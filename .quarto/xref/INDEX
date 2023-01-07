@@ -1,0 +1,20 @@
+{
+  "index.qmd": {
+    "index.html": "c2af307b"
+  },
+  "posts/post-with-code/index.qmd": {
+    "index.html": "d69be6df"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "50a26b3a"
+  },
+  "about.qmd": {
+    "about.html": "de199847"
+  },
+  "posts/2023-01-03-exploratory_analysis/index.qmd": {
+    "index.html": "d3afaae9"
+  },
+  "posts/2022-12-30-promotion_prediction/index.qmd": {
+    "index.html": "0625020f"
+  }
+}

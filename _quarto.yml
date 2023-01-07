@@ -1,0 +1,21 @@
+project:
+  type: website
+
+website:
+  title: "Adam D McKinnon"
+  site-url: "https://www.adam-d-mckinnon.com/"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/
+      - icon: linkedin
+        href: https://www.linkedin.com/in/adamdmckinnon/
+format:
+  html:
+    theme: lux
+    css: custom.scss
+    code-fold: true
+
+editor: visual
+

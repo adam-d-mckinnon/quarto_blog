@@ -1,0 +1,14 @@
+{
+  "hash": "30f87ae695c4dd568d9d5c85eed000d2",
+  "result": {
+    "markdown": "---\ntitle: 'Predicting Promotions Through Machine Learning'\ndate: \"2023-12-30\"\ncategories: [Tidymodels, XGBoost, Machine Learning, Employee Promotions]\nimage: \"shorter_stairs.jpg\"\ntitle-block-banner: true\n---\n\n::: {.cell code_folding='false'}\n::: {.cell-output-display}\n![Photo by [Possessed Photography](https://unsplash.com/@possessedphotography) on [Unsplash](https://unsplash.com/).](shorter_stairs.jpg){width=100%}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

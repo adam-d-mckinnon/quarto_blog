@@ -1,0 +1,253 @@
+---
+title: 'Predicting Promotions Through Machine Learning'
+date: "2022-12-30"
+categories: [Tidymodels, XGBoost, R, Machine Learning, Employee Promotions]
+image: "shorter_stairs.jpg"
+title-block-banner: true
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="Photo by [Possessed Photography](https://unsplash.com/@possessedphotography) on [Unsplash](https://unsplash.com/).", out.width = '100%'}
+knitr::include_graphics("shorter_stairs.jpg")
+
+```
+
+# Libraries
+
+```{r loading_libraries}
+
+# data manipulation
+library(readxl)
+library(tidyverse)
+library(janitor)
+
+# modelling
+library(tidymodels)
+library(finetune)
+library(bundle)
+library(plotly)
+
+# Processing power
+library(doParallel)
+library(parallelly)
+
+
+tidymodels_prefer()
+
+```
+
+# Data
+
+```{r loading_data}
+
+# Load Data ----
+promotions_tbl <- readxl::read_excel(path = "promotion_prediction_files/2022_12_15_promotions.xlsx")
+
+
+promotions_tbl <- promotions_tbl %>% 
+    mutate(
+        promoted  = forcats::as_factor(promoted) %>% forcats::fct_relevel("promoted", "not promoted")
+    ) %>% 
+    mutate_at(.vars = c("gender", "work_site", "management_level"), .funs = ~ forcats::as_factor(.))
+
+
+
+```
+
+# Building an ML Model
+
+### 1. Splitting the data
+
+```{r splitting_data}
+
+# Spending the dataset ----
+
+set.seed(836)
+promotion_split     <- initial_split(promotions_tbl, strata = promoted)
+promotion_train_tbl <- training(promotion_split)
+promotion_test_tbl  <- testing(promotion_split)
+
+
+set.seed(234)
+promotion_folds <- bootstraps(promotion_train_tbl, 
+                              times = 75, # default is 25 - inflated to accommodate racing method of tuning 
+                              strata = promoted)
+
+# check the promotion_folds 
+# promotion_folds
+
+
+
+```
+
+### 2. Pre-processing the data
+
+```{r data_preprocessing}
+
+# Data Pre-processing ----
+xgboost_recipe <- 
+    recipe(formula = promoted ~ ., data = promotion_train_tbl) %>% 
+    recipes::update_role(employee_id, new_role = "id") %>% 
+    step_dummy(all_nominal_predictors(), one_hot = TRUE) %>% 
+    step_zv(all_predictors()) 
+
+
+# check the recipe
+# xgboost_recipe
+
+```
+
+### 3. Create a model specification
+
+```{r model_spec}
+
+# Model Set-up ----
+xgboost_spec <- 
+    boost_tree(trees = 1000, 
+               tree_depth = tune(), min_n = tune(), 
+               loss_reduction = tune(), 
+               sample_size = tune(), mtry = tune(),
+               learn_rate = tune()) %>% 
+    set_engine("xgboost") %>% 
+    set_mode("classification")
+
+
+# check the model specification
+# xgboost_spec
+
+```
+
+### 4. Workflow setup
+
+```{r workflow_setup}
+
+
+# Workflow setup
+xgboost_workflow <- 
+    workflow() %>% 
+    add_recipe(xgboost_recipe) %>% 
+    add_model(xgboost_spec) 
+
+# Check the workflow
+# xgboost_workflow
+
+
+```
+
+### 5. Tuning the model
+
+```{r model_tuning}
+
+# specify the metrics of interest
+# NOTE: The first metric listed will be used for tuning
+promotion_metrics <- metric_set(
+                            roc_auc, 
+                            accuracy, 
+                            sensitivity, 
+                            specificity
+                            )
+
+
+# establish parallel processing based on the number of available cores
+doParallel::registerDoParallel(cores = parallelly::availableCores())
+
+
+set.seed(826)
+racing_resamples <- finetune::tune_race_anova(
+    xgboost_workflow,
+    resamples = promotion_folds,
+    grid = 100, # cast a wide grid to optimise the results -
+                # works best with many resamples - set earlier to 75
+    metrics = promotion_metrics,
+    control = control_race(
+        verbose_elim = TRUE,
+        save_pred    = TRUE
+        )
+)
+
+
+# racing_resamples
+
+
+
+```
+
+### 6. Assess model performance
+
+```{r assess_model}
+
+first_model_metrics_tbl <- collect_metrics(racing_resamples)
+tuning_plot <- plotly_build(plot_race(racing_resamples))
+
+xaringanExtra::use_panelset()
+
+```
+
+::: panelset
+::: panel
+[Promotion Metrics]{.panel-name}
+
+```{r echo=FALSE, code_folding = FALSE}
+
+first_model_metrics_tbl %>% gt::gt()
+
+```
+:::
+
+::: panel
+[Model Tuning Visualisation]{.panel-name}
+
+```{r echo=FALSE, code_folding = FALSE}
+
+tuning_plot
+
+```
+:::
+:::
+
+### 7. Finalise the workflow
+
+```{r finalise_workflow}
+
+last_fit_xgboost_workflow <- xgboost_workflow %>%
+    finalize_workflow(select_best(racing_resamples, "roc_auc")) %>%
+    last_fit(promotion_split)
+
+
+# last_fit_xgboost_workflow
+
+# test the fit
+collect_metrics(last_fit_xgboost_workflow) %>% gt::gt()
+
+# extract the model workflow for further testing & saving
+final_model_workflow <- last_fit_xgboost_workflow %>%
+    extract_workflow()
+
+
+```
+
+### 8. Re-assess model performance
+
+```{r predictions}
+
+# test the model
+pred_test <- final_model_workflow %>% 
+    predict(promotion_test_tbl) %>%
+    bind_cols(promotion_test_tbl)
+
+# Visualise the performance using a confusion matrix
+cm <- conf_mat(pred_test, promoted, .pred_class)
+autoplot(cm, type = "heatmap") %>% 
+    plotly::plotly_build()
+
+```
+
+# Save the model
+
+```{r save_model}
+
+# save the model for future use 
+model_bundle <- bundle::bundle(final_model_workflow)
+readr::write_rds(model_bundle, file = "model_bundle.rds")
+
+
+```

@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "People Analytics Blog",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n  \n\n\n\n\nExpediting Exploratory Data Analysis\n\n\n\n\n\n\n\nPPSR\n\n\nCorrelation Funnel\n\n\nDataExplorer\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nJan 3, 2023\n\n\nAdam D McKinnon\n\n\n\n\n\n\n  \n\n\n\n\nPredicting Promotions Through Machine Learning\n\n\n\n\n\n\n\nTidymodels\n\n\nXGBoost\n\n\nR\n\n\nMachine Learning\n\n\nEmployee Promotions\n\n\n\n\n\n\n\n\n\n\n\nDec 30, 2022\n\n\nAdam D McKinnon\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code.\n\n\nCode\n1 + 1\n\n\n[1] 2\n\n\n\n\n\nReusehttps://creativecommons.org/licenses/by/4.0/CitationBibTeX citation:@online{dmckinnon2023,\n  author = {Adam D McKinnon and Harlow Malloc},\n  title = {Post {With} {Code}},\n  date = {2023-01-08},\n  url = {https://www.adam-d-mckinnon.com//posts/post-with-code},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nAdam D McKinnon, and Harlow Malloc. 2023. “Post With Code.”\nJanuary 8, 2023. https://www.adam-d-mckinnon.com//posts/post-with-code."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This is my personal blog, coming to you from Melbourne, Australia. I write about the evolving field of People Analytics, mostly through the application of the R language. On this blog site you can find my posts which provide both a philosophical perspective regarding advancements in people analytics, along with practical “How To” projects applying different methods (please learn from my mistakes!)."
+  },
+  {
+    "objectID": "posts/2023-01-03-exploratory_analysis/index.html",
+    "href": "posts/2023-01-03-exploratory_analysis/index.html",
+    "title": "Expediting Exploratory Data Analysis",
+    "section": "",
+    "text": "Start with the required libraries, and then load some data.\n\n\nCode\n# data manipulation\nlibrary(tidyverse)\nlibrary(janitor)\n\n# Data Exploration\nlibrary(ppsr)\nlibrary(correlationfunnel)\nlibrary(DataExplorer)\n\n# Visualisation addition\nlibrary(plotly)\n\n\n# Load Data ----\npromotions_tbl <- readr::read_csv(file = \"train.csv\") %>% \n    janitor::clean_names()\n\n# reduce the dataset size\ncleaned_promotions_tbl <-\npromotions_tbl %>%\n    tidyr::drop_na() %>% \n    dplyr::mutate(\n        is_promoted = as.character(is_promoted),\n        is_promoted = if_else(is_promoted==1, \"Yes\", \"No\") %>% as.factor()\n    )\n\n\n\n\n1. Predictive Power Score\n\n\nCode\ncleaned_promotions_tbl %>%\n    select(-employee_id) %>%\n    visualize_pps(y = 'is_promoted', do_parallel = TRUE)\n\n\n\n\n\n\n\n\n\n\n2. Correlation Funnel\n\n\nCode\ncleaned_promotions_tbl %>% \n    select(-employee_id) %>% \n    binarize() %>% \n    correlate(target = is_promoted__Yes) %>% \n    plot_correlation_funnel(interactive = TRUE) %>% \n    plotly::config(displayModeBar = FALSE)\n\n\n\n\n\n\n\n\n\n\n\n3. DataExplorer\n\n\n\n\n\n\n\nDefault Heatmap\n\n\nCode\ncorr_plot <- cleaned_promotions_tbl %>% \n    select(-employee_id) %>% \n    DataExplorer::plot_correlation(\n        theme_config = list(\n            legend.position = \"none\",\n            axis.text.x     = element_text(angle = 90)\n                )\n    )\n\n\n\n\n\n\n\nInteractive Heatmap\n\n\nCode\ncorr_plot$data$value <- round(corr_plot$data$value, digits = 2)\n\nplotly::plotly_build(corr_plot) %>% \n    plotly::layout(width = 700, height = 700) %>% \n    plotly::config(displayModeBar = FALSE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nReusehttps://creativecommons.org/licenses/by/4.0/CitationBibTeX citation:@online{dmckinnon2023,\n  author = {Adam D McKinnon},\n  title = {Expediting {Exploratory} {Data} {Analysis}},\n  date = {2023-01-03},\n  url = {https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nAdam D McKinnon. 2023. “Expediting Exploratory Data\nAnalysis.” January 3, 2023. https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis."
+  },
+  {
+    "objectID": "posts/2022-12-30-promotion_prediction/index.html",
+    "href": "posts/2022-12-30-promotion_prediction/index.html",
+    "title": "Predicting Promotions Through Machine Learning",
+    "section": "",
+    "text": "Photo by Possessed Photography on Unsplash.\n\n\n\n\n\n\n\nReusehttps://creativecommons.org/licenses/by/4.0/CitationBibTeX citation:@online{dmckinnon2023,\n  author = {Adam D McKinnon},\n  title = {Predicting {Promotions} {Through} {Machine} {Learning}},\n  date = {2023-12-30},\n  url = {https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nAdam D McKinnon. 2023. “Predicting Promotions Through Machine\nLearning.” December 30, 2023. https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction."
+  }
+]

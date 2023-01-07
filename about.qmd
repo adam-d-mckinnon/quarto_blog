@@ -1,0 +1,15 @@
+---
+title: "About"
+image: Adam_McKinnon_Headshot.jpg
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/adamdmckinnon/
+    - icon: github
+      text: Github
+      href: https://github.com/adam-d-mckinnon
+---
+
+This is my personal blog, coming to you from Melbourne, Australia. I write about the evolving field of People Analytics, mostly through the application of the R language. On this blog site you can find my posts which provide both a philosophical perspective regarding advancements in people analytics, along with practical "How To" projects applying different methods (*please learn from my mistakes!*).
