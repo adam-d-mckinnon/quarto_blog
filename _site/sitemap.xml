@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.adam-d-mckinnon.com/index.html</loc>
-    <lastmod>2023-01-07T17:06:41.999Z</lastmod>
+    <lastmod>2023-01-08T01:07:04.353Z</lastmod>
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/post-with-code/index.html</loc>
@@ -18,6 +18,10 @@
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2022-12-30-promotion_prediction/index.html</loc>
-    <lastmod>2023-01-07T17:04:12.051Z</lastmod>
+    <lastmod>2023-01-08T00:54:27.017Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2022-07-21-isolation_forests/index.html</loc>
+    <lastmod>2023-01-08T01:07:03.870Z</lastmod>
   </url>
 </urlset>

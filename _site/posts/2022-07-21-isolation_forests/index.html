@@ -6,10 +6,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Martha Curioni">
 <meta name="author" content="Adam D McKinnon">
-<meta name="dcterms.date" content="2023-12-30">
+<meta name="dcterms.date" content="2022-07-21">
+<meta name="description" content="An automated, multi-dimensional and scalable approach to monitoring and improving employee data quality using unsupervised machine learning.">
 
-<title>Adam D McKinnon - Predicting Promotions Through Machine Learning</title>
+<title>Adam D McKinnon - Automated assessment of employee data quality using machine learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -105,37 +107,37 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Predicting Promotions Through Machine Learning</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">Tidymodels</div>
-                <div class="quarto-category">XGBoost</div>
+      <h1 class="title">Automated assessment of employee data quality using machine learning</h1>
+                  <div>
+        <div class="description">
+          An automated, multi-dimensional and scalable approach to monitoring and improving employee data quality using unsupervised machine learning.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">H2o</div>
+                <div class="quarto-category">Isolation Forests</div>
                 <div class="quarto-category">Machine Learning</div>
-                <div class="quarto-category">Employee Promotions</div>
+                <div class="quarto-category">Data Quality</div>
               </div>
                   </div>
   </div>
     
-  <div class="quarto-title-meta-author">
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-heading">Affiliation</div>
-    
-      <div class="quarto-title-meta-contents">
-      <a href="https://www.adam-d-mckinnon.com/">Adam D McKinnon</a> 
-    </div>
-      <div class="quarto-title-meta-contents">
-          <p class="affiliation">
-              RedFox
-            </p>
-        </div>
-      </div>
-
+  
   <div class="quarto-title-meta">
 
-        
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Martha Curioni </p>
+               <p>Adam D McKinnon </p>
+            </div>
+    </div>
+      
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 30, 2023</p>
+        <p class="date">July 21, 2022</p>
       </div>
     </div>
     
@@ -146,7 +148,15 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-process" id="toc-the-process" class="nav-link" data-scroll-target="#the-process">The Process</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -157,29 +167,71 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="cell" data-code_folding="false">
+<p><br></p>
+<div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="shorter_stairs.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@possessedphotography">Possessed Photography</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
+<p><img src="mika-baumeister-Wpnoqo2plFA-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@mbaumi">Mika Baumeister</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The topic of data quality is like that of I.T. services generally… you only ever hear about it when there’s a problem! There’s an implicit assumption among stakeholders receiving the findings of people analytics initiatives that your data is “good”. Failure to observe this assumption of high data quality can significantly (and rapidly) undermine the credibility of findings, irrespective of how small the data quality deviation!</p>
+<p>From an analytical perspective, the quality of your insights can potentially be limited by flawed data. As the saying goes “garbage in, garbage out”. Coupled with stakeholder expectations, it becomes increasingly important that organisations invest time and energy in the ongoing assessment and curation of quality data to maximise the influence of data driven decision making in organisations.</p>
+<p>At the same time, monitoring data quality in HR can be immensely time consuming, expensive, simplistic in execution (i.e., simple evaluation criteria such as age ranges), highly repetitive, and utterly devoid of ANY professional enjoyment! To overcome these shortcomings, we have developed an automated, multi-dimensional and scalable approach to data quality evaluation using unsupervised machine learning—Isolation Forests.</p>
+</section>
+<section id="the-process" class="level1">
+<h1>The Process</h1>
+<p>We used Isolation Forests, an <a href="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/">unsupervised machine learning</a> approach to scan employee data for potentially anomalous[1] records.</p>
+<p>Our code can be viewed at <a href="https://github.com/MarthaC-SBP/IsolationForrest_HR_data_anomalies">this GitHub account</a>, which followed the following process steps:</p>
+<ol type="1">
+<li><p>Ingested personnel data and loaded the appropriate libraries. In our example, we used the IBM HR Attrition dataset, then installed the H2o and Pandas libraries.</p></li>
+<li><p>Defined the dataset columns to include in the data quality assessment. Trained an Isolation Forest algorithm on the data. The Isolation Forest algorithm partitioned data through a forest of decision trees. Each split of the data was made randomly and the number of splits required to isolate a record indicated whether or not the record was considered anomalous. When a forest of random trees collectively produced shorter path lengths for particular records, they were highly likely to be considered anomalies.</p></li>
+<li><p>Using the trained Isolation Forest model, we then predicted which records we believed to be anomalous. Of those records predicted to have data quality issues we then narrowed down to those with the highest likelihood of being anomalous using characteristics from the trained model.</p></li>
+<li><p>The model has two levels of output interpretation:</p>
+<ol type="i">
+<li>Global – which dataset columns are most often related to data quality errors. At best this is interesting in identifying potentially systemic errors, which may be a catalyst for more controlled data entry parameters.</li>
+<li>Local – for any given record why is it deemed an anomaly. It is this level that is most valuable in directly resolving data quality issues, and therefore, was the focus of our approach.</li>
+</ol></li>
+<li><p>For those records deemed highly anomalous (our subset), we then trained a simple Random Forest model to predict the anomaly flag(s). This process was repeated multiple times for each record to increase our certainty in identifying those variables contributing to its anomaly status. Note: We kept the model simple to make identification (and interpretation) of the combination of variables contributing to each records anomaly status easy to perform. In short, we wanted the output interpretable by a wide audience, not just those familiar with machine learning outputs.</p></li>
+<li><p>The generated output (see excerpt of output in image below) has two fields: 1. A unique identifier, and 2. A list of variables contributing to each records anomaly status. The unique identifier, in our case the unique Employee Number taken from the original dataset, is critical to enabling identification and access to the original record that requires review. The second column has a ranked list (ranked from most important to least) showing the variables “collectively” contributing to the anomaly status. For example, when inspecting EmployeeNumber 58’s record we see a Monthly Income only four times their DailyRate (possibly incorrect), and that the individual has been with the company 2 years, had their last promotion 2 years ago, and has 2 years in their current role, which collectively cannot all be correct–the algorithm suggests reviewing YearsInCurrentRole.</p></li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="table_image.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Example Output.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Unsupervised Machine Learning algorithms such as Isolation Forests can be an excellent way of automating and scaling the review of data to monitor for quality concerns. The approach lends itself to those datasets that have a reasonable level of data quality and that are looking to make further improvements.</p>
+<p>The major advantage of this approach is that the Isolation Forest can identify a record as anomalous, despite no one variable in the record being out of acceptable limits. Instead, the algorithm assesses the combination of multiple variables to determine if the combination makes it seem anomalous. This is like having human intelligence review each record quickly, at scale, and without destroying anyone’s job satisfaction!</p>
+<p>We propose that this approach has the potential to significantly reduce time spent on direct data quality evaluations, which has considerable direct benefits (i.e., better quality data, more representative analyses and interpretation, etc.) as well as indirect benefits (i.e., time can be spent on other value-add initiatives that can only be done by humans!). This is particularly true for smaller teams, where the need to do more with less is greatest.</p>
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2022,
-  author = {Adam D McKinnon},
-  title = {Predicting {Promotions} {Through} {Machine} {Learning}},
-  date = {2022-12-30},
-  url = {https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction},
+  author = {Adam D McKinnon and Martha Curioni and Adam D McKinnon},
+  title = {Automated Assessment of Employee Data Quality Using Machine
+    Learning},
+  date = {2022-07-21},
+  url = {https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Adam D McKinnon. 2022. <span>“Predicting Promotions Through Machine
-Learning.”</span> December 30, 2022. <a href="https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction">https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction</a>.
+Adam D McKinnon, Martha Curioni, and Adam D McKinnon. 2022.
+<span>“Automated Assessment of Employee Data Quality Using Machine
+Learning.”</span> July 21, 2022. <a href="https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests">https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
