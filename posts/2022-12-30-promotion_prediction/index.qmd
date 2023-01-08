@@ -1,6 +1,7 @@
 ---
 title: 'Predicting Promotions Through Machine Learning'
-date: "2022-12-30"
+date: 2022-12-30
+description: "Building an XGBoost model in the Tidymodels ecosystem that predicts whether an employee should be promoted."
 categories: [Tidymodels, XGBoost, R, Machine Learning, Employee Promotions]
 image: "shorter_stairs.jpg"
 title-block-banner: true

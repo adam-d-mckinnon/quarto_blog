@@ -7,15 +7,16 @@ website:
   navbar:
     right:
       - about.qmd
-      - icon: github
-        href: https://github.com/
       - icon: linkedin
         href: https://www.linkedin.com/in/adamdmckinnon/
+      - icon: github
+        href: https://github.com/adam-d-mckinnon
 format:
   html:
     theme: lux
     css: custom.scss
     code-fold: true
+    toc-depth: 3
 
 editor: visual
 

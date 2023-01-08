@@ -21,11 +21,5 @@ execute:
   message: false
   warning: false
 
-# Default author
-author:
-  - name: Adam D McKinnon
-    url: https://www.adam-d-mckinnon.com/
-    affiliation: RedFox
-
 # Default fields for citation
 citation: true

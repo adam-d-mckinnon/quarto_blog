@@ -13,7 +13,6 @@
 <lastBuildDate>Mon, 02 Jan 2023 13:00:00 GMT</lastBuildDate>
 <item>
   <title>Expediting Exploratory Data Analysis</title>
-  <dc:creator>Adam D McKinnon</dc:creator>
   <link>https://www.adam-d-mckinnon.com/posts/2023-01-03-exploratory_analysis/index.html</link>
   <description><![CDATA[ 
 
@@ -144,16 +143,16 @@
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
-  author = {Adam D McKinnon},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
+  author = {},
   title = {Expediting {Exploratory} {Data} {Analysis}},
   date = {2023-01-03},
   url = {https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon. 2023. <span>“Expediting Exploratory Data
-Analysis.”</span> January 3, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis">https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis</a>.
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2023" class="csl-entry quarto-appendix-citeas">
+<span>“Expediting Exploratory Data Analysis.”</span> 2023. January 3,
+2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis">https://www.adam-d-mckinnon.com//posts/2023-01-03-exploratory_analysis</a>.
 </div></div></section></div> ]]></description>
   <category>PPSR</category>
   <category>Correlation Funnel</category>
@@ -165,7 +164,6 @@ Analysis.”</span> January 3, 2023. <a href="https://www.adam-d-mckinnon.com//p
 </item>
 <item>
   <title>Predicting Promotions Through Machine Learning</title>
-  <dc:creator>Adam D McKinnon</dc:creator>
   <link>https://www.adam-d-mckinnon.com/posts/2022-12-30-promotion_prediction/index.html</link>
   <description><![CDATA[ 
 
@@ -185,16 +183,16 @@ Analysis.”</span> January 3, 2023. <a href="https://www.adam-d-mckinnon.com//p
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2022,
-  author = {Adam D McKinnon},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
+  author = {},
   title = {Predicting {Promotions} {Through} {Machine} {Learning}},
   date = {2022-12-30},
   url = {https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2022" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon. 2022. <span>“Predicting Promotions Through Machine
-Learning.”</span> December 30, 2022. <a href="https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction">https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction</a>.
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas">
+<span>“Predicting Promotions Through Machine Learning.”</span> 2022.
+December 30, 2022. <a href="https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction">https://www.adam-d-mckinnon.com//posts/2022-12-30-promotion_prediction</a>.
 </div></div></section></div> ]]></description>
   <category>Tidymodels</category>
   <category>XGBoost</category>
@@ -207,7 +205,6 @@ Learning.”</span> December 30, 2022. <a href="https://www.adam-d-mckinnon.com/
 </item>
 <item>
   <title>Automated assessment of employee data quality using machine learning</title>
-  <dc:creator>Adam D McKinnon</dc:creator>
   <dc:creator>Martha Curioni</dc:creator>
   <dc:creator>Adam D McKinnon</dc:creator>
   <link>https://www.adam-d-mckinnon.com/posts/2022-07-21-isolation_forests/index.html</link>
@@ -269,18 +266,18 @@ Learning.”</span> December 30, 2022. <a href="https://www.adam-d-mckinnon.com/
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2022,
-  author = {Adam D McKinnon and Martha Curioni and Adam D McKinnon},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{curioni2022,
+  author = {Martha Curioni and Adam D McKinnon},
   title = {Automated Assessment of Employee Data Quality Using Machine
     Learning},
   date = {2022-07-21},
   url = {https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2022" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon, Martha Curioni, and Adam D McKinnon. 2022.
-<span>“Automated Assessment of Employee Data Quality Using Machine
-Learning.”</span> July 21, 2022. <a href="https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests">https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests</a>.
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-curioni2022" class="csl-entry quarto-appendix-citeas">
+Martha Curioni, and Adam D McKinnon. 2022. <span>“Automated Assessment
+of Employee Data Quality Using Machine Learning.”</span> July 21, 2022.
+<a href="https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests">https://www.adam-d-mckinnon.com//posts/2022-07-21-isolation_forests</a>.
 </div></div></section></div> ]]></description>
   <category>Python</category>
   <category>H2o</category>
@@ -289,6 +286,431 @@ Learning.”</span> July 21, 2022. <a href="https://www.adam-d-mckinnon.com//pos
   <category>Data Quality</category>
   <guid>https://www.adam-d-mckinnon.com/posts/2022-07-21-isolation_forests/index.html</guid>
   <pubDate>Wed, 20 Jul 2022 14:00:00 GMT</pubDate>
+  <media:content url="https://www.adam-d-mckinnon.com/posts/2022-07-21-isolation_forests/mika-baumeister-Wpnoqo2plFA-unsplash.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>How HR can Apply Network Analysis to Open Data</title>
+  <dc:creator>Adam D McKinnon</dc:creator>
+  <dc:creator>André Vermeij</dc:creator>
+  <link>https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/matt-palmer-iPum7Ket2jo-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@mattpalmer">Matt Palmer</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>This article explores:</p>
+<ul>
+<li><p>The value of moving from a purely internal network view (a potential limitation of Organisational Network Analysis) to a view that includes external network analysis as well.</p></li>
+<li><p>How Network Analysis can be applied to a variety of datasets to generate unique people analytics insights for organisations.</p></li>
+<li><p>The value of applying Network Analysis to “Open” (i.e.&nbsp;publicly available) data sources to inform people-related decisions inside organisations.</p></li>
+<li><p>Practical use cases of how HR can inform decisions by applying network analysis to open data.</p></li>
+</ul>
+<p><br> <br></p>
+<section id="why-network-analysis" class="level1">
+<h1>Why Network Analysis?</h1>
+<section id="why-network-analysis-could-be-more-valuable-than-organisational-network-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="why-network-analysis-could-be-more-valuable-than-organisational-network-analysis">Why “Network Analysis” could be more valuable than “Organisational Network Analysis”</h4>
+<p>Organisational Network Analysis (ONA) has received considerable attention in recent years within People Analytics circles globally, as illustrated by the public discussion and proliferation of companies specialising in this method. There is an appetite to learn and do more, which also speaks to the quality and actionability of insights generated. Typical ONA benefits include, for example, improved collaboration through a better view on intra- and inter-team collaboration and the identification of key individuals acting as hubs and connectors for efficient message broadcasting during change management initiatives.</p>
+<p>ONA traditionally denotes the analysis of social interactions internally to inform organisational decision making. We have seen exceptional examples of this work published in the public domain from people like Michael Arena, Rob Cross, Manish Goel and many others. These are important examples; however, we could be imposing a false barrier upon practitioners by focusing too much on the ‘O’ for Organisational. While the term ONA is directionaly accurate, it limits our thinking and actions regarding the breadth of possible applications for network analysis. In other words, we are limiting the data sources we could use and the questions we could answer by only looking internally, within the organisation.</p>
+<p>In academic circles, this work is often referred to as “Social Network Analysis” (SNA) and can be found in a body of literature that spans decades. SNA broadens the perspective of the discussion by using network analysis to understand social interactions. In doing so, it has generated a wealth of insights around social relationships in the fields of sociology, psychology and anthropology. There are however, once again, limitations. The field is limited to solely represent social connectedness (connections between individuals, teams, or entire companies), as opposed to simply connectedness (connections between any other type of data point – for example documents, projects, skills, knowledge areas, etc.). In a society of ever-increasing digitisation and data generation, insights into this broader concept of connectedness are of increasing value.</p>
+<p>Network analysis can be applied to a variety of data types and data sources in a bid to understand this kind of broad connectedness between data, as opposed to just connections between people. Since the early 2000s, the broader scientific fields of Network Science and Complex Networks have been focusing on applying large-scale network analysis in a wide variety of other domains as well, including, for example, biology (cellular networks), neurology (brain networks), economics (corporate governance, trade networks) and finance (transaction networks, fraud detection).</p>
+<p>The People Analytics field should therefore embrace the name “Network Analysis” as opposed to “Organisational Network Analysis” in order to shed the limitations imposed by the domain specific names that have previously dominated public discussion in the field, and subsequently broaden the opportunity for People Analytics practitioners to generate unique insights.</p>
+<p><br></p>
+</section>
+</section>
+<section id="what-data" class="level1">
+<h1>What data?</h1>
+<section id="what-data-is-available-for-network-analysis-beyond-the-traditional-sources" class="level4">
+<h4 class="anchored" data-anchor-id="what-data-is-available-for-network-analysis-beyond-the-traditional-sources">What data is available for network analysis, beyond the traditional sources?</h4>
+<p>Traditional discussion of network analysis has focused on active (i.e.&nbsp;data collection through surveys) and passive data (i.e.&nbsp;data collection through meta-data stored such as email). Both sources of data are focused on social interactions and can generate valuable insights when applied singularly or in concert.</p>
+<p>Some limited discussion has been offered on the topic of behavioural network data—capturing social interaction data from electronic devices or badges worn by individuals (i.e.&nbsp;arguably a mix of active and passive approaches – an approach used by Humanyze).</p>
+<p>In addition to the above three, it is our belief that a fourth source of data exists - Open Data. <a href="https://theodi.org/article/what-is-open-data-and-why-should-we-care/">Open Data</a> refers to data that is publicly available for anyone to access, use and share. Excellent examples of major governmental open data sources include the <a href="https://www.europeandataportal.eu/en">European Data Portal</a>, <a href="https://www.data.gov">Data.gov</a> (US) and <a href="https://data.gov.uk">Data.gov.uk</a> (UK).</p>
+<p>The benefits of Open Data are that it is:</p>
+<ul>
+<li><p>often free</p></li>
+<li><p>not as often limited by data privacy regulations, which means the data is faster to execute on</p></li>
+<li><p>a valuable training tool for analysts</p></li>
+<li><p>able to provide an “outside in” perspective</p></li>
+</ul>
+<p><a href="https://kaggle.com">Kaggle</a> is a website oriented towards the data science community and offers a wide variety of datasets as well, but these are often focused on specific use cases and hard to use for insights for specific organisations or individuals. A major benefit of more general open data sources, like those mentioned above, is that the insights which can be gained from them can be directly applicable and valuable in a practical context as well.</p>
+<p><br></p>
+</section>
+</section>
+<section id="where-are-open-data-sources" class="level1">
+<h1>Where are Open Data sources?</h1>
+<p>Rich and openly available datasets are available in a wide variety of contexts. Finding the right data sources for your network analysis activity often starts with answering the following questions:</p>
+<ul>
+<li><p>In which subject category or application area am I looking for insights?</p></li>
+<li><p>Within this area, which types of data points and connections between them are most interesting for my analysis?</p></li>
+<li><p>Which open data sources contain these types of data and what is the quality of these data sources? It’s important to assess these characteristics:</p>
+<ul>
+<li><p>Structure / format</p></li>
+<li><p>Cleanliness</p></li>
+<li><p>Size</p></li>
+<li><p>Recency / update frequency</p></li>
+</ul></li>
+</ul>
+<p>For example, when we are analysing knowledge and innovation, open data on patent activity, journal articles, research grants, start-up activity, clinical trials and conference attendance are very valuable to gain a view on the connectedness between organisations, people and topics of interest. The structured metadata available in these open data sources are usually very rich, and it is often possible to generate multiple valuable networks using the same dataset. For example, one can use author and institutional affiliation information on documents to create various types of collaboration networks but can also create networks of connected documents by looking at shared characteristics, keywords or text.</p>
+<p><br></p>
+<section id="combining-datasets-to-add-even-more-value" class="level2">
+<h2 class="anchored" data-anchor-id="combining-datasets-to-add-even-more-value">Combining datasets to add even more value</h2>
+<p>Analyses based on open data can become particularly powerful when datasets are combined in a meaningful way. If you’re working with various types of documents (let’s say patents and journal articles), you can use metadata which is common to both datasets to link them together and generate combined network overviews. Document summaries/abstracts and author information are good examples of columns which can be used to link datasets.</p>
+<p><br></p>
+</section>
+</section>
+<section id="three-practical-use-cases" class="level1">
+<h1>Three practical use cases</h1>
+<p>The analyses in the examples below were carried out using Kenelyze, a visual analytics platform which allows anyone to create interactive network visualisations using any dataset.</p>
+<section id="recruiting-through-journal-articles" class="level4">
+<h4 class="anchored" data-anchor-id="recruiting-through-journal-articles">1. Recruiting through Journal Articles</h4>
+<p><strong>Data sources: journal articles</strong></p>
+<p>Locating external talent with very specific, scarce technical expertise can be challenging when using traditional recruitment channels. Kenelyze supported a globally operating business active in the agricultural sector with a data-driven analysis for the identification of talent in an area of interest using journal article data, specifically authorship collaborations, and applied network analysis to identify key opinion leaders.</p>
+<p>We first collected relevant data based on keyword searches in publication databases, and then constructed networks of collaborating scientists to identify key players (often professors) and the teams surrounding them (including recently graduated postdoctoral researchers and PhD students). This enabled Hiring Managers to locate previously unknown pockets of potential talent at various universities and research institutes around the world. In addition, the analysis provided an assessment of the professional maturity of identified talent, generating insights that could thereby focus their overall recruitment strategy and actions in this space.</p>
+<p><strong>Results:</strong></p>
+<ul>
+<li><p>Identification of unknown potential talent</p></li>
+<li><p>Assessment of professional maturity of talent</p></li>
+<li><p>More focused recruitment strategy and follow-up</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/journal_network.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Journal article authorship network informing the identification of scientific talent.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="talent-retention-during-ma-using-patent-data." class="level4">
+<h4 class="anchored" data-anchor-id="talent-retention-during-ma-using-patent-data.">2. Talent Retention during M&amp;A using Patent Data.</h4>
+<p><strong>Data sources: patent documents</strong></p>
+<p>Network analysis was applied to patent data during a corporate acquisition of a technology company. Employee data was not available prior to the close of the acquisition, making preparations for people integration activities difficult. However, the company had generated many new technologies and filed numerous patents over the last 15 years, with each patent listing inventors who were employees at the company.</p>
+<p>Network analysis of the acquired company’s patent data identified: (1) prolific inventors in the company’s scientific teams, (2) socially influential scientists and (3) (by combining the first two points) current and future leadership talent in the technical domains and the scientists that must be retained with the resources available.</p>
+<p>Another outcome of the analysis, due to the data source utilised, was a listing of the different technologies (e.g., materials, methods, etc.) that each scientist has exposure to, thereby powering the generation of a technical profile of scientific talent within the acquired entity. Finally, patent categorisation data listed on patents for both the acquiring and acquired organisations were analysed collaboratively to identify shared technical domains in which the companies have developed technologies, and the employees associated with such inventions. This data could inform the systematic bringing together of experts and teams, thereby informing future organisational design of the integrated companies.</p>
+<p><strong>Results:</strong></p>
+<ul>
+<li><p>Identification of leadership talent and key employees</p></li>
+<li><p>Generation of technical profiles</p></li>
+<li><p>Identification of shared technical domains for future organisational design of integrated companies</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/patent_network.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Patent categorisation code network identifying shared technical domains to inform talent decisions.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="analysing-text-similarity-to-drive-innovation" class="level4">
+<h4 class="anchored" data-anchor-id="analysing-text-similarity-to-drive-innovation">3. Analysing Text Similarity to drive Innovation</h4>
+<p><strong>Data sources: patents and journal articles combined in one dataset</strong></p>
+<p>Network analysis and text analytics based on Natural Language Processing (NLP) go hand in hand. We worked with a major business active in the Food Ingredients industry in the Netherlands to help them get a data-driven view of new application areas for one of their key ingredients. Based on a combination of patents and journal articles joined in the same dataset, we created a total of three network perspectives which allowed the client to focus on: (1) key topics and the connections between them in document text similarity networks, (2) organisational collaboration networks, and (3) individual expert networks. The document networks were created by calculating similarities between document abstracts using NLP techniques. Subsequent visualisation of these textual similarities in networks is a powerful way to gain a view on any topic. Since static visualisations do not do justice to the power of network analyses, the networks were delivered as interactive visuals to enable the client to explore the output and gain further insights.</p>
+<p><strong>Results:</strong></p>
+<ul>
+<li><p>Gain new insights into practical application areas for their products</p></li>
+<li><p>Help to shape their innovation strategy going forward</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/text_similarity_network.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Text similarity network for identification of technology benefit areas.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+</section>
+</section>
+<section id="in-conclusion" class="level1">
+<h1>In conclusion…</h1>
+<p>Using the broader term Network Analysis instead of ONA/ SNA opens up the opportunity to understand connectivity between data in many other contexts external to the organisation as well, leading to new insights and benefits</p>
+<p>Open Data, as opposed to traditional data sources, are quicker to collect and analyse, cheaper to obtain, analyse and deploy findings, and provide organisations with an “outside in” perspective.</p>
+<p>Examples illustrate that there are many unique ways in which Network Analysis can add value to people-related decisions in organisations. The limits of this type of analysis will be defined by our collective imagination!</p>
+
+</section>
+
+<div id="quarto-appendix" class="default"><section id="acknowledgments" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+
+<p>This article was first published on the myHRfuture website under the title <a href="https://www.myhrfuture.com/blog/2020/8/12/how-hr-can-apply-network-analysis-to-open-data">“How HR can Apply Network Analysis to Open Data”</a> on August 13, 2020.</p>
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2020,
+  author = {Adam D McKinnon and André Vermeij},
+  title = {How {HR} Can {Apply} {Network} {Analysis} to {Open} {Data}},
+  date = {2020-08-27},
+  url = {https://www.adam-d-mckinnon.com//posts/2020-08-27-network_analysis},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2020" class="csl-entry quarto-appendix-citeas">
+Adam D McKinnon, and André Vermeij. 2020. <span>“How HR Can Apply
+Network Analysis to Open Data.”</span> August 27, 2020. <a href="https://www.adam-d-mckinnon.com//posts/2020-08-27-network_analysis">https://www.adam-d-mckinnon.com//posts/2020-08-27-network_analysis</a>.
+</div></div></section></div> ]]></description>
+  <category>Network Analysis</category>
+  <category>Open Data</category>
+  <category>HR</category>
+  <guid>https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/index.html</guid>
+  <pubDate>Wed, 26 Aug 2020 14:00:00 GMT</pubDate>
+  <media:content url="https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/matt-palmer-iPum7Ket2jo-unsplash.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>A Beginner’s Guide to Machine Learning for HR Practitioners</title>
+  <dc:creator>Adam D McKinnon</dc:creator>
+  <dc:creator>Monica Ashton</dc:creator>
+  <link>https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/pietro-jeng-n6B49lTx7NM-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Image by Pietro Jeng on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>When you hear Artificial Intelligence (AI) the first thing that comes to mind are robots; in particular, the Steven Spielberg movie titled A.I. where a robot child is built that can love and behave just like a real human. This idea appears to be closer to a dream than reality. Truth is, AI is more ubiquitous than we might think. It ranges from self-driving cars, movie recommendations on Netflix, e-mail spam detection to voice-controlled assistants such as Apple’s SIRI. The fact is that AI is already present across many businesses and various industries, as is shown in the figure below (Note the low adoption rate in Human Resources).</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/Which Department - Article Used.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Image source: Where AI projects are being used within companies. From AI Adoption in the Enterprise, Magoulas, R. &amp; Swoyer, S. (2020).</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Still, evidence suggests that HR departments remain unable to seize the multitude of opportunities associated with AI. In part, what may be required to accelerate the adoption of AI is educational content directed at HR Professionals, not data scientists. Thus, we offer this brief guide to Machine Learning (ML), an important subset of AI, with the intent to demystify ML and make it tangible.</p>
+<p><br></p>
+<section id="what-is-ai" class="level1">
+<h1>What is AI?</h1>
+<p>Let’s start with the definition. AI is a broad area of computer science with the focus on building machines that can behave in an intelligent way—akin to humans. Furthermore, we can differentiate between 1. Generalized AI and 2. Specific AI. The concept behind Generalized AI is to develop machines that can perform multiple tasks, just like Spielberg’s robot-child. This is an area still in its infancy.</p>
+<p>More relevant to HR is Specific AI, which refers to the use of intelligent machines to perform only one particular task, but to do it better than a human could (e.g.&nbsp;faster, more accurately, or objectively). For example, an application that reads hundreds of CVs in seconds and identifies optimal candidates for an interview—thereby affording HR professionals greater time to perform tasks humans do better than machines (e.g., building rapport, empathy, creativity, critical thinking, etc.).</p>
+<p><br></p>
+</section>
+<section id="what-is-machine-learning" class="level1">
+<h1>What is Machine Learning?</h1>
+<p>But how can a machine be programmed to process information (i.e., data) in an intelligent way? The answer to that is Machine Learning (ML). ML is a subset of Specific AI that comes from a mix of statistics and computer science. It refers to the process of computers learning to perform a task instead of following step-by-step instructions. This is generally performed iteratively by data scientists instructing a computer if its decisions are correct or incorrect. Depending on the outcome, the computer adapts how it makes decisions in the future—in other words, “it learns”.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/AI_ML.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">The relationship between AI, ML and the three broad types of ML.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When it comes to ML there are basically three broad types:</p>
+<ol type="1">
+<li><p>Reinforcement Learning,</p></li>
+<li><p>Unsupervised Learning, and</p></li>
+<li><p>Supervised Learning.</p></li>
+</ol>
+<p><br></p>
+<section id="what-is-reinforcement-learning" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-reinforcement-learning">1. What is Reinforcement Learning?</h2>
+<p>Reinforcement Learning is probably best known through IBM’s Deep Blue computer, a “robot” that learned how to play chess and beat the human world champion.</p>
+<p>Reinforcement Learning is a type of technique that enables an algorithm to learn by trial and error, using feedback from its own actions and experiences. Much like Pavlov and his dog, Reinforcement Learning involves rewarding decisions that lead to success and penalizing decisions that lead to anything other than success—ultimately making the algorithm more intelligent in the process.</p>
+<p>Examples of reinforcement learning applied in HR are a bit lean, though are most prevalent in areas such as education (i.e., applying content based on the progress of the student), finance and investment (i.e., advanced forecasting), supply chain operations (i.e., robots fulfilling orders in a warehouse), traffic flow optimization, and healthcare (i.e., accurate classification of biopsy images).</p>
+<p><br></p>
+</section>
+<section id="what-is-supervised-learning" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-supervised-learning">2. What is Supervised Learning?</h2>
+<p>The most common forms of ML across industries, and specifically the HR domain, are Supervised Learning, followed by Unsupervised Learning.</p>
+<p>In Supervised Learning, we try to predict an outcome, such as whether an employee will leave the company, the risk of an employee being injured, or the ideal starting salary of a new employee.</p>
+<p>To make predictions we need different input variables (i.e., variables are called “Features” by data scientists). Our input features are only limited to our imagination (i.e., what we think will be important), what data we can get our hands-on, or what data we can create (e.g., by knowing where someone works and where they live we can create a variable focused on employee commute distance). <br> ### An example: Supervised Learning informing Employee Turnover</p>
+<p>Let’s examine a more detailed example of Supervised Learning—predicting who will leave an organization. Imagine that 1 in 5 new recruits leaves an organization in their first 12 months of tenure. To prevent such turnover, we could build a supervised learning model that predicts the likelihood of new starters leaving, so that our HR and managerial colleagues could intervene.</p>
+<p>In this example, the model outcome being predicted is turnover risk, and the features used to predict turnover risk could include an employees’ demographic and employment characteristics (e.g., age, education level, role level, pay relative to market, month of employment, presence of development plans, and so on.).</p>
+<p>Assuming such a model was highly accurate, it would enable us to understand turnover among our new starter population from three angles.</p>
+<ol type="1">
+<li><p>Firstly, what are the factors most influential in predicting turnover among our population. An example of such a model output is presented in the figure below, which illustrates whether a feature prevents turnover (green bars) or promotes turnover (red lines), and the relative importance of each feature in predicting turnover (i.e.&nbsp;longer lines denote more importance).</p></li>
+<li><p>Secondly, the model also rates the likelihood of each new starter leaving the company, enabling focused intervention (i.e.&nbsp;the risk that Adam will leave in his first 12 months).</p></li>
+<li><p>Thirdly, the model identifies the features preventing or promoting turnover risk for each employee. This individualized output can enable HR professionals to take informed and personalized action, regardless of whether they personally know each employee.</p></li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/Variable Importance Plot - Article Used.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Example output from a model that predicts employee turnover risk. The plot describes the relative importance and directional influence of features in the model. Red bars represent features that contribute to employee turnover risk, while green bars represent features preventing turnover risk.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>A supervised learning model used to predict employee turnover among new starters has the potential to reduce notable costs, including financial (e.g., separation, vacancy, recruitment, training, and replacement) reputational (e.g., eroding an EVP and/or reducing candidate appeal) and productivity-related (e.g., on average organizations invest between four weeks and three months training new employees). Some of these costs can be readily quantified so that we can identify organizational savings based on prevented turnover (e.g., preventing 2 in 10 resignations saves $xxx).</p>
+<p><br></p>
+</section>
+<section id="what-is-unsupervised-learning" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-unsupervised-learning">3. What is Unsupervised Learning?</h2>
+<p>Unlike Supervised Learning where we are trying to predict an outcome, Unsupervised Learning analyzes many variables simultaneously to identify similarities, patterns or relationships in the data. Unsupervised Learning is more about understanding what’s in the data. The two most common uses of unsupervised learning are focused on:</p>
+<ul>
+<li><p>Clustering: automatically splitting the dataset into groups based on similarities among the features analyzed. Classically applied to consumers, but equally relevant to organizations, whereby we understand our employee segments (i.e., clusters) and determine whether our HR policies serve the segments.</p></li>
+<li><p>Association mining: identifies sets of variables that often occur together in your dataset. For example, identifying injury patterns among workers at specific sites. <br> ### An example: Unsupervised Learning informing Employee Turnover</p></li>
+</ul>
+<p>Cluster Analysis, the most famous form of unsupervised learning, can also help us better understand employee attrition. This approach can help group employees based on similar features (e.g., location, tenure, nationality, education level, age, performance level, etc.).</p>
+<p>The figure below depicts the results of an analysis of the employee’s demographic features. Multiple demographic features are first reduced to two dimensions using a method called Manifold Learning (another non-supervised method), and these two new dimensions are then clustered using a method called T-SNE. The figure below shows us how the employees can be grouped together, in this case, twelve clusters, based on their demographic features.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/tsne_clusters.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">An example cluster analysis output when applied to employee features.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br> Once grouped into clusters, the next step is to determine the risk of turnover for each group. Moreover, it is interesting to identify if there are some shared risk factors, practically indicating that employees within a cluster are experiencing the workplace in a similar way.</p>
+<p>This last insight is of considerable practical significance, as it may help us tailor interventions that target specific employee clusters, thereby delivering maximum impact (i.e., retaining employees and reducing turnover costs) and return on our investment (i.e.&nbsp;for every $ spent we generated $xxx in savings from reduced turnover).</p>
+<p><br></p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>We have begun to open the black box that is AI, providing a simple overview of ML. We looked at three broad types of ML—reinforcement, supervised and unsupervised—and examined some simple applications of each, where possible related to Human Resources. It is our genuine belief that through greater knowledge of what is possible with ML, HRBP’s and organizational decision-makers will both expect more, and be willing to do more, in this technological domain. Our next piece will explain the step-by-step process for performing Supervised ML—making discussions with People Analytics teams more tangible and less abstract!</p>
+
+</section>
+
+<div id="quarto-appendix" class="default"><section id="acknowledgments" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+
+<p>This article was first published on the Analytics In HR (AIHR) website under the title <a href="https://www.analyticsinhr.com/blog/machine-learning-hr/">“A Beginner’s Guide to Machine Learning for HR Practitioners”</a> on June 8th, 2020.</p>
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2020,
+  author = {Adam D McKinnon and Monica Ashton},
+  title = {A {Beginner’s} {Guide} to {Machine} {Learning} for {HR}
+    {Practitioners}},
+  date = {2020-06-19},
+  url = {https://www.adam-d-mckinnon.com//posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2020" class="csl-entry quarto-appendix-citeas">
+Adam D McKinnon, and Monica Ashton. 2020. <span>“A Beginner’s Guide to
+Machine Learning for HR Practitioners.”</span> June 19, 2020. <a href="https://www.adam-d-mckinnon.com//posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners">https://www.adam-d-mckinnon.com//posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners</a>.
+</div></div></section></div> ]]></description>
+  <category>Artificial Intelligence</category>
+  <category>Machine Learning</category>
+  <category>HR</category>
+  <guid>https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html</guid>
+  <pubDate>Thu, 18 Jun 2020 14:00:00 GMT</pubDate>
+  <media:content url="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/pietro-jeng-n6B49lTx7NM-unsplash.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>4 Key Insights on the HR Tech Landscape… Analysis from London Unleash 2019</title>
+  <dc:creator>Adam D McKinnon</dc:creator>
+  <dc:creator>Leandra Griep</dc:creator>
+  <link>https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/jj-ying-8bghKxNU1j0-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@jjying">JJ Ying</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<section id="data-collection" class="level2">
+<h2 class="anchored" data-anchor-id="data-collection">Data collection</h2>
+<p>We obtained data from the 2019 Unleash Conference in London, specifically the 35 start-ups and 64 sponsors that were present at the conference. Conference attendees were provided a list of company names and their “tags”, which were descriptors of the technology or HR domain that characterize the respective companies.</p>
+<p><br></p>
+</section>
+<section id="network-analyses-how-we-did-what-we-did" class="level2">
+<h2 class="anchored" data-anchor-id="network-analyses-how-we-did-what-we-did">Network Analyses — How we did what we did?</h2>
+<p>We examined the tags using network analysis, in a technology called <a href="https://www.kenelyze.com/">Kenelyze</a> (kudos to our partner <a href="https://www.linkedin.com/in/andrevermeij/">André Vermeij</a>).</p>
+<p>The current network examines the “influence” of HR tech among those vendors present at the 2019 Unleash Conference in London. Network Nodes were the company Tags, and company name was included as a node attribute. The network was undirected and displayed using the Force Atlas 2 layout. Nodes (i.e.&nbsp;Tags) were sized according to the number of times the Tag was used to describe an organization, and coloured according to the PageRank score (i.e.&nbsp;influence measure). The network is presented below.</p>
+<p><br> <br></p>
+<iframe width="1000" height="700" src="https://www.kenedict.com/networks/hr_tech/" title="HR Tech Network"></iframe>
+<p>Network Output of Analysis of HR Tech at 2019 Unleash Conference in London</p>
+<p><br></p>
+</section>
+<section id="data-interpretation-what-did-we-discover-what-are-main-insights" class="level1">
+<h1>Data interpretation: What did we discover? / What are main insights?</h1>
+<p><br></p>
+<section id="what-are-prominent-technologies-in-the-hr-tech-landscape" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-prominent-technologies-in-the-hr-tech-landscape">What are prominent technologies in the HR Tech landscape?</h2>
+<p><br></p>
+<section id="talent-acquisition-is-a-main-influencer" class="level4">
+<h4 class="anchored" data-anchor-id="talent-acquisition-is-a-main-influencer">1. Talent acquisition is a main influencer</h4>
+<p>The most frequent Tag, most connected to other Tags, and most influential was “Talent Acquisition (incl.&nbsp;Referrals)”. It is perhaps unsurprising that Talent Acquisition is both a common and influential domain in HR Technology. This may in part reflect the discrete nature of the recruiting process, characterized by a definitive start and end point, and a clear, binary success measure—hired or not hired. In addition, Talent Acquisition also lends itself to performance measurement, evidenced by metrics such as source of hire, time to hire, applicants per hire, cost per hire, offer acceptance per hire, etc. All discrete metrics that the technology domain has progressively digitized. Good news for Talent Acquisition functions, what about the rest of us?</p>
+<p><br></p>
+</section>
+<section id="people-analytics-and-employee-experience-are-up-and-coming" class="level4">
+<h4 class="anchored" data-anchor-id="people-analytics-and-employee-experience-are-up-and-coming">2. People Analytics and Employee Experience are “up and coming”</h4>
+<p>Following Talent Acquisition the next most frequent and influential Tags included Employee Engagement, Learning &amp; Development, People Analytics, Talent Management, and Employee Experience (EX). These Tags reflect what we interpret as a mix of established HR domains (e.g.&nbsp;Employee Engagement, Learning &amp; Development, Talent Management, HR Transformation), and “up and coming” (e.g.&nbsp;People Analytics and EX). The latter two topics have experienced a meteoric rise in prominence in recent years. However, both People Analytics and EX we anecdotally know to be technology related, and both benefit from a historical connection to data collection network nodes such as “Employee Engagement” and “Surveys (incl.&nbsp;Employee Listening)”.</p>
+<p>We note two points about People Analytics and EX—first, their collective network metrics and second, the various companies that identify themselves with these two capabilities (i.e.&nbsp;click on nodes to see company listings). To us the network metrics and network position suggest that People Analytics is currently more influential (e.g.&nbsp;frequency, degree, PageRank), more central to the network (i.e.&nbsp;position), and consequently likely to play a more significant role in connecting technologies in the HR Tech landscape in the immediate future. Longer term, only time and repeated assessment of the market will tell.</p>
+<p>Secondly, the companies identifying themselves with these two capabilities are varied! Our interpretation of this variation is that the terms People Analytics and EX (also applicable to “Workforce Planning”) mean many things to different people, perhaps driven by maturity of practice in the consumer population. Alternatively, it may also represent future use cases that aren’t currently mainstream, or the potential for partnership or acquisition among technology vendors. Finally, it may represent opportunistic thinking by marketing professionals!</p>
+<p><br></p>
+</section>
+<section id="skills-are-the-new-currency" class="level4">
+<h4 class="anchored" data-anchor-id="skills-are-the-new-currency">3. Skills are the new currency</h4>
+<p>A special call out to the topic of Skills Matching, which we at Merck KGaA have invested in during 2019, and will further explore in 2020. As evidenced in the network, we believe there is real world connectivity between Skills Matching and domains such as People Analytics (our team currently owns the Skills Matching topic at Merck KGaA), Strategic Workforce Planning (i.e.&nbsp;bridging the current with the future), Talent Management, Learning &amp; Development (i.e.&nbsp;to get from the present to the future what training interventions are required), Talent Sourcing (incl.&nbsp;Referrals), and Performance Management (i.e.&nbsp;among other things a useful source of data to inform Skills Matching!). As referenced in recent predictions for 2020 by a variety of authors (e.g.&nbsp;<a href="https://www.linkedin.com/pulse/putting-h-back-hr-10-predictions-2020-david-green/">David Green</a>, <a href="https://hello.visier.com/hr-trends-2020-ebook/">Visier</a>, <a href="https://joshbersin.com/hr-and-talent-predictions-for-2020/">Bersin</a>, etc.), we believe that “Skills are the new currency”! Kudos to <a href="https://www.linkedin.com/in/ianbailie/">Ian Bailie</a> for one of our favourite stakeholder pitch lines.</p>
+<p><br></p>
+</section>
+<section id="social-networks-appear-niche" class="level4">
+<h4 class="anchored" data-anchor-id="social-networks-appear-niche">4. Social Networks appear niche</h4>
+<p>Tech Tags that appeared less frequently than expected, at least considering public hype, included Digital HR and Social Networks. This may simply reflect the companies present at Unleash 2019. However, it may also be suggestive of the niche nature of this technology / approach, and the slow rate of adoption among companies due to various reasons (e.g.&nbsp;data privacy implications, prevalence of skills, lack of available use cases, etc.).</p>
+<p><br></p>
+</section>
+</section>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+<p>The analysis provides a data driven exploration of the HR Tech landscape present at Unleash London in 2019. While the dataset does not claim to capture the universe of HR Tech, it does provide an interesting perspective of available technologies and how these technologies relate to one another. We encourage further exploration of the interactive network—reflect on your own hypotheses, look at the edges for new trends, examine the network structure, and consider what it might mean for the future. To make the article digestible we intentionally did not address many relationships in the network.</p>
+<p>We welcome your comments, particularly additional interpretation of the network, that may generate insights and practical value for other readers. Stay tuned! We may look to squeeze further insights from this analysis (e.g.&nbsp;different algorithms, node configurations, etc.).</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2020,
+  author = {Adam D McKinnon and Leandra Griep},
+  title = {4 {Key} {Insights} on the {HR} {Tech} {Landscape…} {Analysis}
+    from {London} {Unleash} 2019},
+  date = {2020-03-16},
+  url = {https://www.adam-d-mckinnon.com//posts/2020-03-16-hrtechanalysis},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2020" class="csl-entry quarto-appendix-citeas">
+Adam D McKinnon, and Leandra Griep. 2020. <span>“4 Key Insights on the
+HR Tech Landscape… Analysis from London Unleash 2019.”</span> March 16,
+2020. <a href="https://www.adam-d-mckinnon.com//posts/2020-03-16-hrtechanalysis">https://www.adam-d-mckinnon.com//posts/2020-03-16-hrtechanalysis</a>.
+</div></div></section></div> ]]></description>
+  <category>HR Tech</category>
+  <category>Network Analysis</category>
+  <category>Kenelyze</category>
+  <guid>https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/index.html</guid>
+  <pubDate>Sun, 15 Mar 2020 13:00:00 GMT</pubDate>
+  <media:content url="https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/jj-ying-8bghKxNU1j0-unsplash.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
