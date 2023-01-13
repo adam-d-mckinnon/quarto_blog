@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adam D McKinnon">
+<meta name="author" content="Sambit Das">
+<meta name="dcterms.date" content="2021-06-06">
+<meta name="description" content="A ‘How To’ article on the measurment of differences between groups in HR settings.">
+
+<title>Adam D McKinnon - Measuring Impact in HR: A Practical Demonstration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="../../site_libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="../../custom.scss">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Adam D McKinnon</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/adamdmckinnon/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/adam-d-mckinnon"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Measuring Impact in HR: A Practical Demonstration</h1>
+                  <div>
+        <div class="description">
+          A ‘How To’ article on the measurment of differences between groups in HR settings.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Impact Measurement</div>
+                <div class="quarto-category">t-test</div>
+                <div class="quarto-category">rstatix</div>
+                <div class="quarto-category">ggpubr</div>
+                <div class="quarto-category">Plotly</div>
+                <div class="quarto-category">R</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Adam D McKinnon </p>
+               <p>Sambit Das </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 6, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#differences-in-training-outcomes" id="toc-differences-in-training-outcomes" class="nav-link active" data-scroll-target="#differences-in-training-outcomes">Differences in Training Outcomes</a></li>
+  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a>
+  <ul class="collapse">
+  <li><a href="#ingesting-data" id="toc-ingesting-data" class="nav-link" data-scroll-target="#ingesting-data">1. Ingesting Data</a></li>
+  <li><a href="#analysing-data" id="toc-analysing-data" class="nav-link" data-scroll-target="#analysing-data">2. Analysing Data</a>
+  <ul class="collapse">
+  <li><a href="#step-1." id="toc-step-1." class="nav-link" data-scroll-target="#step-1.">Step 1.</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
+  <li><a href="#step-2." id="toc-step-2." class="nav-link" data-scroll-target="#step-2.">Step 2.</a></li>
+  <li><a href="#interpretation-1" id="toc-interpretation-1" class="nav-link" data-scroll-target="#interpretation-1">Interpretation</a></li>
+  </ul></li>
+  <li><a href="#visualising-results" id="toc-visualising-results" class="nav-link" data-scroll-target="#visualising-results">3. Visualising Results</a>
+  <ul class="collapse">
+  <li><a href="#interpretation-2" id="toc-interpretation-2" class="nav-link" data-scroll-target="#interpretation-2">Interpretation</a></li>
+  </ul></li>
+  <li><a href="#quantifying-benefit" id="toc-quantifying-benefit" class="nav-link" data-scroll-target="#quantifying-benefit">4. Quantifying Benefit</a>
+  <ul class="collapse">
+  <li><a href="#interpretation-3" id="toc-interpretation-3" class="nav-link" data-scroll-target="#interpretation-3">Interpretation</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#recommendation" id="toc-recommendation" class="nav-link" data-scroll-target="#recommendation">Recommendation</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="patricia-serna-zPZ9vqqDNBA-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@sernarial">patricia serna</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="differences-in-training-outcomes" class="level1">
+<h1>Differences in Training Outcomes</h1>
+<p>The decision we are trying to inform here is: <strong>in which training format should we invest?</strong></p>
+<p>The context is simple. The organisation has introduced a new digital (i.e., online e-training) for new starters. The new digital training takes half a day to complete. The traditional model of training delivery was a full-day of face-to-face activity.</p>
+<p>The company wants to understand which training format to commit to in future. Enter People Analytics Team!</p>
+<p><br></p>
+</section>
+<section id="workflow" class="level1">
+<h1>Workflow</h1>
+<p>The workflow is as follows:</p>
+<ol type="1">
+<li><p><strong>INGEST:</strong> We began by ingesting the end-of-course assessment data from the training (previously collected). The data was from a random selection of participants that have completed the training in one of the training formats (i.e., face-to-face or digital).</p></li>
+<li><p><strong>ANALYSE:</strong> From there we analysed the end-of-course assessment results. This was done using some basic descriptive statistics and a simple Independent Samples t-test. Prior to performing the t-test we completed an assessment of the t-test assumptions.</p></li>
+<li><p><strong>VISUALISE:</strong> We visualised the results obtained from the two training formats to make it easier for our audience to interpret and understand,</p></li>
+<li><p><strong>QUANTIFY:</strong> Finally, we quantified the benefits of the optimal approach.</p></li>
+</ol>
+<p>The R code for this analysis is presented below, following the workflow steps above. In addition, some guidance regarding the steps and interpretation of the outcomes are provided. We have used namepsacing throughout to illustrate which packages are being used for any given function call. While this helps to ensure the accuracy of our code, it also facilitates learning and ease of understanding for fellow practitioners.</p>
+<p><br></p>
+<section id="ingesting-data" class="level2">
+<h2 class="anchored" data-anchor-id="ingesting-data">1. Ingesting Data</h2>
+<p>The first code chunk is fairly simple. We load our packages, read in our assessment results, clean the variable names, and finally take a simple look at the structure of the data to see what we are working with.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the packages we will use for this workflow</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># workhorse</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co"># ingesting our data</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor) <span class="co"># cleaning variable names</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstatix) <span class="co"># performing t-tests</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr) <span class="co"># simple boxplots</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ingest our training assessment results</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>assessment_results_tbl <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"training_data.xlsx"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                          janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a feel for the data and its structure</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(assessment_results_tbl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 27
+Columns: 2
+$ training &lt;chr&gt; "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "…
+$ result   &lt;dbl&gt; 56, 50, 52, 44, 52, 47, 47, 53, 45, 48, 42, 51, 42, 43, 44, 5…</code></pre>
+</div>
+</div>
+<p>A key point to note is that in the <strong>“training”</strong> variable a response of “A” equates to the traditional face-to-face delivery mode, while “B” equates to the new digital learning format.</p>
+<p><br></p>
+</section>
+<section id="analysing-data" class="level2">
+<h2 class="anchored" data-anchor-id="analysing-data">2. Analysing Data</h2>
+<p>The analysis comprised the following steps:</p>
+<ol type="1">
+<li><p>Firstly, we performed a quick exploration of the data by getting some summary statistics.</p></li>
+<li><p>Secondly, we performed our t-test to determine if statistically significant differences existed in assessment outcome scores achieved by the two training formats.</p></li>
+</ol>
+<p>These two steps are performed sequentially.</p>
+<section id="step-1." class="level3">
+<h3 class="anchored" data-anchor-id="step-1.">Step 1.</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2a. get some summary stats</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>descriptive_stats_tbl <span class="ot">&lt;-</span> assessment_results_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(training) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">get_summary_stats</span>(result, <span class="at">type =</span> <span class="st">"mean_sd"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>descriptive_stats_tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  training variable     n  mean    sd
+  &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 A        result      15  47.7  4.42
+2 B        result      12  56.5  4.28</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation">Interpretation</h3>
+<p>Our descriptive statistics indicate an interesting outcome. It appears a notable difference exists between training formats in the mean score achieved on the assessment outcome, Training B (digital) seems to achieve on average a higher score (56.5) than Training A (face-to-face). However, the question remains–is this difference statistically significant?</p>
+<p><br></p>
+</section>
+<section id="step-2." class="level3">
+<h3 class="anchored" data-anchor-id="step-2.">Step 2.</h3>
+<p>Before we can perform the t-test we must check several assumptions to ensure a t-test is appropriate. The assumptions are as follows:</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Assumption</strong></th>
+<th><strong>Outcome</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. The data are continuous (not discrete).</td>
+<td>Our assessment outcomes scores are continuous - <u><strong>CHECK</strong></u></td>
+</tr>
+<tr class="even">
+<td>2. The data follow the normal probability distribution.</td>
+<td>We will test for normality using a Q-Q plot (Quantile-Quantile plot) and the Shapiro-Wilk’s test.</td>
+</tr>
+<tr class="odd">
+<td>3. The variances of the two populations are equal.</td>
+<td>We will test for equal variance using the Levene Test.</td>
+</tr>
+<tr class="even">
+<td>4. The two samples are independent.</td>
+<td>Our training participants could only participate in one type of training (i.e., face-to-face or digital) so our samples are independent - <u><strong>CHECK</strong></u></td>
+</tr>
+<tr class="odd">
+<td>5. Both samples are simple random samples from their respective populations.</td>
+<td>Our participant results were randomly selected for analysis - <u><strong>CHECK!</strong></u></td>
+</tr>
+</tbody>
+</table>
+<p>If the data is normally distributed and the variance across the two groups (e.g.&nbsp;Training Groups A &amp; B) are equal then a t-test can be used effectively. Let’s check the last two assumptions and then analyse the data!</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2b. Normality Tests</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ggpubr<span class="sc">::</span><span class="fu">ggqqplot</span>(assessment_results_tbl<span class="sc">$</span>result,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">title =</span> <span class="st">"Normality Assessment"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">plotly_build</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-d16bb3f2b389b2d2ff4a" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d16bb3f2b389b2d2ff4a">{"x":{"data":[{"x":[-2.08535556603183,-1.59321881802305,-1.32495768889298,-1.12814364527876,-0.967421566101701,-0.828464648581135,-0.703921788828513,-0.589455797849779,-0.482248214837923,-0.380325641763631,-0.282216147062508,-0.186756121063737,-0.0929718485610738,0,0.0929718485610739,0.186756121063737,0.282216147062508,0.380325641763631,0.482248214837923,0.589455797849779,0.703921788828513,0.828464648581135,0.967421566101701,1.12814364527876,1.32495768889298,1.59321881802305,2.08535556603183],"y":[42,42,43,44,44,45,47,47,48,50,51,52,52,52,53,53,53,53,54,55,56,56,57,57,59,64,65],"text":["theoretical: -2.08535557<br />sample: 42<br />x: 42","theoretical: -1.59321882<br />sample: 42<br />x: 42","theoretical: -1.32495769<br />sample: 43<br />x: 43","theoretical: -1.12814365<br />sample: 44<br />x: 44","theoretical: -0.96742157<br />sample: 44<br />x: 44","theoretical: -0.82846465<br />sample: 45<br />x: 45","theoretical: -0.70392179<br />sample: 47<br />x: 47","theoretical: -0.58945580<br />sample: 47<br />x: 47","theoretical: -0.48224821<br />sample: 48<br />x: 48","theoretical: -0.38032564<br />sample: 50<br />x: 50","theoretical: -0.28221615<br />sample: 51<br />x: 51","theoretical: -0.18675612<br />sample: 52<br />x: 52","theoretical: -0.09297185<br />sample: 52<br />x: 52","theoretical:  0.00000000<br />sample: 52<br />x: 52","theoretical:  0.09297185<br />sample: 53<br />x: 53","theoretical:  0.18675612<br />sample: 53<br />x: 53","theoretical:  0.28221615<br />sample: 53<br />x: 53","theoretical:  0.38032564<br />sample: 53<br />x: 53","theoretical:  0.48224821<br />sample: 54<br />x: 54","theoretical:  0.58945580<br />sample: 55<br />x: 55","theoretical:  0.70392179<br />sample: 56<br />x: 56","theoretical:  0.82846465<br />sample: 56<br />x: 56","theoretical:  0.96742157<br />sample: 57<br />x: 57","theoretical:  1.12814365<br />sample: 57<br />x: 57","theoretical:  1.32495769<br />sample: 59<br />x: 59","theoretical:  1.59321882<br />sample: 64<br />x: 64","theoretical:  2.08535557<br />sample: 65<br />x: 65"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-2.08535556603183,-1.59321881802305,-1.32495768889298,-1.12814364527876,-0.967421566101701,-0.828464648581135,-0.703921788828513,-0.589455797849779,-0.482248214837923,-0.380325641763631,-0.282216147062508,-0.186756121063737,-0.0929718485610738,0,0.0929718485610739,0.186756121063737,0.282216147062508,0.380325641763631,0.482248214837923,0.589455797849779,0.703921788828513,0.828464648581135,0.967421566101701,1.12814364527876,1.32495768889298,1.59321881802305,2.08535556603183],"y":[38.1100506485699,41.2110335447951,42.9013628618402,44.141499847046,45.1542192194367,46.0297950147556,46.8145469754708,47.5358039871869,48.2113253389465,48.8535455290084,49.4717392856348,50.0732385825135,50.6641788570253,51.25,51.8358211429747,52.4267614174865,53.0282607143652,53.6464544709916,54.2886746610536,54.9641960128131,55.6854530245292,56.4702049852444,57.3457807805633,58.358500152954,59.5986371381598,61.2889664552049,64.3899493514301],"text":"","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-2.08535556603183,-1.59321881802305,-1.32495768889298,-1.12814364527876,-0.967421566101701,-0.828464648581135,-0.703921788828513,-0.589455797849779,-0.482248214837923,-0.380325641763631,-0.282216147062508,-0.186756121063737,-0.0929718485610738,0,0.0929718485610739,0.186756121063737,0.282216147062508,0.380325641763631,0.482248214837923,0.589455797849779,0.703921788828513,0.828464648581135,0.967421566101701,1.12814364527876,1.32495768889298,1.59321881802305,2.08535556603183,2.08535556603183,2.08535556603183,1.59321881802305,1.32495768889298,1.12814364527876,0.967421566101701,0.828464648581135,0.703921788828513,0.589455797849779,0.482248214837923,0.380325641763631,0.282216147062508,0.186756121063737,0.0929718485610739,0,-0.0929718485610738,-0.186756121063737,-0.282216147062508,-0.380325641763631,-0.482248214837923,-0.589455797849779,-0.703921788828513,-0.828464648581135,-0.967421566101701,-1.12814364527876,-1.32495768889298,-1.59321881802305,-2.08535556603183,-2.08535556603183],"y":[31.0448613531787,36.3557281847318,38.7473888138278,40.3602188074258,41.6090860991283,42.6480073477773,43.5513950111512,44.3610983147921,45.1031767723232,45.79512917315,46.4494399520156,47.075495893053,47.6807070934095,48.2712111253076,48.8523493793589,49.4290187280261,50.0059613807459,50.5880381151333,51.1805260944303,51.7894903404182,52.4223010602096,53.0884173182661,53.800647660255,54.5772191133338,55.4446630901475,56.4336610951415,57.324760056039,57.324760056039,71.4551386468213,66.1442718152682,63.7526111861722,62.1397811925742,60.8909139008717,59.8519926522227,58.9486049888488,58.1389016852079,57.3968232276768,56.70487082685,56.0505600479844,55.424504106947,54.8192929065905,54.2287888746924,53.6476506206411,53.0709812719739,52.4940386192541,51.9119618848667,51.3194739055697,50.7105096595818,50.0776989397904,49.4115826817339,48.699352339745,47.9227808866662,47.0553369098525,46.0663389048585,45.175239943961,31.0448613531787],"text":"","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"transparent","dash":"solid"},"fill":"toself","fillcolor":"rgba(0,0,0,0.2)","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":46.2864259028643,"r":7.97011207970112,"b":47.0236612702366,"l":43.8356164383562},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"title":{"text":"Normality Assessment","font":{"color":"rgba(0,0,0,1)","family":"","size":19.1282689912827},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2.29389112263501,2.29389112263501],"tickmode":"array","ticktext":["-2","-1","0","1","2"],"tickvals":[-2,-1,0,1,2],"categoryorder":"array","categoryarray":["-2","-1","0","1","2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(0,0,0,1)","ticklen":3.98505603985056,"tickwidth":0.724555643609193,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"Theoretical","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[29.0243474884966,73.4756525115034],"tickmode":"array","ticktext":["30","40","50","60","70"],"tickvals":[30,40,50,60,70],"categoryorder":"array","categoryarray":["30","40","50","60","70"],"nticks":null,"ticks":"outside","tickcolor":"rgba(0,0,0,1)","ticklen":3.98505603985056,"tickwidth":0.724555643609193,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Sample","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":2.06156048675734,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"14269191b4c79":{"sample":{},"type":"scatter"},"142694f39a8cf":{"sample":{}},"142695279d6ab":{"sample":{}}},"cur_data":"14269191b4c79","visdat":{"14269191b4c79":["function (y) ","x"],"142694f39a8cf":["function (y) ","x"],"142695279d6ab":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rstatix<span class="sc">::</span><span class="fu">shapiro_test</span>(assessment_results_tbl<span class="sc">$</span>result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  variable                      statistic p.value
+  &lt;chr&gt;                             &lt;dbl&gt;   &lt;dbl&gt;
+1 assessment_results_tbl$result     0.958   0.338</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2c. Equal Variance - levene's test</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levene_test</span>(result <span class="sc">~</span> training, <span class="at">data =</span> assessment_results_tbl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     1    25     0.242 0.627</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2d. perform the t-test</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>(t_test_tbl <span class="ot">&lt;-</span> assessment_results_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">t_test</span>(<span class="at">formula =</span> result <span class="sc">~</span> training, <span class="at">var.equal =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">add_significance</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 9
+  .y.    group1 group2    n1    n2 statistic    df         p p.signif
+  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   
+1 result A      B         15    12     -5.20    25 0.0000223 ****    </code></pre>
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="interpretation-1" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-1">Interpretation</h3>
+<p><strong>Normality</strong> Our QQ plot suggests that we can assume normality. The distribution of results are falling approximately along the reference line and within the bounds. However, the QQ plot can be sensitive to small sample sizes. To further validate normality we performed the Shapiro Wilk’s test. This test again suggests that the data are normally distributed, as the p-value (0.338) is greater than 0.05. We can assume normality!</p>
+<p><strong>Equal Variance</strong> We use the levene’s test to determine whether both the training methods have an approximately equal variance. Since our p-value (0.627) is greater than 0.05 we can assume that the variance in outcome assessments scores is not statistically significantly different for the two training methods. We can assume equal variance! All our assumptions are met and we can perform the t-test.</p>
+<p><strong>t-test</strong> The t-test indicates that the difference is highly significant (p-value = 0.0002); well below a cut-off of 0.01. This difference is extremely unlikely to be by chance alone and suggests that the digital training yields a better outcome, at least as defined by the assessment outcomes.</p>
+<p><br></p>
+</section>
+</section>
+<section id="visualising-results" class="level2">
+<h2 class="anchored" data-anchor-id="visualising-results">3. Visualising Results</h2>
+<p>Our next step is to visualise the differences achieved by the two training formats. The intent here is to ensure our stakeholders can clearly appreciate that a notable difference exists, and subsequently take an investment decision with confidence. To illustrate the difference observed, we opted to use a Box-Plot, which displays the distribution of scores in each group, coupled with some descriptive statistics. As with our QQ plot, we have used the Plotly package to make the plot interactive.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. visualise the results from the two training methods</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>training_plot <span class="ot">&lt;-</span> assessment_results_tbl <span class="sc">%&gt;%</span>  </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                 ggpubr<span class="sc">::</span><span class="fu">ggboxplot</span>(<span class="at">x     =</span> <span class="st">"training"</span>, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">y     =</span> <span class="st">"result"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">fill  =</span> <span class="st">"training"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">xlab  =</span> <span class="st">"Training Delivery Format"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">ylab  =</span> <span class="st">"Assessment Result"</span>) </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"arial"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># make the graph interactive</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">plotly_build</span>(training_plot) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">layout</span>(<span class="at">title =</span> <span class="st">"&lt;b&gt;Difference in Assessment Results by Training Delivery Format&lt;/b&gt;"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">font =</span> t,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">showlegend =</span> <span class="cn">FALSE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-17ade52e18c808896047" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-17ade52e18c808896047">{"x":{"data":[{"x":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"y":[56,50,52,44,52,47,47,53,45,48,42,51,42,43,44],"hoverinfo":"y","type":"box","fillcolor":"rgba(248,118,109,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(0,0,0,1)","width":1.88976377952756},"name":"A","legendgroup":"A","showlegend":true,"xaxis":"x","yaxis":"y","frame":null},{"x":[2,2,2,2,2,2,2,2,2,2,2,2],"y":[59,54,55,65,52,57,64,53,53,56,53,57],"hoverinfo":"y","type":"box","fillcolor":"rgba(0,191,196,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(0,0,0,1)","width":1.88976377952756},"name":"B","legendgroup":"B","showlegend":true,"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":27.1581569115816,"r":7.97011207970112,"b":47.0236612702366,"l":43.8356164383562},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"arial","size":12},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["A","B"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["A","B"],"nticks":null,"ticks":"outside","tickcolor":"rgba(0,0,0,1)","ticklen":3.98505603985056,"tickwidth":0.724555643609193,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"Training Delivery Format","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[40.85,66.15],"tickmode":"array","ticktext":["45","50","55","60","65"],"tickvals":[45,50,55,60,65],"categoryorder":"array","categoryarray":["45","50","55","60","65"],"nticks":null,"ticks":"outside","tickcolor":"rgba(0,0,0,1)","ticklen":3.98505603985056,"tickwidth":0.724555643609193,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Assessment Result","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":2.06156048675734,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218},"title":{"text":"training","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}}},"hovermode":"closest","barmode":"relative","title":"<b>Difference in Assessment Results by Training Delivery Format<\/b>"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1426968c81973":{"x":{},"y":{},"fill":{},"type":"box"}},"cur_data":"1426968c81973","visdat":{"1426968c81973":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><br></p>
+<section id="interpretation-2" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-2">Interpretation</h3>
+<p>Our visualisation seeks to clearly illustrate that employees who completed the digital training performed better on the end-of-course assessment. This may suggest that the digital training results in better knowledge retention (i.e., they are learning more).</p>
+<p>The line crossing each box on the boxplot indicates the median score of each training format. The median is the middle value achieved on the assessment results for each training format. There is a clear difference between the two groups when comparing these lines. This is worth calling out when delivering the results to stakeholders.</p>
+<p><br></p>
+</section>
+</section>
+<section id="quantifying-benefit" class="level2">
+<h2 class="anchored" data-anchor-id="quantifying-benefit">4. Quantifying Benefit</h2>
+<p>There are two key ways in which we can further quantify the differences of the training formats:</p>
+<ol type="1">
+<li><p>The percentage change in performance. We have identified the gain is statistically significant and visualised the difference above. We can make this increase in performance more accessible to a broader audience by indicating the performance gain as a percentage.<br></p></li>
+<li><p>The cost difference of the delivery formats. By calculating the cost difference of delivering the training over a year or more for the two formats.</p></li>
+</ol>
+<p>On the basis of these two metrics we are in a better position to recommend a future course of action.</p>
+<p><strong>Performance Efficiency</strong></p>
+<p>Using the mean score from each training group we can calculate the % gain in performance. The code is presented in the code chunk below.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. quantify the benefit  </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mean assessment score for f2f training</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>train_A_mean <span class="ot">&lt;-</span> descriptive_stats_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(training <span class="sc">==</span> <span class="st">"A"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(mean)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mean assessment score for digital training</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>train_B_mean <span class="ot">&lt;-</span> descriptive_stats_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(training <span class="sc">==</span> <span class="st">"B"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(mean)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate % increase in performance</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>(<span class="at">pct_increase =</span> ((train_B_mean <span class="sc">-</span> train_A_mean)<span class="sc">/</span> train_A_mean) <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">percent</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "18%"</code></pre>
+</div>
+</div>
+<p><strong>Cost Efficiency</strong></p>
+<p>Below is an except from an excel spreadsheet in which we have detailed costs associated with both training formats.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"training_costs_3.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="training_costs_3.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Cost of training offerings.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<section id="interpretation-3" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-3">Interpretation</h3>
+<p>Our performance gains are straightforward–digital training results in end of course assessment scores that are 18% higher than traditional face-to-face delivery. This kind of result is accessible to all audiences, and is compelling! In addition, we are confident that the result is a function of the training delivery format based on the results of our t-test.</p>
+<p>Our simple cost assessment also creates a compelling picture of the financial savings associated with digital training. In one year we stand to create <strong>$8,400 in savings</strong> if we move to a digital format, and this increases to <strong>$21,800</strong> at the end of two years.</p>
+<p><br></p>
+</section>
+</section>
+</section>
+<section id="recommendation" class="level1">
+<h1>Recommendation</h1>
+<p>Our recommendation is to invest in the Digital Training! Our rationale:</p>
+<ol type="1">
+<li><strong>Digital training is more effective!</strong> Digital training yields 18% better performance outcomes on the end of course assessment. This result is statistically significant, and more importantly practically significant, as it better sets up our new starters for success!</li>
+</ol>
+<p><br></p>
+<ol start="2" type="1">
+<li><strong>Digital training is cheaper!</strong> Digital training costs $21,800 less than face-to-face training over a 2 year period. In addition, in each year we have an indirect benefit of giving 110 employees a half day back to invest in other activities!</li>
+</ol>
+<p><br></p>
+<ol start="3" type="1">
+<li><strong>Digital training is more scaleable!</strong> Digital training can support an unlimited number of participants should recruitment numbers increase for any reason. The ability to accommodate increased numbers of participants also has cost implications (i.e., face-to-face becomes more expensive), further reinforcing the cost benefit of the digital training approach.</li>
+</ol>
+<p><br></p>
+<ol start="4" type="1">
+<li><strong>Digital training is more flexible!</strong> Digital training is not limited by pandemic conditions, and affords employees with more flexibility, a message worth reinforcing early in the careers of new starters!</li>
+</ol>
+<p><br></p>
+<p>Further time could be invested to speak with employees that recently completed the two training formats to validate the results identified and the recommendation provided.</p>
+<p><br></p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>The above case study provides a simple example of using People Analytics to inform a HR investment decision. We used R to analyse training results, determine whether statistically significant differences existed in outcome scores, visualised the results and then quantified the benefit of the respective training modes. Collectively, the analytic evidence suggested a clear investment decision, which could be augmented with user experience feedback. <strong>Happy measuring!</strong></p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2021,
+  author = {Adam D McKinnon and Sambit Das},
+  title = {Measuring {Impact} in {HR:} {A} {Practical} {Demonstration}},
+  date = {2021-06-06},
+  url = {https://www.adam-d-mckinnon.com//posts/2021-02-05-group_impact},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Adam D McKinnon, and Sambit Das. 2021. <span>“Measuring Impact in HR: A
+Practical Demonstration.”</span> June 6, 2021. <a href="https://www.adam-d-mckinnon.com//posts/2021-02-05-group_impact">https://www.adam-d-mckinnon.com//posts/2021-02-05-group_impact</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
