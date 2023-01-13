@@ -125,6 +125,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+<script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="../../site_libs/echarts4r-4.8.0/echarts-en.min.js"></script>
+<script src="../../site_libs/echarts4r-4.8.0/ecStat.min.js"></script>
+<script src="../../site_libs/echarts4r-4.8.0/dataTool.min.js"></script>
+<script src="../../site_libs/echarts4r-binding-0.4.4/echarts4r.js"></script>
+<script src="../../site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="../../site_libs/react-17.0.0/react.min.js"></script>
+<script src="../../site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="../../site_libs/reactable-binding-0.3.0/reactable.js"></script>
+
 
 <link rel="stylesheet" href="../../custom.scss">
 </head>
@@ -215,7 +226,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
   <li><a href="#calling-google-maps" id="toc-calling-google-maps" class="nav-link" data-scroll-target="#calling-google-maps">1. Calling Google Maps</a></li>
+  <li><a href="#unpacking-the-data" id="toc-unpacking-the-data" class="nav-link" data-scroll-target="#unpacking-the-data">2. Unpacking the Data</a></li>
+  <li><a href="#creating-insights" id="toc-creating-insights" class="nav-link" data-scroll-target="#creating-insights">3. Creating Insights</a>
+  <ul class="collapse">
+  <li><a href="#are-people-generally-better-off-travelling-to-the-new-office-location" id="toc-are-people-generally-better-off-travelling-to-the-new-office-location" class="nav-link" data-scroll-target="#are-people-generally-better-off-travelling-to-the-new-office-location">1. Are people generally better off travelling to the new office location?</a></li>
+  <li><a href="#which-individuals-will-have-shorter-or-longer-travel-times" id="toc-which-individuals-will-have-shorter-or-longer-travel-times" class="nav-link" data-scroll-target="#which-individuals-will-have-shorter-or-longer-travel-times">2. Which individuals will have shorter or longer travel times?</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion:</a></li>
   </ul>
 </nav>
 </nav>
@@ -282,98 +300,329 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googleway)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(echarts4r)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rrapply)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googleway)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(echarts4r)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># # Set API key ----</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>key <span class="ot">=</span> my_api_key <span class="co"># enter your API key here</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Data ----</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>original_locations_tbl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">"http://www.education.vic.gov.au/Documents/about/research/datavic/dv165-allschoolslocationlist2015.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                          janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># # Set API key ----</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>key <span class="ot">=</span> my_api_key <span class="co"># enter your API key here</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Data ----</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>original_locations_tbl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="st">"http://www.education.vic.gov.au/Documents/about/research/datavic/dv165-allschoolslocationlist2015.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                          janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># limit the address data to schools in the Greater Melbourne local government area's</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>councils <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bayside (C)"</span>, <span class="st">"Port Phillip (C)"</span>, <span class="st">"Stonnington (C)"</span>, <span class="st">"Casey (C)"</span>, <span class="st">"Melbourne (C)"</span>, </span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Frankston (C)"</span>, <span class="st">"Glen Eira (C)"</span>, <span class="st">"Monash (C)"</span>, <span class="st">"Yarra (C)"</span>, <span class="st">"Moonee Valley (C)"</span>)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># limit the address data to schools in the Greater Melbourne local government area's</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>councils <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bayside (C)"</span>, <span class="st">"Port Phillip (C)"</span>, <span class="st">"Stonnington (C)"</span>, <span class="st">"Casey (C)"</span>, <span class="st">"Melbourne (C)"</span>, </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Frankston (C)"</span>, <span class="st">"Glen Eira (C)"</span>, <span class="st">"Monash (C)"</span>, <span class="st">"Yarra (C)"</span>, <span class="st">"Moonee Valley (C)"</span>)</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># create an address dataset</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>addresses_tbl <span class="ot">&lt;-</span> original_locations_tbl <span class="sc">%&gt;%</span> </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create and format the home address field, and create the old and new workplace addresses</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_address =</span> base<span class="sc">::</span><span class="fu">paste0</span>(address_line_1, <span class="st">", "</span>, address_town, <span class="st">" "</span>, address_state, <span class="st">" "</span>,address_postcode),</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">old_work_address =</span> <span class="st">"154 High St, Ashburton VIC 3147"</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">new_work_address =</span> <span class="st">"Spring St, East Melbourne VIC 3002"</span>,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">employee         =</span> <span class="fu">paste0</span>(<span class="st">"Employee "</span>, <span class="fu">row_number</span>())  </span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># only include addresses from areas around Melbourne</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(lga_name <span class="sc">%in%</span> councils) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># randomly select 100 records</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">sample_n</span>(<span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(employee, home_address, old_work_address, new_work_address)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># create an address dataset</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>addresses_tbl <span class="ot">&lt;-</span> original_locations_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create and format the home address field, and create the old and new workplace addresses</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_address =</span> base<span class="sc">::</span><span class="fu">paste0</span>(address_line_1, <span class="st">", "</span>, address_town, <span class="st">" "</span>, address_state, <span class="st">" "</span>,address_postcode),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">old_work_address =</span> <span class="st">"154 High St, Ashburton VIC 3147"</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">new_work_address =</span> <span class="st">"Spring St, East Melbourne VIC 3002"</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">employee         =</span> <span class="fu">paste0</span>(<span class="st">"Employee "</span>, <span class="fu">row_number</span>())  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># only include addresses from areas around Melbourne</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(lga_name <span class="sc">%in%</span> councils) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># randomly select 10 records</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">sample_n</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(employee, home_address, old_work_address, new_work_address)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co"># check the dataset</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co"># head(addresses_tbl)</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co"># check the dataset</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co"># head(addresses_tbl)</span></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co"># call Google Maps using googleway to calculate the distance and time for the old and new workplace locations</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co"># the calculations are repeated for both public transport and car modes of transport</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>commute_tbl <span class="ot">&lt;-</span> addresses_tbl <span class="sc">%&gt;%</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">old_transit_calculations =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> old_work_address,</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"transit"</span>,</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">new_transit_calculations =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> new_work_address,</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"transit"</span>,</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        <span class="at">old_car_calculations     =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> old_work_address,</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"driving"</span>,</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>        <span class="at">new_car_calculations     =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> new_work_address,</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"driving"</span>,</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co"># call Google Maps using googleway to calculate the distance and time for the old and new workplace locations</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co"># the calculations are repeated for both public transport and car modes of transport</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>commute_tbl <span class="ot">&lt;-</span> addresses_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">old_transit_calculations =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> old_work_address,</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"transit"</span>,</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>        <span class="at">new_transit_calculations =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> new_work_address,</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"transit"</span>,</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>        <span class="at">old_car_calculations     =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> old_work_address,</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"driving"</span>,</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>        <span class="at">new_car_calculations     =</span> purrr<span class="sc">::</span><span class="fu">map2</span>(<span class="at">.x =</span> home_address,</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.y =</span> new_work_address,</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">.f =</span> <span class="sc">~</span> googleway<span class="sc">::</span><span class="fu">google_distance</span>(<span class="at">origins      =</span> .x,</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">destinations =</span> .y,</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">mode         =</span> <span class="st">"driving"</span>,</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">key          =</span> key,</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="at">simplify     =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-
-
+<p><br></p>
 </section>
+<section id="unpacking-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="unpacking-the-data">2. Unpacking the Data</h2>
+<p>The data returned from the google_distance function is complicated! Consequently, it required some fiddling to unpack and format in a usable fashion. While the approach developed works, I strongly suspect it could be better. Searching online has yielded several alternatives. However, I decided to stay with my own and welcome suggested improvements.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cleaning function for results</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>results_cleaner <span class="ot">&lt;-</span> <span class="cf">function</span>(data, old_or_new, car_or_transit){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for renaming multiple variables from the API call</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    var_string <span class="ot">&lt;-</span> <span class="fu">paste0</span>(old_or_new, <span class="st">"_"</span>, car_or_transit, <span class="st">"_"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for renaming the status field</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    new_name   <span class="ot">&lt;-</span> <span class="fu">paste0</span>(var_string, <span class="st">"status"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># receive the data</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    data <span class="sc">|&gt;</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        rrapply<span class="sc">::</span><span class="fu">rrapply</span>(<span class="at">how =</span> <span class="st">"bind"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">7</span>) <span class="sc">|&gt;</span> <span class="co"># remove the last two columns</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">rename_at</span>(<span class="fu">vars</span>(<span class="fu">starts_with</span>(<span class="st">"rows_elements_1_"</span>)), <span class="sc">~</span> <span class="fu">str_replace_all</span>(., </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                                                                              <span class="at">pattern     =</span> <span class="st">"rows_elements_1_"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                                                                              <span class="at">replacement =</span> var_string) </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                                                                              ) <span class="sc">|&gt;</span> </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">rename</span>( <span class="sc">!!</span> <span class="fu">quo_name</span>(new_name) <span class="sc">:</span><span class="er">=</span> status)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clean the final results for the old commute by public transport</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>old_transit_commute_tbl <span class="ot">&lt;-</span> commute_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(old_transit_calculations) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">results_cleaner</span>(<span class="at">old_or_new =</span> <span class="st">"old"</span>, <span class="at">car_or_transit =</span> <span class="st">"transit"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># clean the final results for the new commute by public transport</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>new_transit_commute_tbl <span class="ot">&lt;-</span> commute_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(new_transit_calculations) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">results_cleaner</span>(<span class="at">old_or_new =</span> <span class="st">"new"</span>, <span class="at">car_or_transit =</span> <span class="st">"transit"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># clean the final results for the old commute by car</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>old_car_commute_tbl <span class="ot">&lt;-</span> commute_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(old_car_calculations) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">results_cleaner</span>(<span class="at">old_or_new =</span> <span class="st">"old"</span>, <span class="at">car_or_transit =</span> <span class="st">"car"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># clean the final results for the old commute by car</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>new_car_commute_tbl <span class="ot">&lt;-</span> commute_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(new_car_calculations) <span class="sc">%&gt;%</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">results_cleaner</span>(<span class="at">old_or_new =</span> <span class="st">"new"</span>, <span class="at">car_or_transit =</span> <span class="st">"car"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># connect the original data with the new clean distance and time results</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>total_commute_tbl <span class="ot">&lt;-</span> addresses_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(old_transit_commute_tbl) <span class="sc">%&gt;%</span> <span class="co"># add the columns of the old commute by public transport</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(new_transit_commute_tbl) <span class="sc">%&gt;%</span> <span class="co"># add the columns of the new commute by public transport</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(old_car_commute_tbl) <span class="sc">%&gt;%</span> <span class="co"># add the columns of the old commute by car</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(new_car_commute_tbl) <span class="sc">%&gt;%</span> <span class="co"># add the columns of the new commute by car</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter out any results that were not OK</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(old_transit_status <span class="sc">==</span> <span class="st">"OK"</span> <span class="sc">|</span> </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                  new_transit_status <span class="sc">==</span> <span class="st">"OK"</span> <span class="sc">|</span> </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                  old_car_status     <span class="sc">==</span> <span class="st">"OK"</span> <span class="sc">|</span> </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                  new_car_status     <span class="sc">==</span> <span class="st">"OK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><br></p>
+</section>
+<section id="creating-insights" class="level2">
+<h2 class="anchored" data-anchor-id="creating-insights">3. Creating Insights</h2>
+<p>The data returned from googleway provides both the travel distance between the two points, and time required to complete the trip for the selected mode of transit. From here it is important to gauge the following:</p>
+<section id="are-people-generally-better-off-travelling-to-the-new-office-location" class="level3">
+<h3 class="anchored" data-anchor-id="are-people-generally-better-off-travelling-to-the-new-office-location">1. Are people generally better off travelling to the new office location?</h3>
+<p>This can be examined by both distance and time. However, in a city a short trip can still take considerable time. Therefore, examining the difference in time taken for the shortest option (i.e., car or public transport) appears more realistic / accurate. If the time decreased by more than 5 minutes, an improvement in commute is assumed.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate value in Minutes (default results are in seconds)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>scale_mins <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">/</span> <span class="dv">60</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(x, <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate value in Kilometres (default results are in metres)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>scale_kms <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(x, <span class="at">digits =</span> <span class="dv">1</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>final_commute_details_tbl <span class="ot">&lt;-</span> total_commute_tbl <span class="sc">|&gt;</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># covert all duration variable values to minutes</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">ends_with</span>(<span class="st">"duration_value"</span>)), scale_mins) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># covert all distance variable values to kilometres</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">ends_with</span>(<span class="st">"distance_value"</span>)), scale_kms) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate the difference in distance and time between the new and old locations</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">NOTE</span><span class="co">: calculations are based on new - old. Therefore, negative numbers indicate less distance and time, </span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># whereas positive numbers indicate an increase in distance and time</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">diff_transit_commute_distance =</span> new_transit_distance_value <span class="sc">-</span> old_transit_distance_value,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">diff_transit_commute_time     =</span> new_transit_duration_value <span class="sc">-</span> old_transit_duration_value,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">diff_car_commute_distance     =</span> new_car_distance_value <span class="sc">-</span> old_car_distance_value,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">diff_car_commute_time         =</span> new_car_duration_value <span class="sc">-</span> old_car_duration_value,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find the shortest time (i.e., transit or car) for both the old and new offices</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">old_office_min_mins =</span> base<span class="sc">::</span><span class="fu">ifelse</span>(old_transit_duration_value <span class="sc">&lt;</span> old_car_duration_value, </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                                           old_transit_duration_value, old_car_duration_value),</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">new_office_min_mins =</span> base<span class="sc">::</span><span class="fu">ifelse</span>(new_transit_duration_value <span class="sc">&lt;</span> new_car_duration_value, </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>                                           new_transit_duration_value, new_car_duration_value),</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find the differences in the best commute times between the two locations</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">new_office_best_commute_diff =</span> new_office_min_mins <span class="sc">-</span> old_office_min_mins,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find which is the better commute for each person (new office, old office, or similar). This assumes </span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># that a commute is better if the commute time is reduced by more than 5 minutes</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">preferred_commute_location   =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>((old_office_min_mins <span class="sc">-</span> new_office_min_mins) <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">5</span> <span class="sc">~</span> <span class="st">"Old Office"</span>,</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>                                                        (new_office_min_mins <span class="sc">-</span> old_office_min_mins) <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">5</span> <span class="sc">~</span> <span class="st">"New Office"</span>,</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>                                                        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Similar Commute"</span>),</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="co"># determine the best mode of transport for the new location</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">preferred_mode_transport     =</span> base<span class="sc">::</span><span class="fu">ifelse</span>(new_transit_duration_value <span class="sc">&lt;=</span> new_car_duration_value, <span class="st">"Public Transport"</span>, <span class="st">"Car"</span>)</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>                                        </span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="co"># visually represent the impact of the new location to travel time</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>final_commute_details_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(preferred_commute_location) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  echarts4r<span class="sc">::</span><span class="fu">e_chart</span>(preferred_commute_location) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  echarts4r<span class="sc">::</span><span class="fu">e_bar</span>(n) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  echarts4r<span class="sc">::</span><span class="fu">e_labels</span>(<span class="at">position =</span> <span class="st">"insideTop"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  echarts4r<span class="sc">::</span><span class="fu">e_legend</span>(<span class="at">show =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  echarts4r<span class="sc">::</span><span class="fu">e_title</span>(<span class="at">text =</span> <span class="st">"Preferred Office Location Based on Travel Time"</span>,</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Preferred Location Is Defined by A Reduction In Travel Time Of More Than 5 Minutes"</span>,</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>                     <span class="at">left =</span> <span class="st">"10%"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>  echarts4r<span class="sc">::</span><span class="fu">e_tooltip</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-59c7db25ccc50c5d1ec6" style="width:100%;height:500px;" class="echarts4r html-widget"></div>
+<script type="application/json" data-for="htmlwidget-59c7db25ccc50c5d1ec6">{"x":{"theme":"","tl":false,"draw":true,"renderer":"canvas","events":[],"buttons":[],"opts":{"yAxis":[{"show":true}],"xAxis":[{"data":["Old Office","Similar Commute"],"type":"category","boundaryGap":true}],"legend":{"data":["n"],"show":false,"type":"plain"},"series":[{"data":[{"value":["Old Office","7"]},{"value":["Similar Commute","3"]}],"name":"n","type":"bar","yAxisIndex":0,"xAxisIndex":0,"coordinateSystem":"cartesian2d","label":{"show":true,"position":"insideTop"}}],"title":[{"left":"10%","text":"Preferred Office Location Based on Travel Time","subtext":"Preferred Location Is Defined by A Reduction In Travel Time Of More Than 5 Minutes"}],"tooltip":{"trigger":"item"}},"dispose":true},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The visualisation above depicts how the location change will impact employee travel, and it appears the majority of individuals will be worse off when commuting to the new location.</p>
+</section>
+<section id="which-individuals-will-have-shorter-or-longer-travel-times" class="level3">
+<h3 class="anchored" data-anchor-id="which-individuals-will-have-shorter-or-longer-travel-times">2. Which individuals will have shorter or longer travel times?</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>final_commute_details_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select the preferred variables</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(employee, home_address, preferred_commute_location, new_office_best_commute_diff,preferred_mode_transport, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                new_transit_duration_value, diff_transit_commute_time, new_car_duration_value, </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                diff_car_commute_time) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(new_office_best_commute_diff) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rename the variables for more readable output</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">Employee =</span> employee,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Home Address</span><span class="st">`</span><span class="ot">=</span> home_address,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Preferred Office</span><span class="st">`</span> <span class="ot">=</span> preferred_commute_location,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Commute Change (Mins)</span><span class="st">`</span> <span class="ot">=</span> new_office_best_commute_diff,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Preferred Transport for New Office</span><span class="st">`</span> <span class="ot">=</span> preferred_mode_transport,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Time via Public Transport (Mins)</span><span class="st">`</span> <span class="ot">=</span> new_transit_duration_value,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Public Transport Time Saving (Mins)</span><span class="st">`</span> <span class="ot">=</span> diff_transit_commute_time,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Time via Car (Mins)</span><span class="st">`</span> <span class="ot">=</span> new_car_duration_value,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">Car Time Saving (Mins)</span><span class="st">`</span> <span class="ot">=</span> diff_car_commute_time) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  reactable<span class="sc">::</span><span class="fu">reactable</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># pagination and searching options</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">showPageSizeOptions =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">pageSizeOptions =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>),</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">defaultPageSize =</span> <span class="dv">5</span>,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># table formatting options</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">outlined =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">borderless =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">striped =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">resizable =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># column width</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">list</span>(</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">Employee =</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>),</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Home Address</span><span class="st">`</span> <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">175</span>),</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Preferred Office</span><span class="st">`</span> <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>),</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Commute Change (Mins)</span><span class="st">`</span> <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>),</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Preferred Transport for New Office</span><span class="st">`</span>  <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>),</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Time via Public Transport (Mins)</span><span class="st">`</span>  <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>),</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Public Transport Time Saving (Mins)</span><span class="st">`</span>  <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>),</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Time via Car (Mins)</span><span class="st">`</span> <span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>),</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Car Time Saving (Mins)</span><span class="st">`</span><span class="ot">=</span> reactable<span class="sc">::</span><span class="fu">colDef</span>(<span class="at">minWidth =</span> <span class="dv">150</span>, <span class="at">align =</span> <span class="st">"center"</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># theming changes    </span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> reactable<span class="sc">::</span><span class="fu">reactableTheme</span>(</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">highlightColor =</span> <span class="st">"#f0f5f9"</span>,</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>      <span class="at">cellPadding =</span> <span class="st">"8px 12px"</span>,</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">list</span>(<span class="at">fontFamily =</span> <span class="st">"-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"</span>))</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="htmlwidget-d14965e3d768059028f6" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d14965e3d768059028f6">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Employee":["Employee 1271","Employee 1455","Employee 1310","Employee 2011","Employee 832","Employee 861","Employee 1031","Employee 2225","Employee 1357","Employee 1869"],"Home Address":["57 Miles Street, Southbank VIC 3006","Quinn Grove, Keilor East VIC 3033","101 Glenhuntly Road, Elwood VIC 3184","517-519 Orrong Road, ARMADALE VIC 3143","1 Tucker Street, Cranbourne VIC 3977","25 Forster Avenue, Frankston North VIC 3200","David Collins Drive, Endeavour Hills VIC 3802","442-452 North Road, ORMOND VIC 3204","291a Mckinnon Road, Mckinnon VIC 3204","250 Stephensons Road, MOUNT WAVERLEY VIC 3149"],"Preferred Office":["Similar Commute","Similar Commute","Similar Commute","Old Office","Old Office","Old Office","Old Office","Old Office","Old Office","Old Office"],"Commute Change (Mins)":[-3,-2,0,7,10,10,10,12,15,16],"Preferred Transport for New Office":["Car","Car","Car","Car","Car","Car","Car","Car","Car","Car"],"Time via Public Transport (Mins)":[31,77,49,44,139,110,126,63,74,68],"Public Transport Time Saving (Mins)":[-33,-54,-64,-52,-20,-39,-40,-23,-20,30],"Time via Car (Mins)":[13,29,23,20,45,43,36,28,30,26],"Car Time Saving (Mins)":[-3,-2,0,7,10,10,10,12,15,16]},"columns":[{"accessor":"Employee","name":"Employee","type":"character","minWidth":150},{"accessor":"Home Address","name":"Home Address","type":"character","minWidth":175},{"accessor":"Preferred Office","name":"Preferred Office","type":"character","minWidth":150,"align":"center"},{"accessor":"Commute Change (Mins)","name":"Commute Change (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Preferred Transport for New Office","name":"Preferred Transport for New Office","type":"character","minWidth":150,"align":"center"},{"accessor":"Time via Public Transport (Mins)","name":"Time via Public Transport (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Public Transport Time Saving (Mins)","name":"Public Transport Time Saving (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Time via Car (Mins)","name":"Time via Car (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Car Time Saving (Mins)","name":"Car Time Saving (Mins)","type":"numeric","minWidth":150,"align":"center"}],"resizable":true,"defaultPageSize":5,"showPageSizeOptions":true,"pageSizeOptions":[5,10,25,50,100],"paginationType":"numbers","showPageInfo":true,"minRows":1,"outlined":true,"borderless":true,"striped":true,"theme":{"highlightColor":"#f0f5f9","cellPadding":"8px 12px","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"}},"dataKey":"3ba05b3834c4d31a6f018e7068b20e08"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The above table could readily be exported to Excel and delivered to Leaders, Managers, Transition Teams, HRBP’s, etc., to help inform the delivery of personalised discussions with staff regarding proposed or upcoming changes. In addition, it could also help to inform the identification of voluntary flight risks, based on negative travel experiences associated with the move. Moreover, additional analyses could be performed on this data to help inform communication efforts (e.g., clustering to develop employee personas).</p>
+<p><br></p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion:</h1>
+<p>I often try to think of ways to prompt people to reach out to the People Analytics team for advice or assistance. One quick-fire way, based on this experience, is through automation. If colleagues are having to do things manually more than a dozen times (i.e., look up commute times on Google Maps), its likely the People Analytics Team can help. While automating work is not necessarily a core remit of People Analytics Team’s, it can be a highly useful approach for building both credibility and goodwill among business colleagues (i.e., low actual effort, high perceived value), which can in turn lead to bigger opportunities for both parties. In addition, this approach (and related activities) represent useful activities that can be performed in support of new site selection during a due diligence phase (i.e., pre-selecting venues).</p>
+<p>In this example we used a series of addresses to calculate travel distance and time between fictitious home and work addresses for different modes of transit. While using Google Maps programmatically is not without some learning required, I hope this example assists in making it more accessible to a broader range of users. Such functions can and should be used in advance of physical location changes to help proactively identify and mitigate distance-related challenges for all parties involved, both employees and consumers.</p>
+<p>Happy coding!</p>
+
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2021,

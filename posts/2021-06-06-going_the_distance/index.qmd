@@ -119,8 +119,8 @@ addresses_tbl <- original_locations_tbl %>%
   # only include addresses from areas around Melbourne
   dplyr::filter(lga_name %in% councils) %>% 
   
-  # randomly select 100 records
-  dplyr::sample_n(100) %>% 
+  # randomly select 10 records
+  dplyr::sample_n(10) %>% 
   
   dplyr::select(employee, home_address, old_work_address, new_work_address)
   
