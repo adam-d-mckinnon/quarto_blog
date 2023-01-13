@@ -11,16 +11,6 @@ title-block-banner: true
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  comment = "##",
-  out.width = "100%",
-  out.height = "100%",
-  dpi = 300,
-  code_folding = TRUE,
-  R.options = list(width = 70))
 
 my_api_key <- Sys.getenv("google_api_key")
 
@@ -84,7 +74,6 @@ library(rrapply)
 
 library(googleway)
 library(purrr)
-library(data.table)
 library(echarts4r)
 library(reactable)
 
@@ -119,8 +108,8 @@ addresses_tbl <- original_locations_tbl %>%
   # only include addresses from areas around Melbourne
   dplyr::filter(lga_name %in% councils) %>% 
   
-  # randomly select 10 records
-  dplyr::sample_n(10) %>% 
+  # randomly select 100 records
+  dplyr::sample_n(100) %>% 
   
   dplyr::select(employee, home_address, old_work_address, new_work_address)
   
@@ -208,12 +197,6 @@ results_cleaner <- function(data, old_or_new, car_or_transit){
 }
 
 
-```
-
-
-
-
-```{r cleaning_results, code_folding=TRUE}
 # clean the final results for the old commute by public transport
 old_transit_commute_tbl <- commute_tbl %>%
     dplyr::select(old_transit_calculations) %>%
@@ -251,8 +234,9 @@ total_commute_tbl <- addresses_tbl %>%
                   new_transit_status == "OK" | 
                   old_car_status     == "OK" | 
                   new_car_status     == "OK")
-  
+
 ```
+
 
 <br>
 
@@ -260,13 +244,14 @@ total_commute_tbl <- addresses_tbl %>%
 
 The data returned from googleway provides both the travel distance between the two points, and time required to complete the trip for the selected mode of transit. From here it is important to gauge the following:
 
+<br>
 
-### 1. Are people generally better off travelling to the new office location? 
+#### 1. Are people generally better off travelling to the new office location? 
 
 This can be examined by both distance and time. However, in a city a short trip can still take considerable time. Therefore, examining the difference in time taken for the shortest option (i.e., car or public transport) appears more realistic / accurate. If the time decreased by more than 5 minutes, an improvement in commute is assumed.
 
 
-```{r generating_insights_1, code_folding=TRUE}
+```{r generating_insights_1}
 
 # calculate value in Minutes (default results are in seconds)
 scale_mins <- function(x){
@@ -340,9 +325,11 @@ final_commute_details_tbl %>%
 
 The visualisation above depicts how the location change will impact employee travel, and it appears the majority of individuals will be worse off when commuting to the new location.  
 
-### 2. Which individuals will have shorter or longer travel times?
+<br>
 
-```{r generating_insights_2, code_folding=TRUE}
+#### 2. Which individuals will have shorter or longer travel times?
+
+```{r generating_insights_2}
 
 final_commute_details_tbl %>% 
   
@@ -399,6 +386,8 @@ final_commute_details_tbl %>%
   
 
 ```
+
+<br>
 
 The above table could readily be exported to Excel and delivered to Leaders, Managers, Transition Teams, HRBP's, etc., to help inform the delivery of personalised discussions with staff regarding proposed or upcoming changes. In addition, it could also help to inform the identification of voluntary flight risks, based on negative travel experiences associated with the move. Moreover, additional analyses could be performed on this data to help inform communication efforts (e.g., clustering to develop employee personas).
 

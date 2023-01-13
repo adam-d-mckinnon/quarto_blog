@@ -647,7 +647,7 @@ Practical Demonstration.”</span> June 6, 2021. <a href="https://www.adam-d-mck
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/emile-seguin-wf5ZJ2s-B7I-unsplash.jpg" style="width:100.0%;height:100.0%" class="figure-img"></p>
+<p><img src="https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/emile-seguin-wf5ZJ2s-B7I-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@emileseguin">Émile Séguin</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
 </figure>
 </div>
@@ -689,7 +689,7 @@ Practical Demonstration.”</span> June 6, 2021. <a href="https://www.adam-d-mck
 <li><p>Public Transport (called “Transit”) &amp;</p></li>
 <li><p>Car.</p></li>
 </ol>
-<div class="cell">
+<div class="cell" data-code_folding="true">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Libraries</span></span>
@@ -697,274 +697,329 @@ Practical Demonstration.”</span> June 6, 2021. <a href="https://www.adam-d-mck
 <span id="cb1-3"><span class="fu" style="color: #4758AB;">library</span>(tidyverse)</span>
 <span id="cb1-4"><span class="fu" style="color: #4758AB;">library</span>(janitor)</span>
 <span id="cb1-5"><span class="fu" style="color: #4758AB;">library</span>(stringr)</span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="fu" style="color: #4758AB;">library</span>(googleway)</span>
-<span id="cb1-8"><span class="fu" style="color: #4758AB;">library</span>(purrr)</span>
-<span id="cb1-9"><span class="fu" style="color: #4758AB;">library</span>(data.table)</span>
-<span id="cb1-10"><span class="fu" style="color: #4758AB;">library</span>(echarts4r)</span>
-<span id="cb1-11"><span class="fu" style="color: #4758AB;">library</span>(reactable)</span>
-<span id="cb1-12"></span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;">library</span>(rrapply)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;">library</span>(googleway)</span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;">library</span>(purrr)</span>
+<span id="cb1-10"><span class="fu" style="color: #4758AB;">library</span>(data.table)</span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;">library</span>(echarts4r)</span>
+<span id="cb1-12"><span class="fu" style="color: #4758AB;">library</span>(reactable)</span>
 <span id="cb1-13"></span>
 <span id="cb1-14"></span>
-<span id="cb1-15"><span class="co" style="color: #5E5E5E;"># # Set API key ----</span></span>
-<span id="cb1-16">key <span class="ot" style="color: #003B4F;">=</span> my_api_key <span class="co" style="color: #5E5E5E;"># enter your API key here</span></span>
-<span id="cb1-17">  </span>
-<span id="cb1-18"><span class="co" style="color: #5E5E5E;"># Import Data ----</span></span>
-<span id="cb1-19">original_locations_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">read_csv</span>(<span class="at" style="color: #657422;">file =</span></span>
-<span id="cb1-20"><span class="st" style="color: #20794D;">"http://www.education.vic.gov.au/Documents/about/research/datavic/dv165-allschoolslocationlist2015.csv"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-21">                          janitor<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">clean_names</span>()</span>
-<span id="cb1-22"></span>
+<span id="cb1-15"></span>
+<span id="cb1-16"><span class="co" style="color: #5E5E5E;"># # Set API key ----</span></span>
+<span id="cb1-17">key <span class="ot" style="color: #003B4F;">=</span> my_api_key <span class="co" style="color: #5E5E5E;"># enter your API key here</span></span>
+<span id="cb1-18">  </span>
+<span id="cb1-19"><span class="co" style="color: #5E5E5E;"># Import Data ----</span></span>
+<span id="cb1-20">original_locations_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">read_csv</span>(<span class="at" style="color: #657422;">file =</span></span>
+<span id="cb1-21"><span class="st" style="color: #20794D;">"http://www.education.vic.gov.au/Documents/about/research/datavic/dv165-allschoolslocationlist2015.csv"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-22">                          janitor<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">clean_names</span>()</span>
 <span id="cb1-23"></span>
 <span id="cb1-24"></span>
-<span id="cb1-25"><span class="co" style="color: #5E5E5E;"># limit the address data to schools in the Greater Melbourne local government area's</span></span>
-<span id="cb1-26">councils <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"Bayside (C)"</span>, <span class="st" style="color: #20794D;">"Port Phillip (C)"</span>, <span class="st" style="color: #20794D;">"Stonnington (C)"</span>, <span class="st" style="color: #20794D;">"Casey (C)"</span>, <span class="st" style="color: #20794D;">"Melbourne (C)"</span>, </span>
-<span id="cb1-27">              <span class="st" style="color: #20794D;">"Frankston (C)"</span>, <span class="st" style="color: #20794D;">"Glen Eira (C)"</span>, <span class="st" style="color: #20794D;">"Monash (C)"</span>, <span class="st" style="color: #20794D;">"Yarra (C)"</span>, <span class="st" style="color: #20794D;">"Moonee Valley (C)"</span>)</span>
-<span id="cb1-28"></span>
+<span id="cb1-25"></span>
+<span id="cb1-26"><span class="co" style="color: #5E5E5E;"># limit the address data to schools in the Greater Melbourne local government area's</span></span>
+<span id="cb1-27">councils <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"Bayside (C)"</span>, <span class="st" style="color: #20794D;">"Port Phillip (C)"</span>, <span class="st" style="color: #20794D;">"Stonnington (C)"</span>, <span class="st" style="color: #20794D;">"Casey (C)"</span>, <span class="st" style="color: #20794D;">"Melbourne (C)"</span>, </span>
+<span id="cb1-28">              <span class="st" style="color: #20794D;">"Frankston (C)"</span>, <span class="st" style="color: #20794D;">"Glen Eira (C)"</span>, <span class="st" style="color: #20794D;">"Monash (C)"</span>, <span class="st" style="color: #20794D;">"Yarra (C)"</span>, <span class="st" style="color: #20794D;">"Moonee Valley (C)"</span>)</span>
 <span id="cb1-29"></span>
-<span id="cb1-30"><span class="co" style="color: #5E5E5E;"># create an address dataset</span></span>
-<span id="cb1-31">addresses_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> original_locations_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-32">  </span>
-<span id="cb1-33">  <span class="co" style="color: #5E5E5E;"># create and format the home address field, and create the old and new workplace addresses</span></span>
-<span id="cb1-34">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
-<span id="cb1-35">    <span class="at" style="color: #657422;">home_address =</span> base<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">paste0</span>(address_line_1, <span class="st" style="color: #20794D;">", "</span>, address_town, <span class="st" style="color: #20794D;">" "</span>, address_state, <span class="st" style="color: #20794D;">" "</span>,address_postcode),</span>
-<span id="cb1-36">    <span class="at" style="color: #657422;">old_work_address =</span> <span class="st" style="color: #20794D;">"154 High St, Ashburton VIC 3147"</span>,</span>
-<span id="cb1-37">    <span class="at" style="color: #657422;">new_work_address =</span> <span class="st" style="color: #20794D;">"Spring St, East Melbourne VIC 3002"</span>,</span>
-<span id="cb1-38">    <span class="at" style="color: #657422;">employee         =</span> <span class="fu" style="color: #4758AB;">paste0</span>(<span class="st" style="color: #20794D;">"Employee "</span>, <span class="fu" style="color: #4758AB;">row_number</span>())  </span>
-<span id="cb1-39">    ) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-40">  </span>
-<span id="cb1-41">  <span class="co" style="color: #5E5E5E;"># only include addresses from areas around Melbourne</span></span>
-<span id="cb1-42">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(lga_name <span class="sc" style="color: #5E5E5E;">%in%</span> councils) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-43">  </span>
-<span id="cb1-44">  <span class="co" style="color: #5E5E5E;"># randomly select 100 records</span></span>
-<span id="cb1-45">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">sample_n</span>(<span class="dv" style="color: #AD0000;">100</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-46">  </span>
-<span id="cb1-47">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(employee, home_address, old_work_address, new_work_address)</span>
-<span id="cb1-48">  </span>
-<span id="cb1-49"></span>
+<span id="cb1-30"></span>
+<span id="cb1-31"><span class="co" style="color: #5E5E5E;"># create an address dataset</span></span>
+<span id="cb1-32">addresses_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> original_locations_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-33">  </span>
+<span id="cb1-34">  <span class="co" style="color: #5E5E5E;"># create and format the home address field, and create the old and new workplace addresses</span></span>
+<span id="cb1-35">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb1-36">    <span class="at" style="color: #657422;">home_address =</span> base<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">paste0</span>(address_line_1, <span class="st" style="color: #20794D;">", "</span>, address_town, <span class="st" style="color: #20794D;">" "</span>, address_state, <span class="st" style="color: #20794D;">" "</span>,address_postcode),</span>
+<span id="cb1-37">    <span class="at" style="color: #657422;">old_work_address =</span> <span class="st" style="color: #20794D;">"154 High St, Ashburton VIC 3147"</span>,</span>
+<span id="cb1-38">    <span class="at" style="color: #657422;">new_work_address =</span> <span class="st" style="color: #20794D;">"Spring St, East Melbourne VIC 3002"</span>,</span>
+<span id="cb1-39">    <span class="at" style="color: #657422;">employee         =</span> <span class="fu" style="color: #4758AB;">paste0</span>(<span class="st" style="color: #20794D;">"Employee "</span>, <span class="fu" style="color: #4758AB;">row_number</span>())  </span>
+<span id="cb1-40">    ) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-41">  </span>
+<span id="cb1-42">  <span class="co" style="color: #5E5E5E;"># only include addresses from areas around Melbourne</span></span>
+<span id="cb1-43">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(lga_name <span class="sc" style="color: #5E5E5E;">%in%</span> councils) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-44">  </span>
+<span id="cb1-45">  <span class="co" style="color: #5E5E5E;"># randomly select 10 records</span></span>
+<span id="cb1-46">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">sample_n</span>(<span class="dv" style="color: #AD0000;">2</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-47">  </span>
+<span id="cb1-48">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(employee, home_address, old_work_address, new_work_address)</span>
+<span id="cb1-49">  </span>
 <span id="cb1-50"></span>
-<span id="cb1-51"><span class="co" style="color: #5E5E5E;"># check the dataset</span></span>
-<span id="cb1-52"><span class="co" style="color: #5E5E5E;"># head(addresses_tbl)</span></span>
-<span id="cb1-53"></span>
+<span id="cb1-51"></span>
+<span id="cb1-52"><span class="co" style="color: #5E5E5E;"># check the dataset</span></span>
+<span id="cb1-53"><span class="co" style="color: #5E5E5E;"># head(addresses_tbl)</span></span>
 <span id="cb1-54"></span>
-<span id="cb1-55"><span class="co" style="color: #5E5E5E;"># call Google Maps using googleway to calculate the distance and time for the old and new workplace locations</span></span>
-<span id="cb1-56"><span class="co" style="color: #5E5E5E;"># the calculations are repeated for both public transport and car modes of transport</span></span>
-<span id="cb1-57">commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> addresses_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
-<span id="cb1-58"></span>
-<span id="cb1-59">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
-<span id="cb1-60">        <span class="at" style="color: #657422;">old_transit_calculations =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-61">                                               <span class="at" style="color: #657422;">.y =</span> old_work_address,</span>
-<span id="cb1-62">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-63">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-64">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"transit"</span>,</span>
-<span id="cb1-65">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-66">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
-<span id="cb1-67"></span>
-<span id="cb1-68">        <span class="at" style="color: #657422;">new_transit_calculations =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-69">                                               <span class="at" style="color: #657422;">.y =</span> new_work_address,</span>
-<span id="cb1-70">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-71">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-72">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"transit"</span>,</span>
-<span id="cb1-73">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-74">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
-<span id="cb1-75"></span>
-<span id="cb1-76">        <span class="at" style="color: #657422;">old_car_calculations     =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-77">                                               <span class="at" style="color: #657422;">.y =</span> old_work_address,</span>
-<span id="cb1-78">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-79">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-80">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"driving"</span>,</span>
-<span id="cb1-81">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-82">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
-<span id="cb1-83"></span>
-<span id="cb1-84">        <span class="at" style="color: #657422;">new_car_calculations     =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-85">                                               <span class="at" style="color: #657422;">.y =</span> new_work_address,</span>
-<span id="cb1-86">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-87">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-88">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"driving"</span>,</span>
-<span id="cb1-89">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-90">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>))</span>
-<span id="cb1-91"></span>
-<span id="cb1-92">    )</span></code></pre></div>
+<span id="cb1-55"></span>
+<span id="cb1-56"><span class="co" style="color: #5E5E5E;"># call Google Maps using googleway to calculate the distance and time for the old and new workplace locations</span></span>
+<span id="cb1-57"><span class="co" style="color: #5E5E5E;"># the calculations are repeated for both public transport and car modes of transport</span></span>
+<span id="cb1-58">commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> addresses_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-59"></span>
+<span id="cb1-60">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb1-61">        <span class="at" style="color: #657422;">old_transit_calculations =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
+<span id="cb1-62">                                               <span class="at" style="color: #657422;">.y =</span> old_work_address,</span>
+<span id="cb1-63">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
+<span id="cb1-64">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
+<span id="cb1-65">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"transit"</span>,</span>
+<span id="cb1-66">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
+<span id="cb1-67">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
+<span id="cb1-68"></span>
+<span id="cb1-69">        <span class="at" style="color: #657422;">new_transit_calculations =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
+<span id="cb1-70">                                               <span class="at" style="color: #657422;">.y =</span> new_work_address,</span>
+<span id="cb1-71">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
+<span id="cb1-72">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
+<span id="cb1-73">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"transit"</span>,</span>
+<span id="cb1-74">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
+<span id="cb1-75">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
+<span id="cb1-76"></span>
+<span id="cb1-77">        <span class="at" style="color: #657422;">old_car_calculations     =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
+<span id="cb1-78">                                               <span class="at" style="color: #657422;">.y =</span> old_work_address,</span>
+<span id="cb1-79">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
+<span id="cb1-80">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
+<span id="cb1-81">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"driving"</span>,</span>
+<span id="cb1-82">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
+<span id="cb1-83">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
+<span id="cb1-84"></span>
+<span id="cb1-85">        <span class="at" style="color: #657422;">new_car_calculations     =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
+<span id="cb1-86">                                               <span class="at" style="color: #657422;">.y =</span> new_work_address,</span>
+<span id="cb1-87">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
+<span id="cb1-88">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
+<span id="cb1-89">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"driving"</span>,</span>
+<span id="cb1-90">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
+<span id="cb1-91">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>))</span>
+<span id="cb1-92"></span>
+<span id="cb1-93">    )</span></code></pre></div>
 </details>
 </div>
-
-
+<p><br></p>
 </section>
+<section id="unpacking-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="unpacking-the-data">2. Unpacking the Data</h2>
+<p>The data returned from the google_distance function is complicated! Consequently, it required some fiddling to unpack and format in a usable fashion. While the approach developed works, I strongly suspect it could be better. Searching online has yielded several alternatives. However, I decided to stay with my own and welcome suggested improvements.</p>
+<div class="cell" data-code_folding="true">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># cleaning function for results</span></span>
+<span id="cb2-2">results_cleaner <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(data, old_or_new, car_or_transit){</span>
+<span id="cb2-3">    </span>
+<span id="cb2-4">    <span class="co" style="color: #5E5E5E;"># for renaming multiple variables from the API call</span></span>
+<span id="cb2-5">    var_string <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">paste0</span>(old_or_new, <span class="st" style="color: #20794D;">"_"</span>, car_or_transit, <span class="st" style="color: #20794D;">"_"</span>)</span>
+<span id="cb2-6">    <span class="co" style="color: #5E5E5E;"># for renaming the status field</span></span>
+<span id="cb2-7">    new_name   <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">paste0</span>(var_string, <span class="st" style="color: #20794D;">"status"</span>)</span>
+<span id="cb2-8">    </span>
+<span id="cb2-9">    <span class="co" style="color: #5E5E5E;"># receive the data</span></span>
+<span id="cb2-10">    data <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb2-11">        rrapply<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">rrapply</span>(<span class="at" style="color: #657422;">how =</span> <span class="st" style="color: #20794D;">"bind"</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb2-12">        janitor<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">clean_names</span>() <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb2-13">        dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">7</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="co" style="color: #5E5E5E;"># remove the last two columns</span></span>
+<span id="cb2-14">        dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">rename_at</span>(<span class="fu" style="color: #4758AB;">vars</span>(<span class="fu" style="color: #4758AB;">starts_with</span>(<span class="st" style="color: #20794D;">"rows_elements_1_"</span>)), <span class="sc" style="color: #5E5E5E;">~</span> <span class="fu" style="color: #4758AB;">str_replace_all</span>(., </span>
+<span id="cb2-15">                                                                              <span class="at" style="color: #657422;">pattern     =</span> <span class="st" style="color: #20794D;">"rows_elements_1_"</span>,</span>
+<span id="cb2-16">                                                                              <span class="at" style="color: #657422;">replacement =</span> var_string) </span>
+<span id="cb2-17">                                                                              ) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb2-18">        dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">rename</span>( <span class="sc" style="color: #5E5E5E;">!!</span> <span class="fu" style="color: #4758AB;">quo_name</span>(new_name) <span class="sc" style="color: #5E5E5E;">:</span><span class="er" style="color: #AD0000;">=</span> status)</span>
+<span id="cb2-19">        </span>
+<span id="cb2-20">}</span>
+<span id="cb2-21"></span>
+<span id="cb2-22"></span>
+<span id="cb2-23"><span class="co" style="color: #5E5E5E;"># clean the final results for the old commute by public transport</span></span>
+<span id="cb2-24">old_transit_commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> commute_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-25">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(old_transit_calculations) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-26">    <span class="fu" style="color: #4758AB;">results_cleaner</span>(<span class="at" style="color: #657422;">old_or_new =</span> <span class="st" style="color: #20794D;">"old"</span>, <span class="at" style="color: #657422;">car_or_transit =</span> <span class="st" style="color: #20794D;">"transit"</span>)</span>
+<span id="cb2-27"></span>
+<span id="cb2-28"></span>
+<span id="cb2-29"><span class="co" style="color: #5E5E5E;"># clean the final results for the new commute by public transport</span></span>
+<span id="cb2-30">new_transit_commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> commute_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-31">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(new_transit_calculations) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-32">    <span class="fu" style="color: #4758AB;">results_cleaner</span>(<span class="at" style="color: #657422;">old_or_new =</span> <span class="st" style="color: #20794D;">"new"</span>, <span class="at" style="color: #657422;">car_or_transit =</span> <span class="st" style="color: #20794D;">"transit"</span>)</span>
+<span id="cb2-33"></span>
+<span id="cb2-34"><span class="co" style="color: #5E5E5E;"># clean the final results for the old commute by car</span></span>
+<span id="cb2-35">old_car_commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> commute_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-36">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(old_car_calculations) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-37">    <span class="fu" style="color: #4758AB;">results_cleaner</span>(<span class="at" style="color: #657422;">old_or_new =</span> <span class="st" style="color: #20794D;">"old"</span>, <span class="at" style="color: #657422;">car_or_transit =</span> <span class="st" style="color: #20794D;">"car"</span>)</span>
+<span id="cb2-38"></span>
+<span id="cb2-39"></span>
+<span id="cb2-40"><span class="co" style="color: #5E5E5E;"># clean the final results for the old commute by car</span></span>
+<span id="cb2-41">new_car_commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> commute_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-42">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(new_car_calculations) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-43">    <span class="fu" style="color: #4758AB;">results_cleaner</span>(<span class="at" style="color: #657422;">old_or_new =</span> <span class="st" style="color: #20794D;">"new"</span>, <span class="at" style="color: #657422;">car_or_transit =</span> <span class="st" style="color: #20794D;">"car"</span>)</span>
+<span id="cb2-44"></span>
+<span id="cb2-45"></span>
+<span id="cb2-46"></span>
+<span id="cb2-47"></span>
+<span id="cb2-48"><span class="co" style="color: #5E5E5E;"># connect the original data with the new clean distance and time results</span></span>
+<span id="cb2-49">total_commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> addresses_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb2-50">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">bind_cols</span>(old_transit_commute_tbl) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="co" style="color: #5E5E5E;"># add the columns of the old commute by public transport</span></span>
+<span id="cb2-51">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">bind_cols</span>(new_transit_commute_tbl) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="co" style="color: #5E5E5E;"># add the columns of the new commute by public transport</span></span>
+<span id="cb2-52">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">bind_cols</span>(old_car_commute_tbl) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="co" style="color: #5E5E5E;"># add the columns of the old commute by car</span></span>
+<span id="cb2-53">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">bind_cols</span>(new_car_commute_tbl) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="co" style="color: #5E5E5E;"># add the columns of the new commute by car</span></span>
+<span id="cb2-54"></span>
+<span id="cb2-55">    <span class="co" style="color: #5E5E5E;"># filter out any results that were not OK</span></span>
+<span id="cb2-56">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(old_transit_status <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"OK"</span> <span class="sc" style="color: #5E5E5E;">|</span> </span>
+<span id="cb2-57">                  new_transit_status <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"OK"</span> <span class="sc" style="color: #5E5E5E;">|</span> </span>
+<span id="cb2-58">                  old_car_status     <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"OK"</span> <span class="sc" style="color: #5E5E5E;">|</span> </span>
+<span id="cb2-59">                  new_car_status     <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"OK"</span>)</span></code></pre></div>
+</details>
+</div>
+<p><br></p>
 </section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2021,
-  author = {Adam D McKinnon},
-  title = {Going the {Distance!}},
-  date = {2021-06-06},
-  url = {https://www.adam-d-mckinnon.com//posts/2021-06-06-going_the_distance},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2021" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon. 2021. <span>“Going the Distance!”</span> June 6, 2021.
-<a href="https://www.adam-d-mckinnon.com//posts/2021-06-06-going_the_distance">https://www.adam-d-mckinnon.com//posts/2021-06-06-going_the_distance</a>.
-</div></div></section></div> ]]></description>
-  <category>Google Maps</category>
-  <category>googleway</category>
-  <category>echarts4r</category>
-  <category>R</category>
-  <guid>https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/index.html</guid>
-  <pubDate>Sat, 05 Jun 2021 14:00:00 GMT</pubDate>
-  <media:content url="https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/emile-seguin-wf5ZJ2s-B7I-unsplash.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Going the Distance!</title>
-  <dc:creator>Adam D McKinnon</dc:creator>
-  <link>https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
+<section id="creating-insights" class="level2">
+<h2 class="anchored" data-anchor-id="creating-insights">3. Creating Insights</h2>
+<p>The data returned from googleway provides both the travel distance between the two points, and time required to complete the trip for the selected mode of transit. From here it is important to gauge the following:</p>
+<p><br></p>
+<section id="are-people-generally-better-off-travelling-to-the-new-office-location" class="level4">
+<h4 class="anchored" data-anchor-id="are-people-generally-better-off-travelling-to-the-new-office-location">1. Are people generally better off travelling to the new office location?</h4>
+<p>This can be examined by both distance and time. However, in a city a short trip can still take considerable time. Therefore, examining the difference in time taken for the shortest option (i.e., car or public transport) appears more realistic / accurate. If the time decreased by more than 5 minutes, an improvement in commute is assumed.</p>
 <div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># calculate value in Minutes (default results are in seconds)</span></span>
+<span id="cb3-2">scale_mins <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x){</span>
+<span id="cb3-3">  x <span class="ot" style="color: #003B4F;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;">/</span> <span class="dv" style="color: #AD0000;">60</span> </span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;">round</span>(x, <span class="at" style="color: #657422;">digits =</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb3-5">}</span>
+<span id="cb3-6"></span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="co" style="color: #5E5E5E;"># calculate value in Kilometres (default results are in metres)</span></span>
+<span id="cb3-9">scale_kms <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x){</span>
+<span id="cb3-10">  x <span class="ot" style="color: #003B4F;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;">/</span> <span class="dv" style="color: #AD0000;">1000</span></span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;">round</span>(x, <span class="at" style="color: #657422;">digits =</span> <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb3-12">} </span>
+<span id="cb3-13"></span>
+<span id="cb3-14"></span>
+<span id="cb3-15"></span>
+<span id="cb3-16"></span>
+<span id="cb3-17">final_commute_details_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> total_commute_tbl <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb3-18">    </span>
+<span id="cb3-19">    <span class="co" style="color: #5E5E5E;"># covert all duration variable values to minutes</span></span>
+<span id="cb3-20">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate_at</span>(<span class="fu" style="color: #4758AB;">vars</span>(<span class="fu" style="color: #4758AB;">ends_with</span>(<span class="st" style="color: #20794D;">"duration_value"</span>)), scale_mins) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-21">    </span>
+<span id="cb3-22">      </span>
+<span id="cb3-23">    <span class="co" style="color: #5E5E5E;"># covert all distance variable values to kilometres</span></span>
+<span id="cb3-24">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate_at</span>(<span class="fu" style="color: #4758AB;">vars</span>(<span class="fu" style="color: #4758AB;">ends_with</span>(<span class="st" style="color: #20794D;">"distance_value"</span>)), scale_kms) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-25">  </span>
+<span id="cb3-26">    <span class="co" style="color: #5E5E5E;"># calculate the difference in distance and time between the new and old locations</span></span>
+<span id="cb3-27">    <span class="co" style="color: #5E5E5E;"># </span><span class="al" style="color: #AD0000;">NOTE</span><span class="co" style="color: #5E5E5E;">: calculations are based on new - old. Therefore, negative numbers indicate less distance and time, </span></span>
+<span id="cb3-28">    <span class="co" style="color: #5E5E5E;"># whereas positive numbers indicate an increase in distance and time</span></span>
+<span id="cb3-29">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb3-30">        <span class="at" style="color: #657422;">diff_transit_commute_distance =</span> new_transit_distance_value <span class="sc" style="color: #5E5E5E;">-</span> old_transit_distance_value,</span>
+<span id="cb3-31">        <span class="at" style="color: #657422;">diff_transit_commute_time     =</span> new_transit_duration_value <span class="sc" style="color: #5E5E5E;">-</span> old_transit_duration_value,</span>
+<span id="cb3-32">        <span class="at" style="color: #657422;">diff_car_commute_distance     =</span> new_car_distance_value <span class="sc" style="color: #5E5E5E;">-</span> old_car_distance_value,</span>
+<span id="cb3-33">        <span class="at" style="color: #657422;">diff_car_commute_time         =</span> new_car_duration_value <span class="sc" style="color: #5E5E5E;">-</span> old_car_duration_value,</span>
+<span id="cb3-34"></span>
+<span id="cb3-35">        <span class="co" style="color: #5E5E5E;"># find the shortest time (i.e., transit or car) for both the old and new offices</span></span>
+<span id="cb3-36">        <span class="at" style="color: #657422;">old_office_min_mins =</span> base<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">ifelse</span>(old_transit_duration_value <span class="sc" style="color: #5E5E5E;">&lt;</span> old_car_duration_value, </span>
+<span id="cb3-37">                                           old_transit_duration_value, old_car_duration_value),</span>
+<span id="cb3-38">        <span class="at" style="color: #657422;">new_office_min_mins =</span> base<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">ifelse</span>(new_transit_duration_value <span class="sc" style="color: #5E5E5E;">&lt;</span> new_car_duration_value, </span>
+<span id="cb3-39">                                           new_transit_duration_value, new_car_duration_value),</span>
+<span id="cb3-40">        </span>
+<span id="cb3-41">        <span class="co" style="color: #5E5E5E;"># find the differences in the best commute times between the two locations</span></span>
+<span id="cb3-42">        <span class="at" style="color: #657422;">new_office_best_commute_diff =</span> new_office_min_mins <span class="sc" style="color: #5E5E5E;">-</span> old_office_min_mins,</span>
+<span id="cb3-43">        </span>
+<span id="cb3-44">        <span class="co" style="color: #5E5E5E;"># find which is the better commute for each person (new office, old office, or similar). This assumes </span></span>
+<span id="cb3-45">        <span class="co" style="color: #5E5E5E;"># that a commute is better if the commute time is reduced by more than 5 minutes</span></span>
+<span id="cb3-46">        <span class="at" style="color: #657422;">preferred_commute_location   =</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">case_when</span>((old_office_min_mins <span class="sc" style="color: #5E5E5E;">-</span> new_office_min_mins) <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">5</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"Old Office"</span>,</span>
+<span id="cb3-47">                                                        (new_office_min_mins <span class="sc" style="color: #5E5E5E;">-</span> old_office_min_mins) <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">5</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"New Office"</span>,</span>
+<span id="cb3-48">                                                        <span class="cn" style="color: #8f5902;">TRUE</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"Similar Commute"</span>),</span>
+<span id="cb3-49">        </span>
+<span id="cb3-50">        <span class="co" style="color: #5E5E5E;"># determine the best mode of transport for the new location</span></span>
+<span id="cb3-51">        <span class="at" style="color: #657422;">preferred_mode_transport     =</span> base<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">ifelse</span>(new_transit_duration_value <span class="sc" style="color: #5E5E5E;">&lt;=</span> new_car_duration_value, <span class="st" style="color: #20794D;">"Public Transport"</span>, <span class="st" style="color: #20794D;">"Car"</span>)</span>
+<span id="cb3-52">                                        </span>
+<span id="cb3-53">        )</span>
+<span id="cb3-54"></span>
+<span id="cb3-55"></span>
+<span id="cb3-56"><span class="co" style="color: #5E5E5E;"># visually represent the impact of the new location to travel time</span></span>
+<span id="cb3-57">final_commute_details_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-58">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">count</span>(preferred_commute_location) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-59">  echarts4r<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">e_chart</span>(preferred_commute_location) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-60">  echarts4r<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">e_bar</span>(n) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-61">  echarts4r<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">e_labels</span>(<span class="at" style="color: #657422;">position =</span> <span class="st" style="color: #20794D;">"insideTop"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-62">  echarts4r<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">e_legend</span>(<span class="at" style="color: #657422;">show =</span> <span class="cn" style="color: #8f5902;">FALSE</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-63">  echarts4r<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">e_title</span>(<span class="at" style="color: #657422;">text =</span> <span class="st" style="color: #20794D;">"Preferred Office Location Based on Travel Time"</span>,</span>
+<span id="cb3-64">                     <span class="st" style="color: #20794D;">"Preferred Location Is Defined by A Reduction In Travel Time Of More Than 5 Minutes"</span>,</span>
+<span id="cb3-65">                     <span class="at" style="color: #657422;">left =</span> <span class="st" style="color: #20794D;">"10%"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-66">  echarts4r<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">e_tooltip</span>() </span></code></pre></div>
+</details>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/emile-seguin-wf5ZJ2s-B7I-unsplash.jpg" style="width:100.0%;height:100.0%" class="figure-img"></p>
-<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@emileseguin">Émile Séguin</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
-</figure>
+<div id="htmlwidget-ec73e11afa8156a2e782" style="width:100%;height:500px;" class="echarts4r html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec73e11afa8156a2e782">{"x":{"theme":"","tl":false,"draw":true,"renderer":"canvas","events":[],"buttons":[],"opts":{"yAxis":[{"show":true}],"xAxis":[{"data":["New Office","Similar Commute"],"type":"category","boundaryGap":true}],"legend":{"data":["n"],"show":false,"type":"plain"},"series":[{"data":[{"value":["New Office","1"]},{"value":["Similar Commute","1"]}],"name":"n","type":"bar","yAxisIndex":0,"xAxisIndex":0,"coordinateSystem":"cartesian2d","label":{"show":true,"position":"insideTop"}}],"title":[{"left":"10%","text":"Preferred Office Location Based on Travel Time","subtext":"Preferred Location Is Defined by A Reduction In Travel Time Of More Than 5 Minutes"}],"tooltip":{"trigger":"item"}},"dispose":true},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</div>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>Two years ago I sat in an elevated office in Germany discussing with a colleague the value of knowing someone’s commute distance to inform their voluntary departure risk. When we worked on generating this variable neither of us could do it! Our flight risk model progressed without this variable. Months later a pandemic hit and the conversation has since (understandably) been firmly ensconced in remote and hybrid models of working. However, many sectors remain sensitive to the need to interact in person. Hospitality, Tourism and to a varying extent Retail, are indicative of this requirement.</p>
-<p>It was therefore, interesting when two years later, a bit more experience under my belt (i.e., mistakes that I had learned from), I was again presented this challenge. The context was simple, a retail business was moving location and wanted to know which employees were likely to be adversely impacted. This information was to be used to inform communication efforts in advance of the move.</p>
-<p>The following provides a practical guide to measuring distances using Google Maps in R. The process involves the following steps:</p>
-<ol type="1">
-<li><p>Calling Google Maps,</p></li>
-<li><p>Unpacking the returned data,</p></li>
-<li><p>Generating insights.</p></li>
-</ol>
+<p>The visualisation above depicts how the location change will impact employee travel, and it appears the majority of individuals will be worse off when commuting to the new location.</p>
 <p><br></p>
-<section id="calling-google-maps" class="level2">
-<h2 class="anchored" data-anchor-id="calling-google-maps">1. Calling Google Maps</h2>
-<p>To use Google Maps you will need three things:</p>
-<ol type="i">
-<li><p><strong>Address data.</strong> We begin by loading some fictitious address data provided by the Victorian State Government – School addresses from 2015.</p></li>
-<li><p><strong>Workplace addresses</strong>, both an old workplace address and a new workplace address. For this example, I am using the following two addresses from Victoria, Australia:</p></li>
-</ol>
-<blockquote class="blockquote">
-<ol type="a">
-<li>Old workplace address: 154 High St, Ashburton VIC 3147, Australia (Ashburton Public Library); and</li>
-</ol>
-</blockquote>
-<blockquote class="blockquote">
-<ol start="2" type="a">
-<li>New workplace address: Spring St, East Melbourne VIC 3002, Australia (Victorian Parliament Building).</li>
-</ol>
-</blockquote>
-<ol start="3" type="i">
-<li><strong>A Google Maps API key</strong>, which can be set up on the <a href="https://developers.google.com/maps">Google Maps Developer Site</a>. The Google Maps service has a free usage quota. To access Google Maps we will use the googleway library in R.</li>
-</ol>
-<p>With all three pieces ready, we will then call Google Maps using the googleway::google_distance function. We will do this for two modes of transit:</p>
-<ol type="1">
-<li><p>Public Transport (called “Transit”) &amp;</p></li>
-<li><p>Car.</p></li>
-</ol>
+</section>
+<section id="which-individuals-will-have-shorter-or-longer-travel-times" class="level4">
+<h4 class="anchored" data-anchor-id="which-individuals-will-have-shorter-or-longer-travel-times">2. Which individuals will have shorter or longer travel times?</h4>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Libraries</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;">library</span>(readxl)</span>
-<span id="cb1-3"><span class="fu" style="color: #4758AB;">library</span>(tidyverse)</span>
-<span id="cb1-4"><span class="fu" style="color: #4758AB;">library</span>(janitor)</span>
-<span id="cb1-5"><span class="fu" style="color: #4758AB;">library</span>(stringr)</span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="fu" style="color: #4758AB;">library</span>(googleway)</span>
-<span id="cb1-8"><span class="fu" style="color: #4758AB;">library</span>(purrr)</span>
-<span id="cb1-9"><span class="fu" style="color: #4758AB;">library</span>(data.table)</span>
-<span id="cb1-10"><span class="fu" style="color: #4758AB;">library</span>(echarts4r)</span>
-<span id="cb1-11"><span class="fu" style="color: #4758AB;">library</span>(reactable)</span>
-<span id="cb1-12"></span>
-<span id="cb1-13"></span>
-<span id="cb1-14"></span>
-<span id="cb1-15"><span class="co" style="color: #5E5E5E;"># # Set API key ----</span></span>
-<span id="cb1-16">key <span class="ot" style="color: #003B4F;">=</span> my_api_key <span class="co" style="color: #5E5E5E;"># enter your API key here</span></span>
-<span id="cb1-17">  </span>
-<span id="cb1-18"><span class="co" style="color: #5E5E5E;"># Import Data ----</span></span>
-<span id="cb1-19">original_locations_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">read_csv</span>(<span class="at" style="color: #657422;">file =</span></span>
-<span id="cb1-20"><span class="st" style="color: #20794D;">"http://www.education.vic.gov.au/Documents/about/research/datavic/dv165-allschoolslocationlist2015.csv"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-21">                          janitor<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">clean_names</span>()</span>
-<span id="cb1-22"></span>
-<span id="cb1-23"></span>
-<span id="cb1-24"></span>
-<span id="cb1-25"><span class="co" style="color: #5E5E5E;"># limit the address data to schools in the Greater Melbourne local government area's</span></span>
-<span id="cb1-26">councils <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"Bayside (C)"</span>, <span class="st" style="color: #20794D;">"Port Phillip (C)"</span>, <span class="st" style="color: #20794D;">"Stonnington (C)"</span>, <span class="st" style="color: #20794D;">"Casey (C)"</span>, <span class="st" style="color: #20794D;">"Melbourne (C)"</span>, </span>
-<span id="cb1-27">              <span class="st" style="color: #20794D;">"Frankston (C)"</span>, <span class="st" style="color: #20794D;">"Glen Eira (C)"</span>, <span class="st" style="color: #20794D;">"Monash (C)"</span>, <span class="st" style="color: #20794D;">"Yarra (C)"</span>, <span class="st" style="color: #20794D;">"Moonee Valley (C)"</span>)</span>
-<span id="cb1-28"></span>
-<span id="cb1-29"></span>
-<span id="cb1-30"><span class="co" style="color: #5E5E5E;"># create an address dataset</span></span>
-<span id="cb1-31">addresses_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> original_locations_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-32">  </span>
-<span id="cb1-33">  <span class="co" style="color: #5E5E5E;"># create and format the home address field, and create the old and new workplace addresses</span></span>
-<span id="cb1-34">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
-<span id="cb1-35">    <span class="at" style="color: #657422;">home_address =</span> base<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">paste0</span>(address_line_1, <span class="st" style="color: #20794D;">", "</span>, address_town, <span class="st" style="color: #20794D;">" "</span>, address_state, <span class="st" style="color: #20794D;">" "</span>,address_postcode),</span>
-<span id="cb1-36">    <span class="at" style="color: #657422;">old_work_address =</span> <span class="st" style="color: #20794D;">"154 High St, Ashburton VIC 3147"</span>,</span>
-<span id="cb1-37">    <span class="at" style="color: #657422;">new_work_address =</span> <span class="st" style="color: #20794D;">"Spring St, East Melbourne VIC 3002"</span>,</span>
-<span id="cb1-38">    <span class="at" style="color: #657422;">employee         =</span> <span class="fu" style="color: #4758AB;">paste0</span>(<span class="st" style="color: #20794D;">"Employee "</span>, <span class="fu" style="color: #4758AB;">row_number</span>())  </span>
-<span id="cb1-39">    ) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-40">  </span>
-<span id="cb1-41">  <span class="co" style="color: #5E5E5E;"># only include addresses from areas around Melbourne</span></span>
-<span id="cb1-42">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(lga_name <span class="sc" style="color: #5E5E5E;">%in%</span> councils) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-43">  </span>
-<span id="cb1-44">  <span class="co" style="color: #5E5E5E;"># randomly select 100 records</span></span>
-<span id="cb1-45">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">sample_n</span>(<span class="dv" style="color: #AD0000;">100</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
-<span id="cb1-46">  </span>
-<span id="cb1-47">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(employee, home_address, old_work_address, new_work_address)</span>
-<span id="cb1-48">  </span>
-<span id="cb1-49"></span>
-<span id="cb1-50"></span>
-<span id="cb1-51"><span class="co" style="color: #5E5E5E;"># check the dataset</span></span>
-<span id="cb1-52"><span class="co" style="color: #5E5E5E;"># head(addresses_tbl)</span></span>
-<span id="cb1-53"></span>
-<span id="cb1-54"></span>
-<span id="cb1-55"><span class="co" style="color: #5E5E5E;"># call Google Maps using googleway to calculate the distance and time for the old and new workplace locations</span></span>
-<span id="cb1-56"><span class="co" style="color: #5E5E5E;"># the calculations are repeated for both public transport and car modes of transport</span></span>
-<span id="cb1-57">commute_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> addresses_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
-<span id="cb1-58"></span>
-<span id="cb1-59">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
-<span id="cb1-60">        <span class="at" style="color: #657422;">old_transit_calculations =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-61">                                               <span class="at" style="color: #657422;">.y =</span> old_work_address,</span>
-<span id="cb1-62">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-63">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-64">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"transit"</span>,</span>
-<span id="cb1-65">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-66">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
-<span id="cb1-67"></span>
-<span id="cb1-68">        <span class="at" style="color: #657422;">new_transit_calculations =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-69">                                               <span class="at" style="color: #657422;">.y =</span> new_work_address,</span>
-<span id="cb1-70">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-71">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-72">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"transit"</span>,</span>
-<span id="cb1-73">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-74">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
-<span id="cb1-75"></span>
-<span id="cb1-76">        <span class="at" style="color: #657422;">old_car_calculations     =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-77">                                               <span class="at" style="color: #657422;">.y =</span> old_work_address,</span>
-<span id="cb1-78">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-79">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-80">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"driving"</span>,</span>
-<span id="cb1-81">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-82">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)),</span>
-<span id="cb1-83"></span>
-<span id="cb1-84">        <span class="at" style="color: #657422;">new_car_calculations     =</span> purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map2</span>(<span class="at" style="color: #657422;">.x =</span> home_address,</span>
-<span id="cb1-85">                                               <span class="at" style="color: #657422;">.y =</span> new_work_address,</span>
-<span id="cb1-86">                                               <span class="at" style="color: #657422;">.f =</span> <span class="sc" style="color: #5E5E5E;">~</span> googleway<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">google_distance</span>(<span class="at" style="color: #657422;">origins      =</span> .x,</span>
-<span id="cb1-87">                                                                                 <span class="at" style="color: #657422;">destinations =</span> .y,</span>
-<span id="cb1-88">                                                                                 <span class="at" style="color: #657422;">mode         =</span> <span class="st" style="color: #20794D;">"driving"</span>,</span>
-<span id="cb1-89">                                                                                 <span class="at" style="color: #657422;">key          =</span> key,</span>
-<span id="cb1-90">                                                                                 <span class="at" style="color: #657422;">simplify     =</span> <span class="cn" style="color: #8f5902;">TRUE</span>))</span>
-<span id="cb1-91"></span>
-<span id="cb1-92">    )</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">final_commute_details_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb4-2">  </span>
+<span id="cb4-3">  <span class="co" style="color: #5E5E5E;"># select the preferred variables</span></span>
+<span id="cb4-4">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(employee, home_address, preferred_commute_location, new_office_best_commute_diff,preferred_mode_transport, </span>
+<span id="cb4-5">                new_transit_duration_value, diff_transit_commute_time, new_car_duration_value, </span>
+<span id="cb4-6">                diff_car_commute_time) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb4-7">  </span>
+<span id="cb4-8">    dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">arrange</span>(new_office_best_commute_diff) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb4-9">  </span>
+<span id="cb4-10">  <span class="co" style="color: #5E5E5E;"># rename the variables for more readable output</span></span>
+<span id="cb4-11">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">rename</span>(</span>
+<span id="cb4-12">                <span class="at" style="color: #657422;">Employee =</span> employee,</span>
+<span id="cb4-13">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Home Address</span><span class="st" style="color: #20794D;">`</span><span class="ot" style="color: #003B4F;">=</span> home_address,</span>
+<span id="cb4-14">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Preferred Office</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> preferred_commute_location,</span>
+<span id="cb4-15">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Commute Change (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> new_office_best_commute_diff,</span>
+<span id="cb4-16">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Preferred Transport for New Office</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> preferred_mode_transport,</span>
+<span id="cb4-17">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Time via Public Transport (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> new_transit_duration_value,</span>
+<span id="cb4-18">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Public Transport Time Saving (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> diff_transit_commute_time,</span>
+<span id="cb4-19">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Time via Car (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> new_car_duration_value,</span>
+<span id="cb4-20">                <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Car Time Saving (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> diff_car_commute_time) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb4-21">  </span>
+<span id="cb4-22">  reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">reactable</span>(</span>
+<span id="cb4-23">    <span class="co" style="color: #5E5E5E;"># pagination and searching options</span></span>
+<span id="cb4-24">    <span class="at" style="color: #657422;">showPageSizeOptions =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb4-25">    <span class="at" style="color: #657422;">pageSizeOptions =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">25</span>, <span class="dv" style="color: #AD0000;">50</span>, <span class="dv" style="color: #AD0000;">100</span>),</span>
+<span id="cb4-26">    <span class="at" style="color: #657422;">defaultPageSize =</span> <span class="dv" style="color: #AD0000;">5</span>,</span>
+<span id="cb4-27">    </span>
+<span id="cb4-28">    <span class="co" style="color: #5E5E5E;"># table formatting options</span></span>
+<span id="cb4-29">    <span class="at" style="color: #657422;">outlined =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb4-30">    <span class="at" style="color: #657422;">borderless =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb4-31">    <span class="at" style="color: #657422;">striped =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb4-32">    <span class="at" style="color: #657422;">resizable =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb4-33"></span>
+<span id="cb4-34">    <span class="co" style="color: #5E5E5E;"># column width</span></span>
+<span id="cb4-35">    <span class="at" style="color: #657422;">columns =</span> <span class="fu" style="color: #4758AB;">list</span>(</span>
+<span id="cb4-36">      <span class="at" style="color: #657422;">Employee =</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>),</span>
+<span id="cb4-37">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Home Address</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">175</span>),</span>
+<span id="cb4-38">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Preferred Office</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>),</span>
+<span id="cb4-39">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Commute Change (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>),</span>
+<span id="cb4-40">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Preferred Transport for New Office</span><span class="st" style="color: #20794D;">`</span>  <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>),</span>
+<span id="cb4-41">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Time via Public Transport (Mins)</span><span class="st" style="color: #20794D;">`</span>  <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>),</span>
+<span id="cb4-42">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Public Transport Time Saving (Mins)</span><span class="st" style="color: #20794D;">`</span>  <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>),</span>
+<span id="cb4-43">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Time via Car (Mins)</span><span class="st" style="color: #20794D;">`</span> <span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>),</span>
+<span id="cb4-44">      <span class="st" style="color: #20794D;">`</span><span class="at" style="color: #657422;">Car Time Saving (Mins)</span><span class="st" style="color: #20794D;">`</span><span class="ot" style="color: #003B4F;">=</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">colDef</span>(<span class="at" style="color: #657422;">minWidth =</span> <span class="dv" style="color: #AD0000;">150</span>, <span class="at" style="color: #657422;">align =</span> <span class="st" style="color: #20794D;">"center"</span>)</span>
+<span id="cb4-45">    ),</span>
+<span id="cb4-46">    </span>
+<span id="cb4-47">    <span class="co" style="color: #5E5E5E;"># theming changes    </span></span>
+<span id="cb4-48">    <span class="at" style="color: #657422;">theme =</span> reactable<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">reactableTheme</span>(</span>
+<span id="cb4-49">      <span class="at" style="color: #657422;">highlightColor =</span> <span class="st" style="color: #20794D;">"#f0f5f9"</span>,</span>
+<span id="cb4-50">      <span class="at" style="color: #657422;">cellPadding =</span> <span class="st" style="color: #20794D;">"8px 12px"</span>,</span>
+<span id="cb4-51">      <span class="at" style="color: #657422;">style =</span> <span class="fu" style="color: #4758AB;">list</span>(<span class="at" style="color: #657422;">fontFamily =</span> <span class="st" style="color: #20794D;">"-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"</span>))</span>
+<span id="cb4-52">  )</span></code></pre></div>
 </details>
+<div class="cell-output-display">
+
+<div id="htmlwidget-8bf336e75780474cbe6c" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8bf336e75780474cbe6c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Employee":["Employee 1437","Employee 1558"],"Home Address":["19 Cambridge Street, Collingwood VIC 3066","214 Dandenong Road, ST KILDA EAST VIC 3183"],"Preferred Office":["New Office","Similar Commute"],"Commute Change (Mins)":[-10,2],"Preferred Transport for New Office":["Car","Car"],"Time via Public Transport (Mins)":[19,47],"Public Transport Time Saving (Mins)":[-43,-31],"Time via Car (Mins)":[7,19],"Car Time Saving (Mins)":[-10,2]},"columns":[{"accessor":"Employee","name":"Employee","type":"character","minWidth":150},{"accessor":"Home Address","name":"Home Address","type":"character","minWidth":175},{"accessor":"Preferred Office","name":"Preferred Office","type":"character","minWidth":150,"align":"center"},{"accessor":"Commute Change (Mins)","name":"Commute Change (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Preferred Transport for New Office","name":"Preferred Transport for New Office","type":"character","minWidth":150,"align":"center"},{"accessor":"Time via Public Transport (Mins)","name":"Time via Public Transport (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Public Transport Time Saving (Mins)","name":"Public Transport Time Saving (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Time via Car (Mins)","name":"Time via Car (Mins)","type":"numeric","minWidth":150,"align":"center"},{"accessor":"Car Time Saving (Mins)","name":"Car Time Saving (Mins)","type":"numeric","minWidth":150,"align":"center"}],"resizable":true,"defaultPageSize":5,"showPageSizeOptions":true,"pageSizeOptions":[5,10,25,50,100],"paginationType":"numbers","showPageInfo":true,"minRows":1,"outlined":true,"borderless":true,"striped":true,"theme":{"highlightColor":"#f0f5f9","cellPadding":"8px 12px","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"}},"dataKey":"0e45a6ad6d7752fed304eb42c9f3610b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
-
-
+</div>
+<p><br></p>
+<p>The above table could readily be exported to Excel and delivered to Leaders, Managers, Transition Teams, HRBP’s, etc., to help inform the delivery of personalised discussions with staff regarding proposed or upcoming changes. In addition, it could also help to inform the identification of voluntary flight risks, based on negative travel experiences associated with the move. Moreover, additional analyses could be performed on this data to help inform communication efforts (e.g., clustering to develop employee personas).</p>
+<p><br></p>
 </section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion:</h1>
+<p>I often try to think of ways to prompt people to reach out to the People Analytics team for advice or assistance. One quick-fire way, based on this experience, is through automation. If colleagues are having to do things manually more than a dozen times (i.e., look up commute times on Google Maps), its likely the People Analytics Team can help. While automating work is not necessarily a core remit of People Analytics Team’s, it can be a highly useful approach for building both credibility and goodwill among business colleagues (i.e., low actual effort, high perceived value), which can in turn lead to bigger opportunities for both parties. In addition, this approach (and related activities) represent useful activities that can be performed in support of new site selection during a due diligence phase (i.e., pre-selecting venues).</p>
+<p>In this example we used a series of addresses to calculate travel distance and time between fictitious home and work addresses for different modes of transit. While using Google Maps programmatically is not without some learning required, I hope this example assists in making it more accessible to a broader range of users. Such functions can and should be used in advance of physical location changes to help proactively identify and mitigate distance-related challenges for all parties involved, both employees and consumers.</p>
+<p>Happy coding!</p>
+
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2021,
