@@ -2,6 +2,8 @@
 title: 'Predicting Promotions Through Machine Learning'
 date: 2022-12-30
 description: "Building an XGBoost model in the Tidymodels ecosystem that predicts whether an employee should be promoted."
+author: 
+    - name: Adam D McKinnon
 categories: [Tidymodels, XGBoost, R, Machine Learning, Employee Promotions]
 image: "shorter_stairs.jpg"
 title-block-banner: true
@@ -41,7 +43,7 @@ tidymodels_prefer()
 ```{r loading_data}
 
 # Load Data ----
-promotions_tbl <- readxl::read_excel(path = "promotion_prediction_files/2022_12_15_promotions.xlsx")
+promotions_tbl <- readxl::read_excel(path = "2022_12_15_promotions.xlsx")
 
 
 promotions_tbl <- promotions_tbl %>% 
