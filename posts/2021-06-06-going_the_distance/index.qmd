@@ -393,7 +393,7 @@ The above table could readily be exported to Excel and delivered to Leaders, Man
 
 <br>
 
-# Conclusion:
+# Conclusion
 
 I often try to think of ways to prompt people to reach out to the People Analytics team for advice or assistance. One quick-fire way, based on this experience, is through automation. If colleagues are having to do things manually more than a dozen times (i.e., look up commute times on Google Maps), its likely the People Analytics Team can help. While automating work is not necessarily a core remit of People Analytics Team’s, it can be a highly useful approach for building both credibility and goodwill among business colleagues (i.e., low actual effort, high perceived value), which can in turn lead to bigger opportunities for both parties. In addition, this approach (and related activities) represent useful activities that can be performed in support of new site selection during a due diligence phase (i.e., pre-selecting venues). 
 
