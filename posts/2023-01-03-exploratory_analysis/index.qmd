@@ -2,6 +2,8 @@
 title: 'Expediting Exploratory Data Analysis'
 date: 2023-01-03
 description: "Experimenting with different methods to rapidly explore relationships within datasets prior to performing other analytic activities."
+author: 
+    - name: Adam D McKinnon
 categories: [PPSR, Correlation Funnel, DataExplorer, R]
 image: "example_ppsr_plot.png"
 title-block-banner: true
