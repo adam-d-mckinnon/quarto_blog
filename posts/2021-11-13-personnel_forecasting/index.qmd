@@ -1,0 +1,269 @@
+---
+title: 'Forecasting Future Personnel Requirements Using Machine Learning'
+date: 2021-11-13
+description: "A practical demonstration of using machine learning to predict personnel requirements based on customer volumes."
+author: 
+    - name: Adam D McKinnon
+categories: [Tidymodels, ModelTime, TimeTK, echarts4r, Machine Learning, TimeSeries]
+image: "lycs-architecture-U2BI3GMnSSE-unsplash.jpg"
+title-block-banner: true
+---
+
+```{r header, echo=FALSE, fig.cap="Photo by [LYCS Architecture](https://unsplash.com/@lycs) on [Unsplash](https://unsplash.com/).", out.width = '100%'}
+
+knitr::include_graphics("lycs-architecture-U2BI3GMnSSE-unsplash.jpg")
+
+```
+
+# The goal is to know what's coming...
+
+Around this time last year I began immersing myself in Forecasting. My learning and professional experience since suggests to me that there are considerable opportunities to apply Forecasting methods in people related decision-making. I see Forecasting informing decisions such as: - retail rostering through the forecasting sales volumes, - workloads for talent acquisition professionals through forecasting requisitions volumes, - job design by forecasting volumes of service delivery staff, - Strategic Workforce Planning (SWP) through anticipation of skill demand, and - many more (I suspect imagination may be the limiting factor)!
+
+While the [last article]() I wrote on Forecasting was fun, this article adopts a more pragmatic stance by providing a practical demonstration of forecasting customer contact volumes to manage staff rosters.
+
+<br>
+
+## Business Context
+
+The Brisbane City Council (Australia) resolves hundreds of customer contact enquiries by residents each day. In a bid to ensure ongoing customer centricity, the council offers multiple channels through which residents can contact the council. It is expected that council staff will resolve a particular number of customer contact enquiries each day. The rate of resolution varies by channel and is measured as follows (these rates are fictitious):
+
+1.  Email: 175 / employee / day,
+2.  Face to Face: 75 / employee / day,
+3.  Mail: 75 / employee / day,
+4.  Online (e.g., Twitter, LinkedIn, etc.): 150 / employee / day,
+5.  Voice: 200 / employee / day, and
+6.  Web (e.g., council website contact forms): 150 / employee / day.
+
+<br>
+
+## Business Challenge
+
+The council would like to accurately roster sufficient staff to resolve contact volumes, while not "over rostering" staff to minimise costs. To do this we will train several Machine Learning Models using historic rates of contact for each of the various contact channels, and then forecast customer contact volumes by channel over the next month. With the forecasted volumes, we can then calculate the required number of staff based on expected resolution rates (see above).
+
+<br>
+
+## Workflow
+
+The workflow for addressing this business challenge is as follows:
+
+1.  Setup & Data
+
+    -   libraries
+    -   ingest the data
+    -   data wrangling / feature engineering & dataset creation
+
+2.  Modeling
+
+    -   data preprocessing
+    -   create the ML models
+    -   evaluate model performance
+    -   determine the best model for each customer contact channel
+
+3.  Forecasting & Rostering
+
+    -   generate future channel forecasts & determine staff requirements
+
+<br>
+
+# 1. Setup & Data
+
+## Libraries
+
+We begin by bringing in the required libraries for the workflow. The most notable call-outs are the libraries related to the ModelTime ecosystem for time series analysis.
+
+```{r libraries}
+
+# data wrangling
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(flipTime)
+library(tsibble)
+
+# ModelTime Ecosystem & Modeling
+library(timetk)
+library(modeltime)
+library(tidymodels)
+
+# graphing
+library(echarts4r)
+library(sknifedatar)
+library(xaringanExtra)
+
+```
+
+<br>
+
+## Ingest Data
+
+The data comes from the following [site](https://www.data.brisbane.qld.gov.au/data/dataset/contact-centre-customer-enquiries). In preparation of this work I had joined the files beginning January 2020 through to March 2021. This joined file is read here, as are Queensland Public Holidays between 2020 to 2021 (from the tsibble package). I felt public holidays may influence contact enquiry volumes. In addition, we define our forecast window (28 days), and then visualise the data for each of the customer contact channels to see what we are working with.
+
+```{r project_data}
+
+# ingest the customer contact time series
+customer_contact_ts_tbl <- readxl::read_excel(path = "contact_customer_enquiries_jan2020_mar2021.xlsx") %>% 
+                           janitor::clean_names() %>% 
+                           dplyr::rename(id = channel, value = volume) 
+
+
+# create a tibble of public holidays in QLD
+qld_public_holidays_tbl <- tsibble::holiday_aus(year = 2020:2021, state = "QLD")
+
+# define our forecast horizon
+forecast_horizon <- 28
+
+
+# plot the time series
+graphs_tbl <- customer_contact_ts_tbl %>% 
+    dplyr::group_by(id) %>% 
+    tidyr::nest() %>% 
+    dplyr::mutate(
+        .plot = purrr::map(data, ~ timetk::plot_time_series(
+                                                          .data = .x,
+                                                          .date_var = date,
+                                                          .value = value,
+                                                          .smooth = TRUE))
+                  ) %>% 
+    ungroup()
+
+
+xaringanExtra::use_panelset() 
+
+```
+
+::: panelset
+::: panel
+[Email]{.panel-name}
+```{r email_plot, echo=FALSE}
+
+graphs_tbl$.plot[[1]]
+
+```
+:::
+
+::: panel
+[Face2Face]{.panel-name}
+```{r face2face_plot, echo=FALSE}
+
+graphs_tbl$.plot[[2]]
+
+```
+:::
+
+::: panel
+[Mail]{.panel-name}
+```{r mail_plot, echo=FALSE}
+
+graphs_tbl$.plot[[3]]
+
+```
+:::
+
+::: panel
+[Online]{.panel-name}
+```{r online_plot, echo=FALSE}
+
+graphs_tbl$.plot[[4]]
+
+```
+:::
+
+::: panel
+[Voice]{.panel-name}
+```{r voice_plot, echo=FALSE}
+
+graphs_tbl$.plot[[5]]
+
+```
+:::
+::: panel
+[Web]{.panel-name}
+```{r web_plot, echo=FALSE}
+
+graphs_tbl$.plot[[6]]
+
+```
+:::
+:::
+
+
+
+<br>
+
+## Data Wrangling & Feature Engineering
+
+The process of creating the full dataset is comprehensive and will therefore be broken down into the following bullet-points:
+
+* We begin by ensuring that the dataset is complete and that there are no missing dates and customer contact volumes. Where dates are missing the date is added and a value of zero is included. 
+* The data is then transformed using a log transformation. Transformations help to minimise the influence of trends or cycles in the data, and enables the forecasting of what is left after these transformations. It is important to apply the inverse of the transformation to the final model forecasts in order get to back to the original scale (i.e., actual customer contact volumes). 
+* The data is joined with the Queensland public holiday data.
+* We extend the dataframe out by our forecast horizon of 28 days.
+* New features are created including Fourier Features, Lags and Rolling Means of our new Lag Features.
+* The timeseries is nested by the id (i.e., customer contact channel). and
+* The data for each channel is split into Training and Test datasets for modelling.
+
+
+
+```{r full_data}
+
+nested_data_tbl <- customer_contact_ts_tbl %>%
+
+    # pad out the date range and add zero's where needed
+    dplyr::group_by(id) %>%
+    timetk::pad_by_time(
+        .date_var = date,
+        .by = "day",
+        .pad_value = 0,
+        .start_date = "2020-01-01",
+        .end_date   = "2021-03-31"
+    ) %>%
+    
+    dplyr::ungroup() %>%
+    
+    # log transform the data
+    dplyr::mutate(value = log1p(value)) %>% 
+
+    # extend the timeseries for nested modelling
+    extend_timeseries(
+        .id_var        = id,
+        .date_var      = date,
+        .length_future = forecast_horizon
+    ) %>%
+
+    # add public holiday data - holidays may impact customer contact
+    dplyr::left_join(qld_public_holidays_tbl, by = c("date" = "date")) %>%
+    
+    # change the public holidays data to a numeric variable
+    dplyr::mutate(
+        holiday = ifelse(is.na(holiday), 0 , 1)
+    ) %>%
+
+    # add some new features based on the date and volume
+    dplyr::group_by(id) %>%
+    timetk::tk_augment_fourier(date, .periods = c(7, 14, 28)) %>%
+    timetk::tk_augment_lags(.value = value, .lags = 28) %>%
+    tk_augment_slidify(
+        .value = value_lag28,
+        .f = ~ mean(., na.rm = TRUE),
+        .period = c(7, 14, 28, 28*2),
+        .align = "center",
+        .partial = TRUE
+    ) %>%
+
+    dplyr::filter(!is.na(value_lag28)) %>%
+    dplyr::ungroup() %>%
+
+    # nest the timeseries data and then split the dataset by actual and future
+    nest_timeseries(
+        .id_var        = id,
+        .length_future = forecast_horizon
+    ) %>% 
+    
+    # split the nested timeseries data by channel (i.e., training and testing datasets)
+    split_nested_timeseries(
+        .length_test = forecast_horizon
+    )
+
+```
+
+

@@ -12,41 +12,46 @@ title-block-banner: true
 
 <br>
 
-
 ```{r image0, echo=FALSE, fig.cap="Photo by [Chris Liverani](https://unsplash.com/@chrisliverani) on [Unsplash](https://unsplash.com/).", out.width = "100%"}
 knitr::include_graphics("chris-liverani-dBI_My696Rk-unsplash.jpg")
 
 ```
+<br>
 
-The last 9 months have, more than ever, emphasized the importance of knowing what is coming. In this article, we take a closer look at forecasting. Forecasting can be applied to a range of HR-related topics. We will specifically examine how forecasting models can be deployed in R, using an example analysis on the rise in popularity of “people analytics”.
+The last 9 months have, more than ever, emphasized the importance of knowing what is coming. In this article, we take a closer look at forecasting. Forecasting can be applied to a range of HR-related topics. We will specifically examine how forecasting models can be deployed in R, using an example analysis on the rise in popularity of "people analytics".
 
-## The goal is to know what’s coming…
-Predictions come in different shapes and sizes. There are many [**Supervised Machine Learning**](https://www.analyticsinhr.com/blog/machine-learning-hr/) algorithms that can generate predictions of outcomes, such as flight risk, safety incidents, performance and engagement outcomes, and personnel selection. These examples represent the highly popular realm of “Predictive Analytics”. 
+<br>
 
-However, a less mainstream topic in the realm of prediction is that of “Forecasting” – often referred to as Time Series Analysis. In a nutshell, forecasting takes values over time (e.g., closing price of a stock over 120 days) to forecast the likely value in the future. 
+## The goal is to know what's coming...
 
-The main difference between supervised machine learning and forecasting is best characterized by the data used. Generally, forecasting relies upon historical data, and the patterns identified therein, to predict future values. 
+Predictions come in different shapes and sizes. There are many [**Supervised Machine Learning**](https://www.analyticsinhr.com/blog/machine-learning-hr/) algorithms that can generate predictions of outcomes, such as flight risk, safety incidents, performance and engagement outcomes, and personnel selection. These examples represent the highly popular realm of "Predictive Analytics".
 
-An HR-related example would be using historical rates of attrition in a business or geography to forecast future rates of attrition. In contrast, predictive analytics uses a variety of additional variables, such as company performance metrics, economic indicators, employment data, and so on, to predict future rates of turnover. Depending upon the use case, there is a time and a place for both approaches. 
+However, a less mainstream topic in the realm of prediction is that of "Forecasting" -- often referred to as Time Series Analysis. In a nutshell, forecasting takes values over time (e.g., closing price of a stock over 120 days) to forecast the likely value in the future.
 
-In the current article, we focus on forecasting and highlight a new library in the R ecosystem called [**ModelTime**](https://business-science.github.io/modeltime/). ModelTime enables the application of multiple forecasting models quickly and easily while employing a tidy framework (for those not familiar with R don’t worry about this). 
+The main difference between supervised machine learning and forecasting is best characterized by the data used. Generally, forecasting relies upon historical data, and the patterns identified therein, to predict future values.
+
+An HR-related example would be using historical rates of attrition in a business or geography to forecast future rates of attrition. In contrast, predictive analytics uses a variety of additional variables, such as company performance metrics, economic indicators, employment data, and so on, to predict future rates of turnover. Depending upon the use case, there is a time and a place for both approaches.
+
+In the current article, we focus on forecasting and highlight a new library in the R ecosystem called [**ModelTime**](https://business-science.github.io/modeltime/). ModelTime enables the application of multiple forecasting models quickly and easily while employing a tidy framework (for those not familiar with R don't worry about this).
 
 To illustrate the ease of using ModelTime we forecast the future level of interest in the domain of People Analytics using Google Trends data. From there we will discuss potential applications of forecasting supply and demand in the context of HR.
 
+<br>
 
 ## Data Collection
+
 The time-series data we will use for our example comes directly from Google Trends. Google Trends is an online tool that enables users to discover trends in search behavior within Google Search, Google News, Google Images, Google Shopping, and YouTube.
 
 To do so, users are required to specify the following:
 
-1. A search term (up to four additional comparison search terms are optional),
-2. A geography (i.e., where the Google Searches were performed),
-3. A time period, and
-4. Google source for searches (e.g., Web Search, Image Search, News Search, Google Shopping, or YouTube Search).
+1.  A search term (up to four additional comparison search terms are optional),
+2.  A geography (i.e., where the Google Searches were performed),
+3.  A time period, and
+4.  Google source for searches (e.g., Web Search, Image Search, News Search, Google Shopping, or YouTube Search).
 
 It is important to note that the search data returned does NOT represent the actual search volume in numbers, but rather a normalized index ranging from 0-100. The values returned represent the search interest relative to the highest search interest during the time period selected. A value of 100 is the peak popularity for the term. A value of 50 means that the term is half as popular at that point in time. A score of 0 means there was not enough data for this term.
 
-```{r data_collection, layout="l-body-outset", fig.width=8, fig.height=5}
+```{r data_collection}
 
 # Libraries
 library(gtrendsR)
@@ -90,11 +95,11 @@ gtrends_search_tbl %>%
 
 ```
 
-
 We can see from the visualisation that the term “people analytics” has trended upwards in Google web searches from January 2010 through to August 2020. The blue trend line, established using a LOESS smoother (i.e., a non-parametric technique that tries to find a curve of best fit without assuming the data adheres to a specific distribution) illustrates a continual rise in interest. The raw data also indicates that the Google search term of “people analytics”, perhaps unsurprisingly, peaked in June of 2020. 
 
 This peak may relate to the impact of COVID-19, specifically the requirement for organisations to deliver targeted ad-hoc reporting on personnel topics during this time. Irrespective, the future for People Analytics seems to be of increasing importance.
 
+<br>
 
 ## Modeling
 Let’s move into some Forecasting! The process employed using ModelTime is as follows:
@@ -104,18 +109,23 @@ Let’s move into some Forecasting! The process employed using ModelTime is as f
 3. The forecasts generated are then compared to the Test data (i.e., actual data) to determine the accuracy of the different models.
 4. Based on the accuracy of the different models, one or more models are then applied to the entire dataset (i.e., Jan 2010 – August 2020) to provide a forecast into 2021.
 
+<br>
+
 ```{r data_split, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("traintest-1.png")
 ```
 
+<br>
+
 We have presented the R code below, with supporting outputs, for steps 1 through to 4.
 
+<br>
 
 
 ### Step 1.
 
 
-```{r step1, layout="l-body-outset", fig.width=8, fig.height=5}
+```{r step1}
 
 # Train/Test 
 # hold out 12 months for test split
@@ -143,11 +153,12 @@ splits %>%
  
 ```
 
-
+<br>
 
 
 The plot above visually depicts our Training and Testing splits in the data, specifically the time period represented by both.
 
+<br>
 
 
 
@@ -208,10 +219,12 @@ model_tbl <- modeltime::modeltime_table(
 ```
 
 
+<br>
 
 
 ### Step 3.
 The forecasts generated above are now compared to the Test data (i.e., actual data) to determine the accuracy of the different models.
+
 
 
 
@@ -224,14 +237,13 @@ calibration_tbl <- model_tbl %>%
 
 # create a table of the calibration results
 calibration_tbl %>%
-    modeltime::modeltime_accuracy() %>%   
-    flextable::flextable() %>% 
-    flextable::bold(part = "header") %>% 
-    flextable::bg(bg = "#D3D3D3", part = "header") %>% 
-    flextable::autofit()
+    modeltime::modeltime_accuracy() %>%
+    dplyr::mutate_if(is.numeric, ~round(., digits = 2)) %>%
+    gt::gt()
 
 ```
 
+<br>
 
 The table above illustrates the metrics derived when evaluating the accuracy of the respective models using the Test set. While it is beyond the scope of this article to explain the models and their metrics, a simple rule of thumb when looking at the below table is that smaller error numbers generally indicate a better model!
 
@@ -240,7 +252,7 @@ The graph below illustrates how the models performed relative to the actual data
 
 
 
-```{r step3b, layout="l-body-outset", fig.width=8, fig.height=5}
+```{r step3b}
 
 # plot the forecast
 calibration_tbl %>%
@@ -252,14 +264,13 @@ calibration_tbl %>%
 ```
 
 
-
+<br>
 
 ### Step 4.
 Based on these metrics we decided to use all five models to forecast into 2021 (i.e., our final Step 4).
 
 
-
-```{r step4a, layout="l-body-outset", fig.width=8, fig.height=5}
+```{r step4a}
 
 # Refit the five models with the last 12 months of data (i.e., Test data)
 refit_tbl <- calibration_tbl %>%
@@ -283,13 +294,13 @@ forecast_tbl %>%
 ```
 
 
-
+<br>
 
 To enhance the accuracy and interpretability (particularly among stakeholders) of the forecast we will take an average of the five models to create an aggregate model. We can see below in both the code and the interactive visualization, that the ongoing trend for people analytics is one of increasing popularity over time!
 
 
 
-```{r step4b, layout="l-body-outset", fig.width=8, fig.height=5}
+```{r step4b}
 
 # Create an aggregated model based on our 5 models
 mean_forecast_tbl <- forecast_tbl %>%
@@ -310,11 +321,13 @@ forecast_tbl %>%
 
 ```
 
-
+<br>
 
 
 The forecast of Google Search interest for the next 12 months appears to continue its trend of upward growth – the forecast for People Analytics seems bright! 
 
+
+<br>
 
 # Implications of Forecasting in HR
 
@@ -322,6 +335,7 @@ The above example illustrates the ease with which analysts can perform forecasti
 
 Scenario planning need not be something that is performed once and later shelved to collect dust, despite varying environmental conditions. In the realm of HR, forecasting can and should be readily repeated to play a crucial, and yet often-underutilized part of strategic activities such as the following:
 
+<br>
 
 ### Workforce Planning 
 
@@ -335,6 +349,7 @@ Scenario planning need not be something that is performed once and later shelved
 
 * What is the trend in specific skills as captured by online job boards? Of the skills that your organisation values / requires, what do you have, what do you forecast needing in light of varying environmental conditions?
 
+<br>
 
 ### Talent Acquisition
 
@@ -342,6 +357,7 @@ Scenario planning need not be something that is performed once and later shelved
 
 * How many talent acquisition staff will be required in specific geographies to meet seasonal recruiting requirements (which do vary by geography!)?
 
+<br>
 
 ### Outsourcing
 
@@ -351,6 +367,7 @@ Scenario planning need not be something that is performed once and later shelved
 
 * Based on turnover among outsourced roles, what are the future implications for onboarding and training needs in specific businesses/geographies? How many L&D staff will be required to support those demands?
 
+<br>
 
 ### Financial budgeting
 
@@ -368,7 +385,7 @@ The above list, while far from comprehensive, provides a sense of the multitude 
 
 
 ## Acknowledgments {.appendix}
-The authors would like to acknowledge the work of [Matt Dancho](https://www.linkedin.com/in/mattdancho/), both in the development and maintenance of [TimeTK](https://business-science.github.io/timetk/) and [ModelTime](https://business-science.github.io/modeltime/), and the [Learning Labs Pro Series](https://university.business-science.io/p/learning-labs-pro) run by Matt, upon which this article is directly based.
+The authors would like to acknowledge the work of [Matt Dancho](https://www.linkedin.com/in/mattdancho/), both in the development and maintenance of [TimeTK](https://business-science.github.io/timetk/) and [ModelTime](https://business-science.github.io/modeltime/), and the [Learning Labs Pro Series](https://university.business-science.io/p/learning-labs-pro) ran by Matt, upon which this article is directly based.
 
 
 This article was first published on the Analytics In HR (AIHR) website under the title ["Forecasting in R: a People Analytics Tool"](https://www.analyticsinhr.com/blog/forecasting-in-r/) on August 31st, 2020.

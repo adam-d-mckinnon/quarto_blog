@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.adam-d-mckinnon.com/index.html</loc>
-    <lastmod>2023-01-15T06:59:40.266Z</lastmod>
+    <lastmod>2023-01-27T22:22:07.090Z</lastmod>
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/post-with-code/index.html</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2023-01-03-exploratory_analysis/index.html</loc>
-    <lastmod>2023-01-15T06:51:28.212Z</lastmod>
+    <lastmod>2023-01-27T22:10:18.907Z</lastmod>
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2022-12-30-promotion_prediction/index.html</loc>
@@ -51,5 +51,13 @@
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2020-12-09-employee_skills_data/index.html</loc>
     <lastmod>2023-01-15T06:49:25.516Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2021-11-13-personnel_forecasting/index.html</loc>
+    <lastmod>2023-01-27T22:22:06.369Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2020-10-10-forecast_people_analytics/index.html</loc>
+    <lastmod>2023-01-27T21:57:36.736Z</lastmod>
   </url>
 </urlset>
