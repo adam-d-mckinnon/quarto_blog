@@ -266,4 +266,176 @@ nested_data_tbl <- customer_contact_ts_tbl %>%
 
 ```
 
+<br>
+
+
+# 2. Modeling
+
+## Data Preprocessing
+The data pre-processing involves use of the Recipes package. This recipe creates a number of new features based on the date variable, removes some unwanted features created, normalises some of the numeric features created so as to minimise undue influence on the models created, and then one-hot encodes all nominal variables. 
+
+
+```{r recipe}
+
+# define the recipe using the training data
+recipe_spec <- recipes::recipe(value ~ ., data = extract_nested_train_split(nested_data_tbl)) %>%
+    step_timeseries_signature(date) %>% # create date features
+    recipes::step_rm(matches("(.xts$)|(.iso$)|(hour)|(minute)|(second)|(am.pm)")) %>% # remove unwanted features
+    recipes::step_normalize(date_index.num, date_year) %>% # normalises two numeric variables
+    recipes::step_dummy(all_nominal(), one_hot = TRUE) # one hot encodes nominal variables
+
+
+```
+
+<br>
+
+
+## Create the Machine Learning Models 
+
+In this section we will create seven models in total. Six will be used for forecasting (XGboost model, Boosted Prophet Time Series model, Random Forest model, Multivariate Adaptive Regression Spline (MARS) model, Neural Net model, and a Support Vector Machine model), while the seventh is used to prove how much better our models are than "guessing". This comparison involves generating what is called a "Naive" forecast. The Naive forecast simply carries the last known value forward as a forecast. The accuracy metrics associated with the Naive forecast can then be compared with the metrics from our more sophisticated models to validate their accuracy, and ultimately their utility. This was something I started doing earlier this year on the back of advice from a colleague. The intent is to ensure your models are good (a simple litmus test), and more importantly, are an excellent way of illustrating the practical utility of the models to non-technical audiences. 
+
+
+```{r forecasting_models}
+
+
+### Naive Model ----
+wkfl_fit_naive <- workflows::workflow() %>%
+    workflows::add_model(
+        modeltime::naive_reg() %>% 
+        parsnip::set_engine("naive")
+    ) %>%
+    workflows::add_recipe(recipe_spec)
+
+
+
+# XGboost
+wkfl_fit_xgboost <- workflows::workflow() %>%
+    workflows::add_model(
+        spec = boost_tree(mode = "regression") %>% 
+        parsnip::set_engine("xgboost")
+    ) %>%
+    workflows::add_recipe(recipe_spec %>% 
+                              recipes::update_role(date, new_role = "indicator")) 
+
+
+# * Prophet Boost ----
+wkfl_fit_prophet_boost <- workflows::workflow() %>%
+    workflows::add_model(
+        spec = prophet_boost(
+            seasonality_daily  = FALSE,
+            seasonality_weekly = FALSE,
+            seasonality_yearly = FALSE
+        ) %>%
+            parsnip::set_engine("prophet_xgboost")
+    ) %>%
+    workflows::add_recipe(recipe_spec)
+
+
+
+# Random Forest
+wkfl_fit_rf <- workflows::workflow() %>%
+    add_model(
+        spec = rand_forest(mode = "regression") %>% 
+        parsnip::set_engine("ranger")
+    ) %>%
+    workflows::add_recipe(recipe_spec %>% 
+                              recipes::update_role(date, new_role = "indicator")) 
+
+
+
+# MARS
+wkfl_fit_mars <- workflows::workflow() %>%
+    workflows::add_model(
+        spec = mars(mode = "regression") %>%  
+        parsnip::set_engine("earth")) %>%
+    workflows::add_recipe(recipe_spec %>% 
+                   update_role(date, new_role = "indicator"))
+
+
+# Neural Net
+wkfl_fit_nnet <- workflows::workflow() %>%
+    workflows::add_model(
+        spec = mlp(mode = "regression") %>% 
+        parsnip::set_engine("nnet")
+    ) %>%
+    workflows::add_recipe(recipe_spec %>% 
+                              recipes::update_role(date, new_role = "indicator")) 
+
+
+# SVM
+wkfl_fit_svm <- workflows::workflow() %>%
+    workflows::add_model(
+        spec = svm_rbf(mode = "regression") %>% 
+        parsnip::set_engine("kernlab")
+    ) %>%
+    workflows::add_recipe(recipe_spec %>% 
+                   update_role(date, new_role = "indicator")) 
+
+
+```
+
+<br>
+
+## Evaluate Model Performance
+
+After adding the ML models into a table, we determine their accuracy against the Test dataset. Below you can view a table indicating six accuracy metrics that come standard with the Modeltime package. With the exception of rsq the general rule of thumb is smaller numbers are better. It is important to keep in mind that we initially log transformed our customer contact volumes, which reduces their absolute value and the breadth of the range of values in the time series. Practically this means the accuracy metrics are artificially lower than if we had stayed with the actual volumes. That said, these default models are performing well, even without model tuning. This is further exemplified when comparing the models to the Naive Forecast. If we were to only rely on the rmse values and compare them (i.e., Naive forecast to six ML models) for each customer contact channel volume (e.g., web, face2face, etc.), we could say that our models are between three and five times more accurate than a Naive forecast.
+
+
+```{r model_table}
+
+# Modeltime Table
+nested_modeltime_tbl <- modeltime::modeltime_nested_fit(
+    # Nested data
+    nested_data = nested_data_tbl,
+
+   # Add workflows
+    model_list = list(
+        wkfl_fit_naive,
+        wkfl_fit_xgboost,
+        wkfl_fit_prophet_boost,
+        wkfl_fit_rf,
+        wkfl_fit_mars,
+        wkfl_fit_nnet,
+        wkfl_fit_svm
+        )
+)
+
+
+nested_modeltime_tbl %>%
+    modeltime::extract_nested_test_accuracy() %>%
+    modeltime::table_modeltime_accuracy(
+        .round_digits = 2,
+        .show_sortable = TRUE,
+        .interactive = TRUE,
+        defaultPageSize = 7,
+        bordered = TRUE,
+        striped = TRUE,
+        compact = TRUE,
+        defaultColDef = reactable::colDef(width = 69),
+        style = list(fontFamily = "Work Sans, sans-serif", fontSize = "13px"),
+        columns = list(
+            .model_id   = reactable::colDef(show = FALSE),
+            .type = reactable::colDef(show = FALSE),
+            .model_desc = reactable::colDef(width = 220)
+                       )
+    )
+
+
+test_forecasts_tbl <- nested_modeltime_tbl %>%
+    modeltime::extract_nested_test_forecast() %>%
+    dplyr::group_by(id) %>%
+    tidyr::nest() %>%
+    dplyr::mutate(
+                .plot_forecast = purrr::map(data, ~modeltime::plot_modeltime_forecast(.data = .x,
+                                                                                      .conf_interval_show = FALSE,
+                                                                                      .legend_max_width = 15,
+                                                                                      .plotly_slider = TRUE
+                                                                                      ))
+                )%>%
+    dplyr::ungroup()
+
+xaringanExtra::use_panelset()
+
+```
+
 
