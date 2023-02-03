@@ -425,9 +425,11 @@ test_forecasts_tbl <- nested_modeltime_tbl %>%
     dplyr::ungroup()
 
 
-# xaringanExtra::use_panelset()
-
 ```
+
+<br>
+
+We can also visualise the forecasts from each of the models for each customer contact channel. The visualisations produced are interactive (you can zoom by using the slider at bottom of the visualisations and click on the legend to add/remove models from the visualisation) and we can visually inspect how well the models perform relative to one another and the actual data (i.e., the Test dataset). This is another great way of showing to business stakeholders how well our models perform, thereby creating greater confidence, and ideally use, of the model forecasts. 
 
 <br>
 
@@ -488,25 +490,113 @@ test_forecasts_tbl$.plot_forecast[[6]]
 :::
 
 
+<br>
+
+
+
+## Determine the Best Models
+We now determine which of our seven models is best for each of the customer contact channels. This is done using the Root Mean Square Error (RMSE) value. The lowest value is indicative of the least error, when compared to our Test dataset. 
+
+
+```{r best_models_table}
+
+best_nested_modeltime_tbl <- nested_modeltime_tbl %>%
+    modeltime::modeltime_nested_select_best(
+        metric                = "rmse",
+        minimize              = TRUE,
+        filter_test_forecasts = TRUE
+    )
+
+
+best_nested_modeltime_tbl %>%
+    modeltime::extract_nested_best_model_report() %>%
+    dplyr::mutate_if(is.double, ~ round(.x, digits = 2)) %>%
+    gt::gt()
 
 
 
 
-<!-- ::: panel -->
-<!-- [Face2Face_Forecast]{.panel-name} -->
-<!-- ```{r face2face_forecast_plot, echo=FALSE} -->
+```
 
-<!-- test_forecasts_tbl$.plot_forecast[[2]] -->
 
-<!-- ``` -->
-<!-- ::: -->
+```{r best_models_vis}
 
-<!-- ::: panel -->
-<!-- [Mail_Forecast]{.panel-name} -->
-<!-- ```{r mail_forecast_plot, echo=FALSE} -->
 
-<!-- test_forecasts_tbl$.plot_forecast[[3]] -->
+best_test_forecasts_tbl <- best_nested_modeltime_tbl %>%
+    modeltime::extract_nested_test_forecast() %>%
+    dplyr::group_by(id) %>%
+    tidyr::nest() %>%
+    dplyr::mutate(
+                .plot_forecast = purrr::map(data, ~ modeltime::plot_modeltime_forecast(.data = .x,
+                                                                                       .conf_interval_show = FALSE,
+                                                                                       .legend_max_width = 15,
+                                                                                       .plotly_slider = TRUE
+                                                                                      ))
+                ) %>%
+    dplyr::ungroup()
 
-<!-- ``` -->
-<!-- ::: -->
-<!-- ::: -->
+
+
+```
+
+
+To provide the best outcome we use the best model for each customer contact channel to make the future forecast. The best model, according to its performance on the Test dataset, is also visualised below for inspection.
+
+<br>
+
+::: panelset
+::: panel
+[Email]{.panel-name}
+```{r best_email_forecast_plot, echo=FALSE}
+
+best_test_forecasts_tbl$.plot_forecast[[1]]
+
+```
+:::
+
+
+::: panel
+[Face2Face]{.panel-name}
+```{r best_f2f_forecast_plot, echo=FALSE}
+
+best_test_forecasts_tbl$.plot_forecast[[2]]
+
+```
+:::
+
+::: panel
+[Mail]{.panel-name}
+```{r best_mail_forecast_plot, echo=FALSE}
+
+best_test_forecasts_tbl$.plot_forecast[[3]]
+
+```
+:::
+
+::: panel
+[Online]{.panel-name}
+```{r best_online_forecast_plot, echo=FALSE}
+
+best_test_forecasts_tbl$.plot_forecast[[4]]
+
+```
+:::
+
+::: panel
+[Voice]{.panel-name}
+```{r best_voice_forecast_plot, echo=FALSE}
+
+best_test_forecasts_tbl$.plot_forecast[[5]]
+
+```
+:::
+
+::: panel
+[Web]{.panel-name}
+```{r best_web_forecast_plot, echo=FALSE}
+
+best_test_forecasts_tbl$.plot_forecast[[6]]
+
+```
+:::
+:::
