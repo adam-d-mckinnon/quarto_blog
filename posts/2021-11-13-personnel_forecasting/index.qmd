@@ -322,9 +322,8 @@ wkfl_fit_xgboost <- workflows::workflow() %>%
 wkfl_fit_prophet_boost <- workflows::workflow() %>%
     workflows::add_model(
         spec = prophet_boost(
-            seasonality_daily  = FALSE,
-            seasonality_weekly = FALSE,
-            seasonality_yearly = FALSE
+            mode = "regression",
+            seasonality_yearly = TRUE
         ) %>%
             parsnip::set_engine("prophet_xgboost")
     ) %>%
@@ -343,15 +342,6 @@ wkfl_fit_rf <- workflows::workflow() %>%
 
 
 
-# MARS
-wkfl_fit_mars <- workflows::workflow() %>%
-    workflows::add_model(
-        spec = mars(mode = "regression") %>%  
-        parsnip::set_engine("earth")) %>%
-    workflows::add_recipe(recipe_spec %>% 
-                   update_role(date, new_role = "indicator"))
-
-
 # Neural Net
 wkfl_fit_nnet <- workflows::workflow() %>%
     workflows::add_model(
@@ -361,15 +351,6 @@ wkfl_fit_nnet <- workflows::workflow() %>%
     workflows::add_recipe(recipe_spec %>% 
                               recipes::update_role(date, new_role = "indicator")) 
 
-
-# SVM
-wkfl_fit_svm <- workflows::workflow() %>%
-    workflows::add_model(
-        spec = svm_rbf(mode = "regression") %>% 
-        parsnip::set_engine("kernlab")
-    ) %>%
-    workflows::add_recipe(recipe_spec %>% 
-                   update_role(date, new_role = "indicator")) 
 
 
 ```
@@ -394,9 +375,7 @@ nested_modeltime_tbl <- modeltime::modeltime_nested_fit(
         wkfl_fit_xgboost,
         wkfl_fit_prophet_boost,
         wkfl_fit_rf,
-        wkfl_fit_mars,
-        wkfl_fit_nnet,
-        wkfl_fit_svm
+        wkfl_fit_nnet
         )
 )
 
@@ -434,8 +413,16 @@ test_forecasts_tbl <- nested_modeltime_tbl %>%
                 )%>%
     dplyr::ungroup()
 
+
 xaringanExtra::use_panelset()
 
 ```
 
+::: panelset
+::: panel
+[Email]{.panel-name}
+```{r email_plot, echo=FALSE}
 
+graphs_tbl$.plot[[1]]
+
+```
