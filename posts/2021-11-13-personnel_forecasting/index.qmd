@@ -372,10 +372,10 @@ nested_modeltime_tbl <- modeltime::modeltime_nested_fit(
    # Add workflows
     model_list = list(
         wkfl_fit_naive,
-        wkfl_fit_xgboost
-        # wkfl_fit_prophet_boost,
-        # wkfl_fit_rf,
-        # wkfl_fit_nnet
+        wkfl_fit_xgboost,
+        wkfl_fit_prophet_boost,
+        wkfl_fit_rf,
+        wkfl_fit_nnet
         )
 )
 
@@ -600,3 +600,162 @@ best_test_forecasts_tbl$.plot_forecast[[6]]
 ```
 :::
 :::
+
+<br>
+
+# 3. Forecasting & Rostering
+
+## Generate Future Channel Forecasts & Determine Staffing Requirements
+The final step is to take the best model for each of the customer contact channels to forecast 28-days into the future. Based on the forecasted volumes for each of the customer contact channels we can then determine the number of staff required to work on each day. To do this we simply take the forecasted daily volumes and divide by the number of contacts per day that an employee is expected to meet for each of the contact channels.
+
+<br>
+
+```{r final_forecast}
+
+
+staff_required <- function(channel, volume){
+
+      dplyr::case_when(
+        channel == "email"     ~ volume / 175,
+        channel == "face2face" ~ volume / 75,
+        channel == "mail"      ~ volume / 75,
+        channel == "online"    ~ volume / 150,
+        channel == "voice"     ~ volume / 200,
+        channel == "web"       ~ volume / 150
+      )
+}
+
+
+# refit our best models to all our historical data
+nested_modeltime_refit_tbl <- best_nested_modeltime_tbl %>%
+    modeltime::modeltime_nested_refit(
+        control = control_nested_refit(verbose = FALSE)
+    )
+
+
+
+# final forecasts
+final_forecasted_volumes_tbl <- nested_modeltime_refit_tbl %>%
+    modeltime::extract_nested_future_forecast() %>%
+    dplyr::mutate(
+      .value         = expm1(.value),
+      known_staff    = map2_dbl(.x = id,
+                                .y = .value,
+                                .f = ~ staff_required(channel = .x, volume = .y)) %>% base::ceiling(),
+      known_staff    = if_else(.key == "actual", known_staff, NA_real_),
+
+      required_staff = map2_dbl(.x = id,
+                                .y = .value,
+                                .f = ~ staff_required(channel = .x, volume = .y)) %>% base::ceiling(),
+      required_staff = if_else(.key == "prediction", required_staff, NA_real_)
+      )
+
+
+# create a function to generate staff roster forecasts
+plot_staff_required <- function(df){
+
+    df %>%
+        echarts4r::e_charts(date) %>%
+        echarts4r::e_line(name = "Historical Roster", known_staff) %>%
+        echarts4r::e_line(name = "Predicted Roster", required_staff) %>%
+        echarts4r::e_datazoom(type = "slider", start = 90) %>% 
+        echarts4r::e_tooltip(formatter = htmlwidgets::JS("
+        function(params){
+            return('<b>Date: </b>' + params.value[0] + '<br/><b>Staff Required: </b>' + params.value[1])
+            }
+          ")
+        )
+
+}
+
+
+# visualise the staff roster forecasts
+staff_volumes_tbl <- final_forecasted_volumes_tbl %>%
+    dplyr::select(channel = id, date = .index, known_staff, required_staff) %>%
+    dplyr::group_by(channel) %>%
+    tidyr::nest() %>%
+    dplyr::mutate(
+        .plot_personnel_forecast = purrr::map(data, ~ plot_staff_required(df = .x))
+    )%>%
+    dplyr::ungroup()
+
+
+```
+
+<br>
+
+::: panelset
+::: panel
+[Email]{.panel-name}
+```{r final_email_forecast_plot, echo=FALSE}
+
+staff_volumes_tbl$.plot_personnel_forecast[[1]]
+
+```
+:::
+
+
+::: panel
+[Face2Face]{.panel-name}
+```{r final_f2f_forecast_plot, echo=FALSE}
+
+staff_volumes_tbl$.plot_personnel_forecast[[2]]
+
+```
+:::
+
+::: panel
+[Mail]{.panel-name}
+```{r final_mail_forecast_plot, echo=FALSE}
+
+staff_volumes_tbl$.plot_personnel_forecast[[3]]
+
+```
+:::
+
+::: panel
+[Online]{.panel-name}
+```{r final_online_forecast_plot, echo=FALSE}
+
+staff_volumes_tbl$.plot_personnel_forecast[[4]]
+
+```
+:::
+
+::: panel
+[Voice]{.panel-name}
+```{r final_voice_forecast_plot, echo=FALSE}
+
+staff_volumes_tbl$.plot_personnel_forecast[[5]]
+
+```
+:::
+
+::: panel
+[Web]{.panel-name}
+```{r final_web_forecast_plot, echo=FALSE}
+
+staff_volumes_tbl$.plot_personnel_forecast[[6]]
+
+```
+:::
+:::
+
+<br>
+
+
+# Conclusion
+
+And there we have it - a forecast of the number of staff required to meet future customer contact volumes. With this information in hand, managers of the customer contact centre at Brisbane City Council could accurately roster sufficient staff in advance, manage staff costs with greater accuracy, whilst also providing staff with predictabilty regarding their working hours.
+
+To practically evaluate the efficacy of the models we could:
+
+* Evaluate the accuracy of the rosters, pre and post forecasts, in their ability to meet customer contact demands,
+* Following on from the above point, quantify the accuracy of the rosters in terms of staff expenditure (both pre and post forecasts), and  
+* Monitor changes in customer feedback, volumes handled and resolved, and general feedback from staff regarding rosters.
+
+As mentioned at the outset, I see Forecasting informing people related decisions such as retail rostering, job design and just general anticipation of future volumes to inform service delivery. More on this in future 
+
+Happy forecasting!
+
+<br>
