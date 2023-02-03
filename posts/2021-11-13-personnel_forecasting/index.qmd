@@ -420,9 +420,21 @@ xaringanExtra::use_panelset()
 
 ::: panelset
 ::: panel
-[Email]{.panel-name}
-```{r email_plot, echo=FALSE}
+[Email Forecast]{.panel-name}
+```{r email_forecast_plot, echo=FALSE}
 
-graphs_tbl$.plot[[1]]
+test_forecasts_tbl$.plot_forecast[[1]]
 
 ```
+:::
+
+::: panel
+[Face2Face Forecast]{.panel-name}
+```{r face2face_forecast_plot, echo=FALSE}
+
+test_forecasts_tbl$.plot_forecast[[2]]
+
+```
+
+
+
