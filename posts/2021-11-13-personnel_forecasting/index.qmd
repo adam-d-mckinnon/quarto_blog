@@ -127,7 +127,7 @@ graphs_tbl <- customer_contact_ts_tbl %>%
     ungroup()
 
 
-xaringanExtra::use_panelset() 
+xaringanExtra::use_panelset()
 
 ```
 
@@ -372,10 +372,10 @@ nested_modeltime_tbl <- modeltime::modeltime_nested_fit(
    # Add workflows
     model_list = list(
         wkfl_fit_naive,
-        wkfl_fit_xgboost,
-        wkfl_fit_prophet_boost,
-        wkfl_fit_rf,
-        wkfl_fit_nnet
+        wkfl_fit_xgboost
+        # wkfl_fit_prophet_boost,
+        # wkfl_fit_rf,
+        # wkfl_fit_nnet
         )
 )
 
@@ -437,6 +437,51 @@ test_forecasts_tbl <- nested_modeltime_tbl %>%
 ```{r email_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[1]]
+
+```
+:::
+
+::: panel
+[FaceToFace]{.panel-name}
+```{r f2f_forecast_plot, echo=FALSE}
+
+test_forecasts_tbl$.plot_forecast[[2]]
+
+```
+:::
+
+::: panel
+[Mail]{.panel-name}
+```{r mail_forecast_plot, echo=FALSE}
+
+test_forecasts_tbl$.plot_forecast[[3]]
+
+```
+:::
+
+::: panel
+[Online]{.panel-name}
+```{r online_forecast_plot, echo=FALSE}
+
+test_forecasts_tbl$.plot_forecast[[4]]
+
+```
+:::
+
+::: panel
+[Voice]{.panel-name}
+```{r voice_forecast_plot, echo=FALSE}
+
+test_forecasts_tbl$.plot_forecast[[5]]
+
+```
+:::
+
+::: panel
+[Web]{.panel-name}
+```{r web_forecast_plot, echo=FALSE}
+
+test_forecasts_tbl$.plot_forecast[[6]]
 
 ```
 :::
