@@ -1,6 +1,6 @@
 ---
 title: 'What is the Forecast for People Analytics?'
-date: 12-09-2020
+date: 10-10-2020
 description: "An article on the use of Google Trends and the new TimeTK and ModelTime Libraries in R."
 author: 
     - name: Adam D McKinnon
