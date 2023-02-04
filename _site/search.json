@@ -439,5 +439,12 @@
     "title": "A People Analytics Tutorial on Unsupervised Machine Learning",
     "section": "Cluster Analysis in HR",
     "text": "Cluster Analysis in HR\nThe objective we aim to achieve is an understanding of factors associated with employee turnover within our data. To do this, we form clusters based on a set of employee variables (i.e., Features) such as age, marital status, role level, and so on. The clusters help us better understand the many attributes that may be associated with turnover, and whether there are distinct clusters of employees that are more susceptible to turnover. This last insight can facilitate the personalising of the employee experience at scale by determining whether current HR policies are serving the employee clusters identified in the analysis, as opposed to using a one size fits all approach."
+  },
+  {
+    "objectID": "posts/2020-08-04-cluster_analysis/index.html#acknowledgments",
+    "href": "posts/2020-08-04-cluster_analysis/index.html#acknowledgments",
+    "title": "A People Analytics Tutorial on Unsupervised Machine Learning",
+    "section": "Acknowledgments",
+    "text": "Acknowledgments\n\nThis article was first published on the Analytics In HR (AIHR) website under the title “A Tutorial on People Analytics Using R – Clustering”on June 13, 2020. The original version can be viewed here."
   }
 ]
