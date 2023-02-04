@@ -5,12 +5,12 @@ description: "Building an XGBoost model in the Tidymodels ecosystem that predict
 author: 
     - name: Adam D McKinnon
 categories: [Tidymodels, XGBoost, R, Machine Learning, Employee Promotions]
-image: "thomas-le-yoPOtxc0s6c-unsplash.jpg"
+image: "markus-spiske-QozzJpFZ2lg-unsplash.jpg"
 title-block-banner: true
 ---
 
-```{r header, echo=FALSE, code_folding = FALSE, fig.cap="Photo by [Possessed Photography](https://unsplash.com/@thomasble) on [Unsplash](https://unsplash.com/).", out.width = '100%'}
-knitr::include_graphics("thomas-le-yoPOtxc0s6c-unsplash.jpg")
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="Photo by [Possessed Photography](https://unsplash.com/@markusspiske) on [Unsplash](https://unsplash.com/).", out.width = '100%'}
+knitr::include_graphics("markus-spiske-QozzJpFZ2lg-unsplash.jpg")
 
 ```
 <br>

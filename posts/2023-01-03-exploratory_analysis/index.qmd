@@ -5,9 +5,14 @@ description: "Experimenting with different methods to rapidly explore relationsh
 author: 
     - name: Adam D McKinnon
 categories: [PPSR, Correlation Funnel, DataExplorer, R]
-image: "example_ppsr_plot.png"
+image: "markus-winkler-afW1hht0NSs-unsplash.jpg"
 title-block-banner: true
 ---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="Photo by [Possessed Photography](https://unsplash.com/@markuswinkler) on [Unsplash](https://unsplash.com/).", out.width = '100%'}
+knitr::include_graphics("markus-winkler-afW1hht0NSs-unsplash.jpg")
+
+```
 
 <br>
 
