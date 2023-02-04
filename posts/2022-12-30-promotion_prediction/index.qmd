@@ -13,6 +13,7 @@ title-block-banner: true
 knitr::include_graphics("thomas-le-yoPOtxc0s6c-unsplash.jpg")
 
 ```
+<br>
 
 # Libraries
 
@@ -38,6 +39,8 @@ tidymodels_prefer()
 
 ```
 
+<br>
+
 # Data
 
 ```{r loading_data}
@@ -55,6 +58,8 @@ promotions_tbl <- promotions_tbl %>%
 
 
 ```
+
+<br>
 
 # Building an ML Model
 
@@ -82,6 +87,7 @@ promotion_folds <- bootstraps(promotion_train_tbl,
 
 ```
 
+<br>
 ### 2. Pre-processing the data
 
 ```{r data_preprocessing}
@@ -99,6 +105,7 @@ xgboost_recipe <-
 
 ```
 
+<br>
 ### 3. Create a model specification
 
 ```{r model_spec}
@@ -119,6 +126,7 @@ xgboost_spec <-
 
 ```
 
+<br>
 ### 4. Workflow setup
 
 ```{r workflow_setup}
@@ -136,6 +144,7 @@ xgboost_workflow <-
 
 ```
 
+<br>
 ### 5. Tuning the model
 
 ```{r model_tuning}
@@ -173,6 +182,7 @@ racing_resamples <- finetune::tune_race_anova(
 
 
 ```
+<br>
 
 ### 6. Assess model performance
 
@@ -207,6 +217,8 @@ tuning_plot
 :::
 :::
 
+<br>
+
 ### 7. Finalise the workflow
 
 ```{r finalise_workflow}
@@ -228,6 +240,8 @@ final_model_workflow <- last_fit_xgboost_workflow %>%
 
 ```
 
+<br>
+
 ### 8. Re-assess model performance
 
 ```{r predictions}
@@ -243,6 +257,8 @@ autoplot(cm, type = "heatmap") %>%
     plotly::plotly_build()
 
 ```
+
+<br>
 
 # Save the model
 
