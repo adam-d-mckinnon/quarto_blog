@@ -56,7 +56,10 @@ promotions_tbl %>%
 
 cleaned_promotions_tbl %>%
     select(-employee_id) %>%
-    visualize_pps(y = 'is_promoted', do_parallel = TRUE)
+    visualize_pps(
+        y = 'is_promoted', 
+        do_parallel = FALSE
+        )
 
 ```
 
