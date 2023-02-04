@@ -1,6 +1,6 @@
 ---
 title: 'Measuring Impact in HR: A Practical Demonstration'
-date: 06-06-2021
+date: 02-12-2021
 description: "A 'How To' article on the measurment of differences between groups in HR settings."
 author: 
     - name: Adam D McKinnon

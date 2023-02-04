@@ -6,7 +6,7 @@ author:
     - name: Adam D McKinnon
     - name: Monica Ashton
 categories: [Forecasting, timetk,  modeltime, plotly, R]
-image: ""
+image: "chris-liverani-dBI_My696Rk-unsplash.jpg"
 title-block-banner: true
 ---
 
@@ -16,6 +16,7 @@ title-block-banner: true
 knitr::include_graphics("chris-liverani-dBI_My696Rk-unsplash.jpg")
 
 ```
+
 <br>
 
 The last 9 months have, more than ever, emphasized the importance of knowing what is coming. In this article, we take a closer look at forecasting. Forecasting can be applied to a range of HR-related topics. We will specifically examine how forecasting models can be deployed in R, using an example analysis on the rise in popularity of "people analytics".
@@ -95,19 +96,20 @@ gtrends_search_tbl %>%
 
 ```
 
-We can see from the visualisation that the term “people analytics” has trended upwards in Google web searches from January 2010 through to August 2020. The blue trend line, established using a LOESS smoother (i.e., a non-parametric technique that tries to find a curve of best fit without assuming the data adheres to a specific distribution) illustrates a continual rise in interest. The raw data also indicates that the Google search term of “people analytics”, perhaps unsurprisingly, peaked in June of 2020. 
+We can see from the visualisation that the term "people analytics" has trended upwards in Google web searches from January 2010 through to August 2020. The blue trend line, established using a LOESS smoother (i.e., a non-parametric technique that tries to find a curve of best fit without assuming the data adheres to a specific distribution) illustrates a continual rise in interest. The raw data also indicates that the Google search term of "people analytics", perhaps unsurprisingly, peaked in June of 2020.
 
 This peak may relate to the impact of COVID-19, specifically the requirement for organisations to deliver targeted ad-hoc reporting on personnel topics during this time. Irrespective, the future for People Analytics seems to be of increasing importance.
 
 <br>
 
 ## Modeling
-Let’s move into some Forecasting! The process employed using ModelTime is as follows:
 
-1. We separate our dataset into “Training” and “Test” datasets. The Training data represents that data from January 2010 to July 2019, while the Test data represents the last 12 months of data (i.e., August 2019 – August 2020). A visual representation of this split is presented in the image you see below.
-2. The Training data is used to generate a 12-month forecast using several different models. In this article, we have chosen the following models: Exponential Smoothing, ARIMA, ARIMA Boost, Prophet, and Prophet Boost. 
-3. The forecasts generated are then compared to the Test data (i.e., actual data) to determine the accuracy of the different models.
-4. Based on the accuracy of the different models, one or more models are then applied to the entire dataset (i.e., Jan 2010 – August 2020) to provide a forecast into 2021.
+Let's move into some Forecasting! The process employed using ModelTime is as follows:
+
+1.  We separate our dataset into "Training" and "Test" datasets. The Training data represents that data from January 2010 to July 2019, while the Test data represents the last 12 months of data (i.e., August 2019 -- August 2020). A visual representation of this split is presented in the image you see below.
+2.  The Training data is used to generate a 12-month forecast using several different models. In this article, we have chosen the following models: Exponential Smoothing, ARIMA, ARIMA Boost, Prophet, and Prophet Boost.
+3.  The forecasts generated are then compared to the Test data (i.e., actual data) to determine the accuracy of the different models.
+4.  Based on the accuracy of the different models, one or more models are then applied to the entire dataset (i.e., Jan 2010 -- August 2020) to provide a forecast into 2021.
 
 <br>
 
@@ -121,9 +123,7 @@ We have presented the R code below, with supporting outputs, for steps 1 through
 
 <br>
 
-
 ### Step 1.
-
 
 ```{r step1}
 
@@ -155,17 +155,13 @@ splits %>%
 
 <br>
 
-
 The plot above visually depicts our Training and Testing splits in the data, specifically the time period represented by both.
 
 <br>
 
+### Step 2
 
-
-### Step 2 
-We first generate a 12-month forecast using five models (Exponential Smoothing, ARIMA, ARIMA Boost, Prophet, and Prophet Boost) on the training data. 
-
-
+We first generate a 12-month forecast using five models (Exponential Smoothing, ARIMA, ARIMA Boost, Prophet, and Prophet Boost) on the training data.
 
 ```{r step2}
 
@@ -218,15 +214,11 @@ model_tbl <- modeltime::modeltime_table(
 
 ```
 
-
 <br>
 
-
 ### Step 3.
+
 The forecasts generated above are now compared to the Test data (i.e., actual data) to determine the accuracy of the different models.
-
-
-
 
 ```{r step3a}
 
@@ -247,10 +239,7 @@ calibration_tbl %>%
 
 The table above illustrates the metrics derived when evaluating the accuracy of the respective models using the Test set. While it is beyond the scope of this article to explain the models and their metrics, a simple rule of thumb when looking at the below table is that smaller error numbers generally indicate a better model!
 
-
 The graph below illustrates how the models performed relative to the actual data (i.e., our Test set).
-
-
 
 ```{r step3b}
 
@@ -263,12 +252,11 @@ calibration_tbl %>%
                                        .legend_max_width = 20)
 ```
 
-
 <br>
 
 ### Step 4.
-Based on these metrics we decided to use all five models to forecast into 2021 (i.e., our final Step 4).
 
+Based on these metrics we decided to use all five models to forecast into 2021 (i.e., our final Step 4).
 
 ```{r step4a}
 
@@ -293,12 +281,9 @@ forecast_tbl %>%
 
 ```
 
-
 <br>
 
 To enhance the accuracy and interpretability (particularly among stakeholders) of the forecast we will take an average of the five models to create an aggregate model. We can see below in both the code and the interactive visualization, that the ongoing trend for people analytics is one of increasing popularity over time!
-
-
 
 ```{r step4b}
 
@@ -323,69 +308,62 @@ forecast_tbl %>%
 
 <br>
 
-
-The forecast of Google Search interest for the next 12 months appears to continue its trend of upward growth – the forecast for People Analytics seems bright! 
-
+The forecast of Google Search interest for the next 12 months appears to continue its trend of upward growth -- the forecast for People Analytics seems bright!
 
 <br>
 
 # Implications of Forecasting in HR
 
-The above example illustrates the ease with which analysts can perform forecasting in R with time-series data to be better prepared for the future. In addition, the use of automated models (i.e., those that self-optimize) can be an excellent entry point for forecasting. Technologies such as ModelTime in R enable users to rapidly and easily apply numerous sophisticated forecasting models to perform scenario planning within organisations. 
+The above example illustrates the ease with which analysts can perform forecasting in R with time-series data to be better prepared for the future. In addition, the use of automated models (i.e., those that self-optimize) can be an excellent entry point for forecasting. Technologies such as ModelTime in R enable users to rapidly and easily apply numerous sophisticated forecasting models to perform scenario planning within organisations.
 
 Scenario planning need not be something that is performed once and later shelved to collect dust, despite varying environmental conditions. In the realm of HR, forecasting can and should be readily repeated to play a crucial, and yet often-underutilized part of strategic activities such as the following:
 
 <br>
 
-### Workforce Planning 
+### Workforce Planning
 
-* What proportion of the employee population is likely to retire over the coming 2 – 5 years? How many employees will the organization need to replace in the future?
+-   What proportion of the employee population is likely to retire over the coming 2 -- 5 years? How many employees will the organization need to replace in the future?
 
-* Will the local job market or universities “produce” sufficient candidates to cover an organisations forecasted graduate/ professional employee recruitment needs?
+-   Will the local job market or universities "produce" sufficient candidates to cover an organisations forecasted graduate/ professional employee recruitment needs?
 
-* When opening new facilities in new markets, is the local population sufficient to support our employee requirements? 
+-   When opening new facilities in new markets, is the local population sufficient to support our employee requirements?
 
-* Are there job profile areas where we are likely to experience talent shortfalls in the near to medium-term future?
+-   Are there job profile areas where we are likely to experience talent shortfalls in the near to medium-term future?
 
-* What is the trend in specific skills as captured by online job boards? Of the skills that your organisation values / requires, what do you have, what do you forecast needing in light of varying environmental conditions?
+-   What is the trend in specific skills as captured by online job boards? Of the skills that your organisation values / requires, what do you have, what do you forecast needing in light of varying environmental conditions?
 
 <br>
 
 ### Talent Acquisition
 
-* How many employees are we likely to recruit in the next 2 – 4 quarters to meet business goals?
+-   How many employees are we likely to recruit in the next 2 -- 4 quarters to meet business goals?
 
-* How many talent acquisition staff will be required in specific geographies to meet seasonal recruiting requirements (which do vary by geography!)?
+-   How many talent acquisition staff will be required in specific geographies to meet seasonal recruiting requirements (which do vary by geography!)?
 
 <br>
 
 ### Outsourcing
 
-* Based on the historical outsourcing activities, what is the current trend and what are the financial implications associated with that requirement? 
+-   Based on the historical outsourcing activities, what is the current trend and what are the financial implications associated with that requirement?
 
-* Will the outsourcing provider be able to cater to future demand requirements? Request forecasts from vendors to substantiate their proposals.
+-   Will the outsourcing provider be able to cater to future demand requirements? Request forecasts from vendors to substantiate their proposals.
 
-* Based on turnover among outsourced roles, what are the future implications for onboarding and training needs in specific businesses/geographies? How many L&D staff will be required to support those demands?
+-   Based on turnover among outsourced roles, what are the future implications for onboarding and training needs in specific businesses/geographies? How many L&D staff will be required to support those demands?
 
 <br>
 
 ### Financial budgeting
 
-* What are the future budget requirements for HR activities?
+-   What are the future budget requirements for HR activities?
 
-* What is the future financial requirement associated with establishing a people analytics team? ;-)
-
+-   What is the future financial requirement associated with establishing a people analytics team? ;-)
 
 The above list, while far from comprehensive, provides a sense of the multitude of ways in which forecasting can be applied in HR to make data driven decisions.
 
-
 **Happy Forecasting!**
 
-
-
-
 ## Acknowledgments {.appendix}
-The authors would like to acknowledge the work of [Matt Dancho](https://www.linkedin.com/in/mattdancho/), both in the development and maintenance of [TimeTK](https://business-science.github.io/timetk/) and [ModelTime](https://business-science.github.io/modeltime/), and the [Learning Labs Pro Series](https://university.business-science.io/p/learning-labs-pro) ran by Matt, upon which this article is directly based.
 
+The authors would like to acknowledge the work of [Matt Dancho](https://www.linkedin.com/in/mattdancho/), both in the development and maintenance of [TimeTK](https://business-science.github.io/timetk/) and [ModelTime](https://business-science.github.io/modeltime/), and the [Learning Labs Pro Series](https://university.business-science.io/p/learning-labs-pro) ran by Matt, upon which this article is directly based.
 
 This article was first published on the Analytics In HR (AIHR) website under the title ["Forecasting in R: a People Analytics Tool"](https://www.analyticsinhr.com/blog/forecasting-in-r/) on August 31st, 2020.
