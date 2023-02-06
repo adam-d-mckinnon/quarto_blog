@@ -14,7 +14,7 @@ website:
 format:
   html:
     theme: lux
-    css: custom.scss
+    css: theme.scss
     code-fold: true
     toc-depth: 3
 
