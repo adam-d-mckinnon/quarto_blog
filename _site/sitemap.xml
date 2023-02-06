@@ -1,75 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.adam-d-mckinnon.com/index.html</loc>
-    <lastmod>2023-02-06T20:11:48.003Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/post-with-code/index.html</loc>
-    <lastmod>2023-01-07T15:41:09.152Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/about.html</loc>
-    <lastmod>2023-02-04T04:20:17.133Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2023-01-03-exploratory_analysis/index.html</loc>
-    <lastmod>2023-02-06T20:11:12.902Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2022-12-30-promotion_prediction/index.html</loc>
-    <lastmod>2023-02-04T05:03:34.971Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2022-07-21-isolation_forests/index.html</loc>
-    <lastmod>2023-02-04T04:58:11.228Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2020--8-13-network_analysis/index.html</loc>
-    <lastmod>2023-01-08T01:12:43.790Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/index.html</loc>
-    <lastmod>2023-01-08T01:39:12.399Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html</loc>
-    <lastmod>2023-01-08T01:47:33.554Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/index.html</loc>
-    <lastmod>2023-02-04T04:19:23.932Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/index.html</loc>
-    <lastmod>2023-01-15T06:43:15.902Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2021-02-05-group_impact/index.html</loc>
-    <lastmod>2023-02-04T04:28:08.002Z</lastmod>
-  </url>
-  <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2020-12-09-employee_skills_data/index.html</loc>
-    <lastmod>2023-01-15T06:49:25.516Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2021-11-13-personnel_forecasting/index.html</loc>
-    <lastmod>2023-02-03T22:16:45.346Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adam-d-mckinnon.com/posts/2020-10-10-forecast_people_analytics/index.html</loc>
-    <lastmod>2023-02-04T05:47:52.399Z</lastmod>
+    <lastmod>2023-02-06T20:15:03.625Z</lastmod>
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2021-02-05-capturing_the_sun/index.html</loc>
-    <lastmod>2023-02-04T05:29:09.865Z</lastmod>
+    <lastmod>2023-02-06T20:15:04.470Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/index.html</loc>
+    <lastmod>2023-02-06T20:15:05.067Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2020-08-27-network_analysis/index.html</loc>
+    <lastmod>2023-02-06T20:15:05.718Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2022-07-21-isolation_forests/index.html</loc>
+    <lastmod>2023-02-06T20:15:06.267Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2021-02-05-group_impact/index.html</loc>
+    <lastmod>2023-02-06T20:15:07.122Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html</loc>
+    <lastmod>2023-02-06T20:15:07.761Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2023-01-03-exploratory_analysis/index.html</loc>
+    <lastmod>2023-02-06T20:15:08.478Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2021-06-06-going_the_distance/index.html</loc>
+    <lastmod>2023-02-06T20:15:09.410Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2021-11-13-personnel_forecasting/index.html</loc>
+    <lastmod>2023-02-06T20:15:10.868Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2020-10-10-forecast_people_analytics/index.html</loc>
+    <lastmod>2023-02-06T20:15:11.881Z</lastmod>
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2020-12-30-causal_impact/index.html</loc>
-    <lastmod>2023-02-04T05:44:40.041Z</lastmod>
+    <lastmod>2023-02-06T20:15:12.883Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/posts/2022-12-30-promotion_prediction/index.html</loc>
+    <lastmod>2023-02-06T20:15:13.754Z</lastmod>
   </url>
   <url>
     <loc>https://www.adam-d-mckinnon.com/posts/2020-08-04-cluster_analysis/index.html</loc>
-    <lastmod>2023-02-04T06:02:28.457Z</lastmod>
+    <lastmod>2023-02-06T20:15:14.790Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/index.html</loc>
+    <lastmod>2023-02-06T20:15:15.370Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adam-d-mckinnon.com/about.html</loc>
+    <lastmod>2023-02-06T20:15:15.642Z</lastmod>
   </url>
 </urlset>
