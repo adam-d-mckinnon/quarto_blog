@@ -11,6 +11,7 @@ website:
         href: https://www.linkedin.com/in/adamdmckinnon/
       - icon: github
         href: https://github.com/adam-d-mckinnon
+        
 format:
   html:
     theme: lux

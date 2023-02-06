@@ -70,10 +70,10 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
-      page: 10,
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
+      page: 12,
     pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -163,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
      <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
@@ -185,398 +185,356 @@ ul.task-list li input[type="checkbox"] {
      </select>
   </div>
 </div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="PPSR,Correlation Funnel,DataExplorer,R" data-listing-date-sort="1672664400000" data-listing-file-modified-sort="1675487638629" data-listing-reading-time-sort="1.465">
-<div class="thumbnail">
-<p><a href="./posts/2023-01-03-exploratory_analysis/index.html"> <img src="./posts/2023-01-03-exploratory_analysis/markus-winkler-afW1hht0NSs-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2023-01-03-exploratory_analysis/index.html">
-<h3 class="no-anchor listing-title">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="PPSR,Correlation Funnel,DataExplorer,R" data-listing-date-sort="1672664400000" data-listing-file-modified-sort="1675487638629" data-listing-reading-time-sort="1.465">
+<a href="./posts/2023-01-03-exploratory_analysis/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2023-01-03-exploratory_analysis/markus-winkler-afW1hht0NSs-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Expediting Exploratory Data Analysis
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+Experimenting with different methods to rapidly explore relationships within datasets prior to performing other analytic activities.
 </div>
-<div class="listing-description">
-<p>Experimenting with different methods to rapidly explore relationships within datasets prior to performing other analytic activities.</p>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Adam D McKinnon
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2023-01-03-exploratory_analysis/index.html">
 <div class="listing-date">
 Jan 3, 2023
 </div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Tidymodels,XGBoost,R,Machine Learning,Employee Promotions" data-listing-date-sort="1672318800000" data-listing-file-modified-sort="1675486892182" data-listing-reading-time-sort="3.85">
+<a href="./posts/2022-12-30-promotion_prediction/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-12-30-promotion_prediction/markus-spiske-QozzJpFZ2lg-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Predicting Promotions Through Machine Learning
+</h5>
+<div class="card-text listing-description">
+Building an XGBoost model in the Tidymodels ecosystem that predicts whether an employee should be promoted.
+</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon
 </div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Tidymodels,XGBoost,R,Machine Learning,Employee Promotions" data-listing-date-sort="1672318800000" data-listing-file-modified-sort="1675486892182" data-listing-reading-time-sort="3.85">
-<div class="thumbnail">
-<p><a href="./posts/2022-12-30-promotion_prediction/index.html"> <img src="./posts/2022-12-30-promotion_prediction/markus-spiske-QozzJpFZ2lg-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2022-12-30-promotion_prediction/index.html">
-<h3 class="no-anchor listing-title">
-Predicting Promotions Through Machine Learning
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Building an XGBoost model in the Tidymodels ecosystem that predicts whether an employee should be promoted.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2022-12-30-promotion_prediction/index.html">
 <div class="listing-date">
 Dec 30, 2022
 </div>
-<div class="listing-author">
-Adam D McKinnon
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Python,H2o,Isolation Forests,Machine Learning,Data Quality" data-listing-date-sort="1658325600000" data-listing-file-modified-sort="1673140496672" data-listing-reading-time-sort="4.37">
-<div class="thumbnail">
-<p><a href="./posts/2022-07-21-isolation_forests/index.html"> <img src="./posts/2022-07-21-isolation_forests/mika-baumeister-Wpnoqo2plFA-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2022-07-21-isolation_forests/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="2" data-categories="Python,H2o,Isolation Forests,Machine Learning,Data Quality" data-listing-date-sort="1658325600000" data-listing-file-modified-sort="1673140496672" data-listing-reading-time-sort="4.37">
+<a href="./posts/2022-07-21-isolation_forests/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-07-21-isolation_forests/mika-baumeister-Wpnoqo2plFA-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Automated assessment of employee data quality using machine learning
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+An automated, multi-dimensional and scalable approach to monitoring and improving employee data quality using unsupervised machine learning.
 </div>
-<div class="listing-description">
-<p>An automated, multi-dimensional and scalable approach to monitoring and improving employee data quality using unsupervised machine learning.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2022-07-21-isolation_forests/index.html">
-<div class="listing-date">
-Jul 21, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Martha Curioni, Adam D McKinnon
 </div>
+<div class="listing-date">
+Jul 21, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="Tidymodels,ModelTime,TimeTK,echarts4r,Machine Learning,TimeSeries" data-listing-date-sort="1636722000000" data-listing-file-modified-sort="1675462558854" data-listing-reading-time-sort="23.58">
-<div class="thumbnail">
-<p><a href="./posts/2021-11-13-personnel_forecasting/index.html"> <img src="./posts/2021-11-13-personnel_forecasting/lycs-architecture-U2BI3GMnSSE-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2021-11-13-personnel_forecasting/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="3" data-categories="Tidymodels,ModelTime,TimeTK,echarts4r,Machine Learning,TimeSeries" data-listing-date-sort="1636722000000" data-listing-file-modified-sort="1675462558854" data-listing-reading-time-sort="23.58">
+<a href="./posts/2021-11-13-personnel_forecasting/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2021-11-13-personnel_forecasting/lycs-architecture-U2BI3GMnSSE-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Forecasting Future Personnel Requirements Using Machine Learning
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+A practical demonstration of using machine learning to predict personnel requirements based on customer volumes.
 </div>
-<div class="listing-description">
-<p>A practical demonstration of using machine learning to predict personnel requirements based on customer volumes.</p>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Adam D McKinnon
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2021-11-13-personnel_forecasting/index.html">
 <div class="listing-date">
 Nov 13, 2021
 </div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="Google Maps,googleway,echarts4r,R" data-listing-date-sort="1622901600000" data-listing-file-modified-sort="1673764872874" data-listing-reading-time-sort="25.09">
+<a href="./posts/2021-06-06-going_the_distance/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2021-06-06-going_the_distance/emile-seguin-wf5ZJ2s-B7I-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Going the Distance!
+</h5>
+<div class="card-text listing-description">
+A practical guide to measuring distance using Google Maps in R.
+</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon
 </div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="Google Maps,googleway,echarts4r,R" data-listing-date-sort="1622901600000" data-listing-file-modified-sort="1673764872874" data-listing-reading-time-sort="25.09">
-<div class="thumbnail">
-<p><a href="./posts/2021-06-06-going_the_distance/index.html"> <img src="./posts/2021-06-06-going_the_distance/emile-seguin-wf5ZJ2s-B7I-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2021-06-06-going_the_distance/index.html">
-<h3 class="no-anchor listing-title">
-Going the Distance!
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>A practical guide to measuring distance using Google Maps in R.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2021-06-06-going_the_distance/index.html">
 <div class="listing-date">
 Jun 6, 2021
 </div>
-<div class="listing-author">
-Adam D McKinnon
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="Impact Measurement,t-test,rstatix,ggpubr,Plotly,R" data-listing-date-sort="1613048400000" data-listing-file-modified-sort="1675484882907" data-listing-reading-time-sort="13.1">
-<div class="thumbnail">
-<p><a href="./posts/2021-02-05-group_impact/index.html"> <img src="./posts/2021-02-05-group_impact/patricia-serna-zPZ9vqqDNBA-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2021-02-05-group_impact/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="5" data-categories="Impact Measurement,t-test,rstatix,ggpubr,Plotly,R" data-listing-date-sort="1613048400000" data-listing-file-modified-sort="1675484882907" data-listing-reading-time-sort="13.1">
+<a href="./posts/2021-02-05-group_impact/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2021-02-05-group_impact/patricia-serna-zPZ9vqqDNBA-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Measuring Impact in HR: A Practical Demonstration
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+A ‘How To’ article on the measurment of differences between groups in HR settings.
 </div>
-<div class="listing-description">
-<p>A ‘How To’ article on the measurment of differences between groups in HR settings.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2021-02-05-group_impact/index.html">
-<div class="listing-date">
-Feb 12, 2021
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon, Sambit Das
 </div>
+<div class="listing-date">
+Feb 12, 2021
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="Visualisation,SunburstR,R" data-listing-date-sort="1612443600000" data-listing-file-modified-sort="1675488547457" data-listing-reading-time-sort="7.11">
-<div class="thumbnail">
-<p><a href="./posts/2021-02-05-capturing_the_sun/index.html"> <img src="./posts/2021-02-05-capturing_the_sun/jude-beck-Oc-mdtjJoeo-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2021-02-05-capturing_the_sun/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="6" data-categories="Visualisation,SunburstR,R" data-listing-date-sort="1612443600000" data-listing-file-modified-sort="1675488547457" data-listing-reading-time-sort="7.11">
+<a href="./posts/2021-02-05-capturing_the_sun/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2021-02-05-capturing_the_sun/jude-beck-Oc-mdtjJoeo-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Capturing the Sun!
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+Exloring Visualisations: Applying the Sunburst Visualisation in R to Synthesize Complex Relationships.
 </div>
-<div class="listing-description">
-<p>Exloring Visualisations: Applying the Sunburst Visualisation in R to Synthesize Complex Relationships.</p>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Adam D McKinnon
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2021-02-05-capturing_the_sun/index.html">
 <div class="listing-date">
 Feb 5, 2021
 </div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="7" data-categories="Causal Impact Analysis,Impact Measurement,Plotly,R" data-listing-date-sort="1609765200000" data-listing-file-modified-sort="1675489470748" data-listing-reading-time-sort="11.61">
+<a href="./posts/2020-12-30-causal_impact/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2020-12-30-causal_impact/makeitrain.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Show Me The Money! Measuring Impact Over Time
+</h5>
+<div class="card-text listing-description">
+A “How To” article on the use of Causal Impact Analysis for People Analytics Practitioners.
+</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon
 </div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="Causal Impact Analysis,Impact Measurement,Plotly,R" data-listing-date-sort="1609765200000" data-listing-file-modified-sort="1675489470748" data-listing-reading-time-sort="11.61">
-<div class="thumbnail">
-<p><a href="./posts/2020-12-30-causal_impact/index.html"> <img src="./posts/2020-12-30-causal_impact/makeitrain.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-12-30-causal_impact/index.html">
-<h3 class="no-anchor listing-title">
-Show Me The Money! Measuring Impact Over Time
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>A “How To” article on the use of Causal Impact Analysis for People Analytics Practitioners.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-12-30-causal_impact/index.html">
 <div class="listing-date">
 Jan 5, 2021
 </div>
-<div class="listing-author">
-Adam D McKinnon
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="Employee Skills,Skill Management,Data,HR" data-listing-date-sort="1607432400000" data-listing-file-modified-sort="1673765326606" data-listing-reading-time-sort="11.845">
-<div class="thumbnail">
-<p><a href="./posts/2020-12-09-employee_skills_data/index.html"> <img src="./posts/2020-12-09-employee_skills_data/alex-kotliarskyi-QBpZGqEMsKg-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-12-09-employee_skills_data/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="8" data-categories="Employee Skills,Skill Management,Data,HR" data-listing-date-sort="1607432400000" data-listing-file-modified-sort="1673765326606" data-listing-reading-time-sort="11.845">
+<a href="./posts/2020-12-09-employee_skills_data/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2020-12-09-employee_skills_data/alex-kotliarskyi-QBpZGqEMsKg-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 The Value of Measuring Employee Skill Data
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+This article explores the two fundamental considerations when it comes to skills management. First, how do you acquire your employees’ skill data? Second, what practical…
 </div>
-<div class="listing-description">
-<p>This article explores the two fundamental considerations when it comes to skills management. First, how do you acquire your employees’ skill data? Second, what practical value can you then generate from this wealth of information?</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-12-09-employee_skills_data/index.html">
-<div class="listing-date">
-Dec 9, 2020
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon, Mikaël Wornoo
 </div>
+<div class="listing-date">
+Dec 9, 2020
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="Forecasting,timetk,modeltime,plotly,R" data-listing-date-sort="1602248400000" data-listing-file-modified-sort="1675489637481" data-listing-reading-time-sort="11.995">
-<div class="thumbnail">
-<p><a href="./posts/2020-10-10-forecast_people_analytics/index.html"> <img src="./posts/2020-10-10-forecast_people_analytics/chris-liverani-dBI_My696Rk-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-10-10-forecast_people_analytics/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="9" data-categories="Forecasting,timetk,modeltime,plotly,R" data-listing-date-sort="1602248400000" data-listing-file-modified-sort="1675489637481" data-listing-reading-time-sort="11.995">
+<a href="./posts/2020-10-10-forecast_people_analytics/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2020-10-10-forecast_people_analytics/chris-liverani-dBI_My696Rk-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 What is the Forecast for People Analytics?
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+An article on the use of Google Trends and the new TimeTK and ModelTime Libraries in R.
 </div>
-<div class="listing-description">
-<p>An article on the use of Google Trends and the new TimeTK and ModelTime Libraries in R.</p>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Adam D McKinnon, Monica Ashton
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-10-10-forecast_people_analytics/index.html">
 <div class="listing-date">
 Oct 10, 2020
 </div>
-<div class="listing-author">
-Adam D McKinnon, Monica Ashton
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="Network Analysis,Open Data,HR" data-listing-date-sort="1598450400000" data-listing-file-modified-sort="1673141847523" data-listing-reading-time-sort="9.795">
-<div class="thumbnail">
-<p><a href="./posts/2020-08-27-network_analysis/index.html"> <img data-src="./posts/2020-08-27-network_analysis/matt-palmer-iPum7Ket2jo-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-08-27-network_analysis/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="10" data-categories="Network Analysis,Open Data,HR" data-listing-date-sort="1598450400000" data-listing-file-modified-sort="1673141847523" data-listing-reading-time-sort="9.795">
+<a href="./posts/2020-08-27-network_analysis/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2020-08-27-network_analysis/matt-palmer-iPum7Ket2jo-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 How HR can Apply Network Analysis to Open Data
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+This article explores how Network Analysis can be applied to a variety of Open data sources to inform people-related decisions inside organisations. Practical use cases…
 </div>
-<div class="listing-description">
-<p>This article explores how Network Analysis can be applied to a variety of Open data sources to inform people-related decisions inside organisations. Practical use cases applying network analysis to open data are provided.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-08-27-network_analysis/index.html">
-<div class="listing-date">
-Aug 27, 2020
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon, André Vermeij
 </div>
+<div class="listing-date">
+Aug 27, 2020
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="Cluster Analysis,Gowers Distance,TSNE,Plotly,R" data-listing-date-sort="1596463200000" data-listing-file-modified-sort="1675490532863" data-listing-reading-time-sort="20.835">
-<div class="thumbnail">
-<p><a href="./posts/2020-08-04-cluster_analysis/index.html"> <img data-src="./posts/2020-08-04-cluster_analysis/sphx_glr_plot_cluster_comparison_0011.png" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-08-04-cluster_analysis/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="11" data-categories="Cluster Analysis,Gowers Distance,TSNE,Plotly,R" data-listing-date-sort="1596463200000" data-listing-file-modified-sort="1675490532863" data-listing-reading-time-sort="20.835">
+<a href="./posts/2020-08-04-cluster_analysis/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2020-08-04-cluster_analysis/sphx_glr_plot_cluster_comparison_0011.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 A People Analytics Tutorial on Unsupervised Machine Learning
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+A “How To” article on the use of Cluster Analysis to understand phenomenon within Organisations.
 </div>
-<div class="listing-description">
-<p>A “How To” article on the use of Cluster Analysis to understand phenomenon within Organisations.</p>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Adam D McKinnon, Monica Ashton
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-08-04-cluster_analysis/index.html">
 <div class="listing-date">
 Aug 4, 2020
 </div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="12" data-categories="Artificial Intelligence,Machine Learning,HR" data-listing-date-sort="1592488800000" data-listing-file-modified-sort="1673142451914" data-listing-reading-time-sort="8">
+<a href="./posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img data-src="./posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/pietro-jeng-n6B49lTx7NM-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+A Beginner’s Guide to Machine Learning for HR Practitioners
+</h5>
+<div class="card-text listing-description">
+An introductory article intended to demistify Machine Learning (ML)–an important subset of AI–for HR Professionals.
+</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon, Monica Ashton
 </div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-categories="Artificial Intelligence,Machine Learning,HR" data-listing-date-sort="1592488800000" data-listing-file-modified-sort="1673142451914" data-listing-reading-time-sort="8">
-<div class="thumbnail">
-<p><a href="./posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html"> <img data-src="./posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/pietro-jeng-n6B49lTx7NM-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html">
-<h3 class="no-anchor listing-title">
-A Beginner’s Guide to Machine Learning for HR Practitioners
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>An introductory article intended to demistify Machine Learning (ML)–an important subset of AI–for HR Professionals.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html">
 <div class="listing-date">
 Jun 19, 2020
 </div>
-<div class="listing-author">
-Adam D McKinnon, Monica Ashton
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-categories="HR Tech,Network Analysis,Kenelyze" data-listing-date-sort="1584277200000" data-listing-file-modified-sort="1675484355312" data-listing-reading-time-sort="4.82">
-<div class="thumbnail">
-<p><a href="./posts/2020-03-16-hrtechanalysis/index.html"> <img data-src="./posts/2020-03-16-hrtechanalysis/jj-ying-8bghKxNU1j0-unsplash.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-03-16-hrtechanalysis/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="13" data-categories="HR Tech,Network Analysis,Kenelyze" data-listing-date-sort="1584277200000" data-listing-file-modified-sort="1675484355312" data-listing-reading-time-sort="4.82">
+<a href="./posts/2020-03-16-hrtechanalysis/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img data-src="./posts/2020-03-16-hrtechanalysis/jj-ying-8bghKxNU1j0-unsplash.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 4 Key Insights on the HR Tech Landscape… Analysis from London Unleash 2019
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+In this article we take a data-driven look at HR Technology, using network analysis. Specifically, we objectively examine the question ’which technologies and vendors are…
 </div>
-<div class="listing-description">
-<p>In this article we take a data-driven look at HR Technology, using network analysis. Specifically, we objectively examine the question ‘which technologies and vendors are influential in the HR Tech landscape?’</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-03-16-hrtechanalysis/index.html">
-<div class="listing-date">
-Mar 16, 2020
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Adam D McKinnon, Leandra Griep
 </div>
-</a>
+<div class="listing-date">
+Mar 16, 2020
 </div>
+</div>
+</div>
+</div>
+</a>
 </div>
 </div>
 <div class="listing-no-matching d-none">
