@@ -1,18 +1,18 @@
 /*-- scss:defaults --*/
+// use lux as the base
+$theme: "lux" !default;
+
 
 /*-- scss:rules --*/
-h1, .h1 {
-  color: #fff;
+// ensure the the h1 title in the title block banner is white
+h1.title, .title.h1 {
+  color: #FFFFFF;
 }
 
-h1.title {
-  color: #fff;
+.quarto-title-block default page-columns page-full{
+    color: #FFFFFF;
 }
 
-.quarto-title-banner {
-    color: #fff;
-}
-
-.quarto-title-banner .quarto-title .title {
-    color: #fff;
+quarto-title column-page {
+    color: #FFFFFF;
 }

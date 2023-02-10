@@ -6,7 +6,7 @@ author:
     - name: Adam D McKinnon
 categories: [PPSR, Correlation Funnel, DataExplorer, R]
 image: "markus-winkler-afW1hht0NSs-unsplash.jpg"
-title-block-banner: true
+title-block-banner: false
 ---
 
 ```{r header, echo=FALSE, code_folding = FALSE, fig.cap="Photo by [Possessed Photography](https://unsplash.com/@markuswinkler) on [Unsplash](https://unsplash.com/).", out.width = '100%'}

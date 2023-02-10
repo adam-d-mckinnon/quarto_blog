@@ -6,6 +6,7 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
+title-block-banner-color: white
 
 # Enable CC licence appendix
 license: "CC BY"
