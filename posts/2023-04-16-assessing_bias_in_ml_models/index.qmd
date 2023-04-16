@@ -21,26 +21,37 @@ knitr::include_graphics("ai_models_stage.webp")
 
 Model explainability is a critical component of machine learning (ML) model building. **Ludek Stehlik**, a great contributor in the people analytics community, recently published an excellent [article](https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/) on the use of the **ModelStudio** package (R ecosystem) for explaining ML models. Inspired by Ludek's blog, I've created the following blog on the use of the **Fairmodels** package in R.
 
+<br>
+
 [![](fairmodels_logo.png){fig-align="center" width="200"}](https://modeloriented.github.io/fairmodels/index.html)
 
-Fairmodels, built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.
+<br>
 
-We'll begin by loading the required libraries, loading the data, and preparing the data for ML modelling.
+Fairmodels, also built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.
+
+<br>
+
+## Setup
+
+We'll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package.
 
 <br>
 
 ```{r set_up}
 
 # Load required libraries
-library(tidyverse)
-library(tidymodels)
-library(fairmodels)
-library(DALEX)
-library(DALEXtra)
+library(tidyverse) # data manipulation
+library(tidymodels) # model building
+
+library(DALEX) # model explainer
+library(DALEXtra) # model explainer with tidymodels functionality
+library(fairmodels) # model fairness check
 
 
+# Wage data from the ISLR package
 wage_tbl <- readr::read_csv(file = "dataset-37830.csv") |> 
             janitor::clean_names()
+
 
 ```
 
@@ -48,17 +59,27 @@ wage_tbl <- readr::read_csv(file = "dataset-37830.csv") |>
 
 ## Model Preparation
 
-We'll remove the "logwage" column as we're going to predict "wage" directly.
+The model preparation involves the following steps:
+
+1.  Convert all character fields to factors and remove redundant fields;
+
+2.  Split the cleaned dataset into Training & Test datasets;
+
+3.  Create a simple recipe for the model building process. More could be done in terms of pre-processing and feature engineering. However, as the focus is on Fairness checks, a simple model will be built to exemplify the process.
+
+It is important to note that the Race variable was left in the dataset, but updated to be an "id" field. This ensures that the variable is accessible when needed in our next step, but not utilised in the model building process; and
+
+4.  The values from the "Protected" variable (i.e., Race) are saved out from the Training dataset and reserved for later use in the Fairness checking process. This is a critical requirement to enable the Fairness check.
+
+<br>
 
 ```{r data_cleaning}
 
-# Remove unnecessary columns
-wage_cleaned_tbl <- wage_tbl %>%
-    mutate_if(is.character, ~as.factor(.)) |> 
-    select(-c(logwage, sex))
 
-# Feature Engineering
-# For this example, we'll keep the features as they are. However, depending on the dataset and the domain, you may need to engineer new features or transform existing ones.
+wage_cleaned_tbl <- wage_tbl %>%
+    mutate_if(is.character, ~as.factor(.)) |> # update character fields to factors for modelling
+    select(-c(logwage, sex)) # Remove unnecessary columns
+
 
 # Split the dataset into training and testing sets
 set.seed(123)
@@ -66,12 +87,13 @@ data_split <- initial_split(wage_cleaned_tbl, prop = 0.8)
 wage_train_tbl <- training(data_split)
 wage_test_tbl <- testing(data_split)
 
+
 # Create a recipe for preprocessing
 wage_recipe <- recipe(wage ~ ., data = wage_train_tbl) |> 
     recipes::update_role(race, new_role = "id")
 
 
-
+# save out the protected variable ("Race") for later reference for Fairness checking
 protected <- bake(wage_recipe |> prep(), new_data = wage_train_tbl) |> select(race) |> pull()
 
 ```

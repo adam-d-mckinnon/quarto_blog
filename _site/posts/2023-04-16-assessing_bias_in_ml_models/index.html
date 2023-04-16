@@ -218,6 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#model-preparation" id="toc-model-preparation" class="nav-link" data-scroll-target="#model-preparation">Model Preparation</a></li>
   <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification">Model Specification</a></li>
   <li><a href="#model-explainer-fairness-check" id="toc-model-explainer-fairness-check" class="nav-link" data-scroll-target="#model-explainer-fairness-check">Model Explainer &amp; Fairness Check</a></li>
@@ -244,57 +245,73 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>Model explainability is a critical component of machine learning (ML) model building. <strong>Ludek Stehlik</strong>, a great contributor in the people analytics community, recently published an excellent <a href="https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/">article</a> on the use of the <strong>ModelStudio</strong> package (R ecosystem) for explaining ML models. Inspired by Ludek’s blog, I’ve created the following blog on the use of the <strong>Fairmodels</strong> package in R.</p>
+<p><br></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://modeloriented.github.io/fairmodels/index.html"><img src="fairmodels_logo.png" class="img-fluid figure-img" width="200"></a></p>
 </figure>
 </div>
-<p>Fairmodels, built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.</p>
-<p>We’ll begin by loading the required libraries, loading the data, and preparing the data for ML modelling.</p>
+<p><br></p>
+<p>Fairmodels, also built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.</p>
+<p><br></p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>We’ll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package.</p>
 <p><br></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required libraries</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fairmodels)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DALEX)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DALEXtra)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># data manipulation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels) <span class="co"># model building</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DALEX) <span class="co"># model explainer</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DALEXtra) <span class="co"># model explainer with tidymodels functionality</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fairmodels) <span class="co"># model fairness check</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">"dataset-37830.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Wage data from the ISLR package</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">"dataset-37830.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><br><br></p>
+</section>
 <section id="model-preparation" class="level2">
 <h2 class="anchored" data-anchor-id="model-preparation">Model Preparation</h2>
-<p>We’ll remove the “logwage” column as we’re going to predict “wage” directly.</p>
+<p>The model preparation involves the following steps:</p>
+<ol type="1">
+<li><p>Convert all character fields to factors and remove redundant fields;</p></li>
+<li><p>Split the cleaned dataset into Training &amp; Test datasets;</p></li>
+<li><p>Create a simple recipe for the model building process. More could be done in terms of pre-processing and feature engineering. However, as the focus is on Fairness checks, a simple model will be built to exemplify the process.</p></li>
+</ol>
+<p>It is important to note that the Race variable was left in the dataset, but updated to be an “id” field. This ensures that the variable is accessible when needed in our next step, but not utilised in the model building process; and</p>
+<ol start="4" type="1">
+<li>The values from the “Protected” variable (i.e., Race) are saved out from the Training dataset and reserved for later use in the Fairness checking process. This is a critical requirement to enable the Fairness check.</li>
+</ol>
+<p><br></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove unnecessary columns</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wage_cleaned_tbl <span class="ot">&lt;-</span> wage_tbl <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_if</span>(is.character, <span class="sc">~</span><span class="fu">as.factor</span>(.)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(logwage, sex))</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wage_cleaned_tbl <span class="ot">&lt;-</span> wage_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_if</span>(is.character, <span class="sc">~</span><span class="fu">as.factor</span>(.)) <span class="sc">|&gt;</span> <span class="co"># update character fields to factors for modelling</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(logwage, sex)) <span class="co"># Remove unnecessary columns</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Feature Engineering</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># For this example, we'll keep the features as they are. However, depending on the dataset and the domain, you may need to engineer new features or transform existing ones.</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into training and testing sets</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(wage_cleaned_tbl, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>wage_train_tbl <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>wage_test_tbl <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a recipe for preprocessing</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>wage_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_train_tbl) <span class="sc">|&gt;</span> </span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    recipes<span class="sc">::</span><span class="fu">update_role</span>(race, <span class="at">new_role =</span> <span class="st">"id"</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>protected <span class="ot">&lt;-</span> <span class="fu">bake</span>(wage_recipe <span class="sc">|&gt;</span> <span class="fu">prep</span>(), <span class="at">new_data =</span> wage_train_tbl) <span class="sc">|&gt;</span> <span class="fu">select</span>(race) <span class="sc">|&gt;</span> <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into training and testing sets</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(wage_cleaned_tbl, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>wage_train_tbl <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>wage_test_tbl <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a recipe for preprocessing</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>wage_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_train_tbl) <span class="sc">|&gt;</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    recipes<span class="sc">::</span><span class="fu">update_role</span>(race, <span class="at">new_role =</span> <span class="st">"id"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># save out the protected variable ("Race") for later reference for Fairness checking</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>protected <span class="ot">&lt;-</span> <span class="fu">bake</span>(wage_recipe <span class="sc">|&gt;</span> <span class="fu">prep</span>(), <span class="at">new_data =</span> wage_train_tbl) <span class="sc">|&gt;</span> <span class="fu">select</span>(race) <span class="sc">|&gt;</span> <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><br><br></p>
