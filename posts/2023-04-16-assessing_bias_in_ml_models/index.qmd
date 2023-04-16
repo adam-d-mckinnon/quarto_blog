@@ -1,0 +1,173 @@
+---
+title: 'Assessing Bias in ML Models'
+date: 2023-04-16
+description: "Assessing the presence of bias against minority groups in Machine Learning models to enhance their ethical strength and equality."
+author: 
+    - name: Adam D McKinnon
+categories: [Bias, Tidymodels, Fairmodels, R]
+image: "ai_models_stage.webp"
+title-block-banner: true
+draft: true
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, out.width = '100%'}
+knitr::include_graphics("ai_models_stage.webp")
+
+```
+
+<br>
+
+# Introduction
+
+Model explainability is a critical component of machine learning (ML) model building. **Ludek Stehlik**, a great contributor in the people analytics community, recently published an excellent [article](https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/) on the use of the **ModelStudio** package (R ecosystem) for explaining ML models. Inspired by Ludek's blog, I've created the following blog on the use of the **Fairmodels** package in R.
+
+[![](fairmodels_logo.png){fig-align="center" width="200"}](https://modeloriented.github.io/fairmodels/index.html)
+
+Fairmodels, built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.
+
+We'll begin by loading the required libraries, loading the data, and preparing the data for ML modelling.
+
+<br>
+
+```{r set_up}
+
+# Load required libraries
+library(tidyverse)
+library(tidymodels)
+library(fairmodels)
+library(DALEX)
+library(DALEXtra)
+
+
+wage_tbl <- readr::read_csv(file = "dataset-37830.csv") |> 
+            janitor::clean_names()
+
+```
+
+<br><br>
+
+## Model Preparation
+
+We'll remove the "logwage" column as we're going to predict "wage" directly.
+
+```{r data_cleaning}
+
+# Remove unnecessary columns
+wage_cleaned_tbl <- wage_tbl %>%
+    mutate_if(is.character, ~as.factor(.)) |> 
+    select(-c(logwage, sex))
+
+# Feature Engineering
+# For this example, we'll keep the features as they are. However, depending on the dataset and the domain, you may need to engineer new features or transform existing ones.
+
+# Split the dataset into training and testing sets
+set.seed(123)
+data_split <- initial_split(wage_cleaned_tbl, prop = 0.8)
+wage_train_tbl <- training(data_split)
+wage_test_tbl <- testing(data_split)
+
+# Create a recipe for preprocessing
+wage_recipe <- recipe(wage ~ ., data = wage_train_tbl) |> 
+    recipes::update_role(race, new_role = "id")
+
+
+
+protected <- bake(wage_recipe |> prep(), new_data = wage_train_tbl) |> select(race) |> pull()
+
+```
+
+<br><br>
+
+## Model Specification
+
+From here we'll set up the random forest model
+
+<br>
+
+```{r modeling}
+
+# Define the model specification
+rf_spec <- rand_forest(trees = 1000) |> 
+    set_engine("ranger") |> 
+    set_mode("regression") 
+    
+
+# Create a workflow
+wage_workflow <- workflow() |> 
+    add_recipe(wage_recipe) |> 
+    add_model(rf_spec)
+
+# Train the model
+wage_fit <- fit(wage_workflow, wage_train_tbl)
+
+# Make predictions on the test set
+wage_test_pred <- predict(wage_fit, wage_test_tbl) |> 
+    bind_cols(wage_test_tbl)
+
+# Evaluate the model performance
+wage_metrics <- metric_set(rmse)
+wage_results <- wage_metrics(wage_test_pred, truth = wage, estimate = .pred)
+
+print(wage_results)
+
+
+```
+
+<br><br>
+
+## Model Explainer & Fairness Check
+
+First we create the DALEX-based explainer object, which draws upon the fitted tidymodels model, the training data and our predicted variable, in this instance, Wage. We then use the explainer object to perform a fairness check of the Wage prediction. As the prediction is a value, and not a probability of classification, we use the fairness_check_regression function from Fairmodels.
+
+Printing the fairness check object provides a summary. Plotting the fairness check object provides a detailed and self-explanatory visualisation of the summary. The regression-based fairness check utilises three metrics to assess the presence of bias. The respective assessment metrics are applied to each of the factor levels of the variable of interest, in our case Race. The visualisation clearly delineates those factor levels that pass the fairness check (i.e., values fall within the green zone), as opposed to those that don't (i.e., values falling within the red zone).
+
+<br>
+
+```{r explainer}
+
+
+wage_explainer <- DALEXtra::explain_tidymodels(
+    wage_fit,
+    data    = wage_train_tbl |> select(-wage),
+    y       = wage_train_tbl$wage,
+    verbose = FALSE
+
+)
+
+
+model_performance(wage_explainer)
+
+
+fairness_object <- fairness_check_regression(wage_explainer,
+                          protected  = protected,
+                          privileged = "1. White",
+                          colorize = TRUE)
+
+
+print(fairness_object)
+
+plot(fairness_object)
+
+```
+
+Independence, Separation, and Sufficiency are essential metrics when assessing regression-based machine learning models for bias. These metrics help identify potential sources of bias and ensure the reliability and validity of the model's results.
+
+#### Independence:
+
+Independence is a metric that measures whether the residuals (the differences between predicted and actual values) are independent of one another. In a well-specified regression model, the residuals should not exhibit any patterns or correlations among themselves.
+
+Violations of independence can lead to biased estimates. For example, if residuals are correlated with one of the predictor variables, this indicates that the model has not adequately accounted for the relationship between that predictor and the outcome variable. This can lead to biased estimates of the predictor's effect on the outcome. Incorrect standard errors can also arise from violations of independence, which can subsequently lead to incorrect conclusions about the significance of predictor variables.
+
+#### Separation:
+
+Separation is a metric that measures whether there is complete separation between predictor variables and the outcome variable. In a logistic regression context, complete separation occurs when a predictor variable perfectly predicts the outcome. This can lead to infinite parameter estimates, as the maximum likelihood estimation fails to converge. Violations of separation can result in infinite parameter estimates or incorrect standard errors. When a predictor perfectly separates the outcome variable, the model can become overfit, resulting in unstable estimates and misleading conclusions about the predictor's effect. To diagnose separation issues, one can use statistical techniques like Firth's penalized likelihood method or the application of ridge regression.
+
+#### Sufficiency:
+
+Sufficiency is a metric that measures whether the sample size is sufficient to support reliable inference from the regression model. In general, larger sample sizes provide more reliable estimates and better model performance.
+
+With small sample sizes, the risk of overfitting increases, and the model may capture noise rather than true relationships between variables, leading to incorrect conclusions about the significance and magnitude of predictor variables' effects. As a rule of thumb, a larger sample size is preferred when working with multiple predictors or complex relationships.
+
+# Conclusion
+
+In conclusion, Independence, Separation, and Sufficiency are crucial metrics for assessing bias in regression models. By understanding these metrics and diagnosing potential violations, researchers can improve the validity and reliability of their models, ultimately leading to more accurate conclusions about the relationships between variables.
