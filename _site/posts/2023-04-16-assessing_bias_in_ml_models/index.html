@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Adam D McKinnon">
-<meta name="dcterms.date" content="2023-04-16">
+<meta name="dcterms.date" content="2023-04-17">
 <meta name="description" content="Assessing the presence of bias against minority groups in Machine Learning models to enhance their ethical strength and equality.">
 
 <title>Adam D McKinnon - Assessing Bias in ML Models</title>
@@ -201,7 +201,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 16, 2023</p>
+        <p class="date">April 17, 2023</p>
       </div>
     </div>
     
@@ -256,7 +256,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>We’ll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package.</p>
+<p>We’ll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package. In addition, I’ve obtained the average wage by race. This output provides useful context prior to assessing bias in the machine learning model we will build to predict wages.</p>
 <p><br></p>
 <div class="cell">
 <details>
@@ -272,8 +272,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Wage data from the ISLR package</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">"dataset-37830.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># get the average wage by race</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="sc">|&gt;</span> <span class="fu">group_by</span>(race) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_wage =</span> <span class="fu">mean</span>(wage))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  race     mean_wage
+  &lt;chr&gt;        &lt;dbl&gt;
+1 1. White     113. 
+2 2. Black     102. 
+3 3. Asian     120. 
+4 4. Other      90.0</code></pre>
+</div>
 </div>
 <p><br><br></p>
 </section>
@@ -283,69 +295,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol type="1">
 <li><p>Convert all character fields to factors and remove redundant fields;</p></li>
 <li><p>Split the cleaned dataset into Training &amp; Test datasets;</p></li>
-<li><p>Create a simple recipe for the model building process. More could be done in terms of pre-processing and feature engineering. However, as the focus is on Fairness checks, a simple model will be built to exemplify the process.</p></li>
+<li><p>Create a simple recipe for the model building process. More could be done in terms of pre-processing and feature engineering. However, as the focus is on Fairness checks, a simple model will be built to expedite the process.</p></li>
 </ol>
 <p>It is important to note that the Race variable was left in the dataset, but updated to be an “id” field. This ensures that the variable is accessible when needed in our next step, but not utilised in the model building process; and</p>
 <ol start="4" type="1">
-<li>The values from the “Protected” variable (i.e., Race) are saved out from the Training dataset and reserved for later use in the Fairness checking process. This is a critical requirement to enable the Fairness check.</li>
+<li>The values from the “Protected” variable (i.e., Race) are pulled out from the processed Training dataset and reserved for later use in the Fairness check. This is a critical component to enable the Fairness check.</li>
 </ol>
 <p><br></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wage_cleaned_tbl <span class="ot">&lt;-</span> wage_tbl <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_if</span>(is.character, <span class="sc">~</span><span class="fu">as.factor</span>(.)) <span class="sc">|&gt;</span> <span class="co"># update character fields to factors for modelling</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(logwage, sex)) <span class="co"># Remove unnecessary columns</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into training and testing sets</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(wage_cleaned_tbl, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>wage_train_tbl <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>wage_test_tbl <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a recipe for preprocessing</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>wage_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_train_tbl) <span class="sc">|&gt;</span> </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    recipes<span class="sc">::</span><span class="fu">update_role</span>(race, <span class="at">new_role =</span> <span class="st">"id"</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># save out the protected variable ("Race") for later reference for Fairness checking</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>protected <span class="ot">&lt;-</span> <span class="fu">bake</span>(wage_recipe <span class="sc">|&gt;</span> <span class="fu">prep</span>(), <span class="at">new_data =</span> wage_train_tbl) <span class="sc">|&gt;</span> <span class="fu">select</span>(race) <span class="sc">|&gt;</span> <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>wage_cleaned_tbl <span class="ot">&lt;-</span> wage_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_if</span>(is.character, <span class="sc">~</span><span class="fu">as.factor</span>(.)) <span class="sc">|&gt;</span> <span class="co"># update character fields to factors for modelling</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(logwage, sex)) <span class="co"># Remove unnecessary columns</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into training and testing sets</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(wage_cleaned_tbl, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>wage_train_tbl <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>wage_test_tbl <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a recipe for preprocessing</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>wage_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(wage <span class="sc">~</span> ., <span class="at">data =</span> wage_train_tbl) <span class="sc">|&gt;</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    recipes<span class="sc">::</span><span class="fu">update_role</span>(race, <span class="at">new_role =</span> <span class="st">"id"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># save out the protected variable ("Race") for later reference for Fairness checking</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>protected <span class="ot">&lt;-</span> <span class="fu">bake</span>(wage_recipe <span class="sc">|&gt;</span> <span class="fu">prep</span>(), <span class="at">new_data =</span> wage_train_tbl) <span class="sc">|&gt;</span> <span class="fu">select</span>(race) <span class="sc">|&gt;</span> <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><br><br></p>
 </section>
 <section id="model-specification" class="level2">
 <h2 class="anchored" data-anchor-id="model-specification">Model Specification</h2>
-<p>From here we’ll set up the random forest model</p>
+<p>A simple Random Forest model is built and then used, in combination with the recipe, in a Tidymodels Workflow, which is subsequently fit to the training dataset. The Workflow is then used to predict unseen values in the Test dataset, which can be compared to the actual values to “test” the quality of the model, in this case using the RMSE or Root Mean Square Error.</p>
+<p>RMSE helps us measure the performance of a regression-based machine learning model by calculating the average difference between predicted and actual values. A lower RMSE means that the model’s predictions are more accurate, just as closer dart throws to the bullseye mean you’re a better dart player.</p>
 <p><br></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the model specification</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_mode</span>(<span class="st">"regression"</span>) </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a workflow</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>wage_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_recipe</span>(wage_recipe) <span class="sc">|&gt;</span> </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_model</span>(rf_spec)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>wage_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(wage_workflow, wage_train_tbl)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>wage_test_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(wage_fit, wage_test_tbl) <span class="sc">|&gt;</span> </span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_cols</span>(wage_test_tbl)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model performance</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>wage_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>wage_results <span class="ot">&lt;-</span> <span class="fu">wage_metrics</span>(wage_test_pred, <span class="at">truth =</span> wage, <span class="at">estimate =</span> .pred)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(wage_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the model specification</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_mode</span>(<span class="st">"regression"</span>) </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a workflow</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>wage_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_recipe</span>(wage_recipe) <span class="sc">|&gt;</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_model</span>(rf_spec)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>wage_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(wage_workflow, wage_train_tbl)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>wage_test_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(wage_fit, wage_test_tbl) <span class="sc">|&gt;</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_cols</span>(wage_test_tbl)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model performance</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>wage_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>wage_results <span class="ot">&lt;-</span> <span class="fu">wage_metrics</span>(wage_test_pred, <span class="at">truth =</span> wage, <span class="at">estimate =</span> .pred)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(wage_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
@@ -358,22 +375,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="model-explainer-fairness-check" class="level2">
 <h2 class="anchored" data-anchor-id="model-explainer-fairness-check">Model Explainer &amp; Fairness Check</h2>
-<p>First we create the DALEX-based explainer object, which draws upon the fitted tidymodels model, the training data and our predicted variable, in this instance, Wage. We then use the explainer object to perform a fairness check of the Wage prediction. As the prediction is a value, and not a probability of classification, we use the fairness_check_regression function from Fairmodels.</p>
-<p>Printing the fairness check object provides a summary. Plotting the fairness check object provides a detailed and self-explanatory visualisation of the summary. The regression-based fairness check utilises three metrics to assess the presence of bias. The respective assessment metrics are applied to each of the factor levels of the variable of interest, in our case Race. The visualisation clearly delineates those factor levels that pass the fairness check (i.e., values fall within the green zone), as opposed to those that don’t (i.e., values falling within the red zone).</p>
+<p>First we create the DALEX-based explainer object, which draws upon the fitted Tidymodels Workflow, the training data and our predicted variable, in this instance, Wage. We then use the explainer object to perform a fairness check of the Wage predictions. As the prediction is a value, and not a probability of classification, we use the fairness_check_regression function from Fairmodels.</p>
+<p>It is important to note that the creators of the Fairmodels package consider this funtion to be experimental. The documentation on this function states:</p>
+<blockquote class="blockquote">
+<p>“<em>the metrics in use are independence, separation, and sufficiency. The intuition behind this method is that the closer to 1 the metrics are the better. When all metrics are close to 1 then it means that from the perspective of a predictive model there are no meaningful differences between subgroups</em>.”</p>
+</blockquote>
+<p>Printing the fairness check object provides a summary. Plotting the fairness check object provides a detailed and self-explanatory visualisation of the summary. The visualisation clearly delineates those factor levels that pass the fairness check (i.e., values fall within the green zone), as opposed to those that don’t (i.e., values falling within the red zone).</p>
 <p><br></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wage_explainer <span class="ot">&lt;-</span> DALEXtra<span class="sc">::</span><span class="fu">explain_tidymodels</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    wage_fit,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data    =</span> wage_train_tbl <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>wage),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> wage_train_tbl<span class="sc">$</span>wage,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">model_performance</span>(wage_explainer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wage_explainer <span class="ot">&lt;-</span> DALEXtra<span class="sc">::</span><span class="fu">explain_tidymodels</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    wage_fit,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data    =</span> wage_train_tbl <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>wage),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> wage_train_tbl<span class="sc">$</span>wage,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">model_performance</span>(wage_explainer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Measures for:  regression
@@ -390,10 +411,10 @@ Residuals:
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fairness_object <span class="ot">&lt;-</span> <span class="fu">fairness_check_regression</span>(wage_explainer,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">protected  =</span> protected,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">privileged =</span> <span class="st">"1. White"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colorize =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fairness_object <span class="ot">&lt;-</span> <span class="fu">fairness_check_regression</span>(wage_explainer,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">protected  =</span> protected,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">privileged =</span> <span class="st">"1. White"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colorize =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Creating fairness regression object
@@ -406,7 +427,7 @@ Residuals:
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fairness_object)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fairness_object)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -417,32 +438,42 @@ Fairness check regression for models: workflow
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fairness_object)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fairness_object)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/explainer-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p><br></p>
 <p>Independence, Separation, and Sufficiency are essential metrics when assessing regression-based machine learning models for bias. These metrics help identify potential sources of bias and ensure the reliability and validity of the model’s results.</p>
+<p><br></p>
 <section id="independence" class="level4">
 <h4 class="anchored" data-anchor-id="independence">Independence:</h4>
 <p>Independence is a metric that measures whether the residuals (the differences between predicted and actual values) are independent of one another. In a well-specified regression model, the residuals should not exhibit any patterns or correlations among themselves.</p>
-<p>Violations of independence can lead to biased estimates. For example, if residuals are correlated with one of the predictor variables, this indicates that the model has not adequately accounted for the relationship between that predictor and the outcome variable. This can lead to biased estimates of the predictor’s effect on the outcome. Incorrect standard errors can also arise from violations of independence, which can subsequently lead to incorrect conclusions about the significance of predictor variables.</p>
+<p>In our example the Fairness Check suggests that the residuals from the Wage predictions are correlated with the “4. Other” level of the Race variable. This indicates that the model has not adequately accounted for the relationship between the Race predictor and the Wage, which can lead to biased estimates of the effect of Race on Wage. In our example, the “4. Other” group appear to consistently receive lower wage predictions.</p>
+<p><br></p>
 </section>
 <section id="separation" class="level4">
 <h4 class="anchored" data-anchor-id="separation">Separation:</h4>
-<p>Separation is a metric that measures whether there is complete separation between predictor variables and the outcome variable. In a logistic regression context, complete separation occurs when a predictor variable perfectly predicts the outcome. This can lead to infinite parameter estimates, as the maximum likelihood estimation fails to converge. Violations of separation can result in infinite parameter estimates or incorrect standard errors. When a predictor perfectly separates the outcome variable, the model can become overfit, resulting in unstable estimates and misleading conclusions about the predictor’s effect. To diagnose separation issues, one can use statistical techniques like Firth’s penalized likelihood method or the application of ridge regression.</p>
+<p>Separation is a metric that measures whether there is complete separation between predictor variables and the outcome variable. Separation occurs when a certain variable, like the Race of an employee in this example, has an extremely high predictive value for the Wage predicted by the model. While it may be tempting to use this feature to make predictions, doing so could lead to biased outcomes. In our example the “4. Other” level in the Race feature nears being outside the bounds of being acceptable.</p>
+<p><br></p>
 </section>
 <section id="sufficiency" class="level4">
 <h4 class="anchored" data-anchor-id="sufficiency">Sufficiency:</h4>
-<p>Sufficiency is a metric that measures whether the sample size is sufficient to support reliable inference from the regression model. In general, larger sample sizes provide more reliable estimates and better model performance.</p>
-<p>With small sample sizes, the risk of overfitting increases, and the model may capture noise rather than true relationships between variables, leading to incorrect conclusions about the significance and magnitude of predictor variables’ effects. As a rule of thumb, a larger sample size is preferred when working with multiple predictors or complex relationships.</p>
+<p>Sufficiency is a metric that measures whether the sample size is sufficient to support reliable inferences from the regression model. In general, larger sample sizes provide more reliable estimates and better model performance.</p>
+<p>With small sample sizes, the risk of overfitting increases, and the model may capture noise rather than true relationships between variables, leading to incorrect conclusions about the significance and magnitude of predictor variables’ effects. In our example, the sample sizes for each level of the Race variable are considered acceptable by the Fairness Check.</p>
+<p><br></p>
+</section>
+<section id="we-found-bias-now-what" class="level4">
+<h4 class="anchored" data-anchor-id="we-found-bias-now-what">We found bias, now what?</h4>
+<p>Where bias is found to exist various pre and post processing techniques are available to minimise the influence of potential sources of bias. These methods, while beyond the scope of the current article, are supported by the Fairmodels package and are detailed in the supporting package <a href="https://modeloriented.github.io/fairmodels/articles/Advanced_tutorial.html#bias-mitigation-strategies-1">documentation</a>.</p>
+<p><br></p>
 </section>
 </section>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
-<p>In conclusion, Independence, Separation, and Sufficiency are crucial metrics for assessing bias in regression models. By understanding these metrics and diagnosing potential violations, researchers can improve the validity and reliability of their models, ultimately leading to more accurate conclusions about the relationships between variables.</p>
+<p>In conclusion, Independence, Separation, and Sufficiency are crucial metrics for assessing bias in regression models. By understanding these metrics and diagnosing potential violations, researchers can improve the validity and reliability of their models, ultimately leading to more accurate conclusions about the relationships between variables, and thereby minimise bias toward particular groups.</p>
 
 
 </section>
@@ -450,13 +481,13 @@ Fairness check regression for models: workflow
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
   author = {Adam D McKinnon},
   title = {Assessing {Bias} in {ML} {Models}},
-  date = {2023-04-16},
+  date = {2023-04-17},
   url = {https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
 Adam D McKinnon. 2023. <span>“Assessing Bias in ML Models.”</span> April
-16, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models">https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models</a>.
+17, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models">https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

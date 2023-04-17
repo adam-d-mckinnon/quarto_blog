@@ -10,7 +10,277 @@
 <atom:link href="https://www.adam-d-mckinnon.com/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.313</generator>
-<lastBuildDate>Mon, 02 Jan 2023 13:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 16 Apr 2023 14:00:00 GMT</lastBuildDate>
+<item>
+  <title>Assessing Bias in ML Models</title>
+  <dc:creator>Adam D McKinnon</dc:creator>
+  <link>https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell" data-code_folding="false">
+<div class="cell-output-display">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/ai_models_stage.webp" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<p><br></p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Model explainability is a critical component of machine learning (ML) model building. <strong>Ludek Stehlik</strong>, a great contributor in the people analytics community, recently published an excellent <a href="https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/">article</a> on the use of the <strong>ModelStudio</strong> package (R ecosystem) for explaining ML models. Inspired by Ludek’s blog, I’ve created the following blog on the use of the <strong>Fairmodels</strong> package in R.</p>
+<p><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://modeloriented.github.io/fairmodels/index.html"><img src="https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/fairmodels_logo.png" class="img-fluid figure-img" width="200"></a></p>
+</figure>
+</div>
+<p><br></p>
+<p>Fairmodels, also built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.</p>
+<p><br></p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>We’ll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package. In addition, I’ve obtained the average wage by race. This output provides useful context prior to assessing bias in the machine learning model we will build to predict wages.</p>
+<p><br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Load required libraries</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">library</span>(tidyverse) <span class="co" style="color: #5E5E5E;"># data manipulation</span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;">library</span>(tidymodels) <span class="co" style="color: #5E5E5E;"># model building</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;">library</span>(DALEX) <span class="co" style="color: #5E5E5E;"># model explainer</span></span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;">library</span>(DALEXtra) <span class="co" style="color: #5E5E5E;"># model explainer with tidymodels functionality</span></span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;">library</span>(fairmodels) <span class="co" style="color: #5E5E5E;"># model fairness check</span></span>
+<span id="cb1-8"></span>
+<span id="cb1-9"></span>
+<span id="cb1-10"><span class="co" style="color: #5E5E5E;"># Wage data from the ISLR package</span></span>
+<span id="cb1-11">wage_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">read_csv</span>(<span class="at" style="color: #657422;">file =</span> <span class="st" style="color: #20794D;">"dataset-37830.csv"</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-12">            janitor<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">clean_names</span>()</span>
+<span id="cb1-13"></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;"># get the average wage by race</span></span>
+<span id="cb1-15">wage_tbl <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="fu" style="color: #4758AB;">group_by</span>(race) <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="fu" style="color: #4758AB;">summarise</span>(<span class="at" style="color: #657422;">mean_wage =</span> <span class="fu" style="color: #4758AB;">mean</span>(wage))</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  race     mean_wage
+  &lt;chr&gt;        &lt;dbl&gt;
+1 1. White     113. 
+2 2. Black     102. 
+3 3. Asian     120. 
+4 4. Other      90.0</code></pre>
+</div>
+</div>
+<p><br><br></p>
+</section>
+<section id="model-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="model-preparation">Model Preparation</h2>
+<p>The model preparation involves the following steps:</p>
+<ol type="1">
+<li><p>Convert all character fields to factors and remove redundant fields;</p></li>
+<li><p>Split the cleaned dataset into Training &amp; Test datasets;</p></li>
+<li><p>Create a simple recipe for the model building process. More could be done in terms of pre-processing and feature engineering. However, as the focus is on Fairness checks, a simple model will be built to expedite the process.</p></li>
+</ol>
+<p>It is important to note that the Race variable was left in the dataset, but updated to be an “id” field. This ensures that the variable is accessible when needed in our next step, but not utilised in the model building process; and</p>
+<ol start="4" type="1">
+<li>The values from the “Protected” variable (i.e., Race) are pulled out from the processed Training dataset and reserved for later use in the Fairness check. This is a critical component to enable the Fairness check.</li>
+</ol>
+<p><br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">wage_cleaned_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> wage_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb3-2">    <span class="fu" style="color: #4758AB;">mutate_if</span>(is.character, <span class="sc" style="color: #5E5E5E;">~</span><span class="fu" style="color: #4758AB;">as.factor</span>(.)) <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="co" style="color: #5E5E5E;"># update character fields to factors for modelling</span></span>
+<span id="cb3-3">    <span class="fu" style="color: #4758AB;">select</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">c</span>(logwage, sex)) <span class="co" style="color: #5E5E5E;"># Remove unnecessary columns</span></span>
+<span id="cb3-4"></span>
+<span id="cb3-5"></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;"># Split the dataset into training and testing sets</span></span>
+<span id="cb3-7"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">123</span>)</span>
+<span id="cb3-8">data_split <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">initial_split</span>(wage_cleaned_tbl, <span class="at" style="color: #657422;">prop =</span> <span class="fl" style="color: #AD0000;">0.8</span>)</span>
+<span id="cb3-9">wage_train_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">training</span>(data_split)</span>
+<span id="cb3-10">wage_test_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">testing</span>(data_split)</span>
+<span id="cb3-11"></span>
+<span id="cb3-12"></span>
+<span id="cb3-13"><span class="co" style="color: #5E5E5E;"># Create a recipe for preprocessing</span></span>
+<span id="cb3-14">wage_recipe <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">recipe</span>(wage <span class="sc" style="color: #5E5E5E;">~</span> ., <span class="at" style="color: #657422;">data =</span> wage_train_tbl) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb3-15">    recipes<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">update_role</span>(race, <span class="at" style="color: #657422;">new_role =</span> <span class="st" style="color: #20794D;">"id"</span>)</span>
+<span id="cb3-16"></span>
+<span id="cb3-17"></span>
+<span id="cb3-18"><span class="co" style="color: #5E5E5E;"># save out the protected variable ("Race") for later reference for Fairness checking</span></span>
+<span id="cb3-19">protected <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">bake</span>(wage_recipe <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="fu" style="color: #4758AB;">prep</span>(), <span class="at" style="color: #657422;">new_data =</span> wage_train_tbl) <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="fu" style="color: #4758AB;">select</span>(race) <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="fu" style="color: #4758AB;">pull</span>()</span></code></pre></div>
+</details>
+</div>
+<p><br><br></p>
+</section>
+<section id="model-specification" class="level2">
+<h2 class="anchored" data-anchor-id="model-specification">Model Specification</h2>
+<p>A simple Random Forest model is built and then used, in combination with the recipe, in a Tidymodels Workflow, which is subsequently fit to the training dataset. The Workflow is then used to predict unseen values in the Test dataset, which can be compared to the actual values to “test” the quality of the model, in this case using the RMSE or Root Mean Square Error.</p>
+<p>RMSE helps us measure the performance of a regression-based machine learning model by calculating the average difference between predicted and actual values. A lower RMSE means that the model’s predictions are more accurate, just as closer dart throws to the bullseye mean you’re a better dart player.</p>
+<p><br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;"># Define the model specification</span></span>
+<span id="cb4-2">rf_spec <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">rand_forest</span>(<span class="at" style="color: #657422;">trees =</span> <span class="dv" style="color: #AD0000;">1000</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-3">    <span class="fu" style="color: #4758AB;">set_engine</span>(<span class="st" style="color: #20794D;">"ranger"</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-4">    <span class="fu" style="color: #4758AB;">set_mode</span>(<span class="st" style="color: #20794D;">"regression"</span>) </span>
+<span id="cb4-5">    </span>
+<span id="cb4-6"></span>
+<span id="cb4-7"><span class="co" style="color: #5E5E5E;"># Create a workflow</span></span>
+<span id="cb4-8">wage_workflow <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">workflow</span>() <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-9">    <span class="fu" style="color: #4758AB;">add_recipe</span>(wage_recipe) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-10">    <span class="fu" style="color: #4758AB;">add_model</span>(rf_spec)</span>
+<span id="cb4-11"></span>
+<span id="cb4-12"></span>
+<span id="cb4-13"><span class="co" style="color: #5E5E5E;"># Train the model</span></span>
+<span id="cb4-14">wage_fit <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">fit</span>(wage_workflow, wage_train_tbl)</span>
+<span id="cb4-15"></span>
+<span id="cb4-16"></span>
+<span id="cb4-17"><span class="co" style="color: #5E5E5E;"># Make predictions on the test set</span></span>
+<span id="cb4-18">wage_test_pred <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">predict</span>(wage_fit, wage_test_tbl) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-19">    <span class="fu" style="color: #4758AB;">bind_cols</span>(wage_test_tbl)</span>
+<span id="cb4-20"></span>
+<span id="cb4-21"></span>
+<span id="cb4-22"><span class="co" style="color: #5E5E5E;"># Evaluate the model performance</span></span>
+<span id="cb4-23">wage_metrics <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">metric_set</span>(rmse)</span>
+<span id="cb4-24">wage_results <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">wage_metrics</span>(wage_test_pred, <span class="at" style="color: #657422;">truth =</span> wage, <span class="at" style="color: #657422;">estimate =</span> .pred)</span>
+<span id="cb4-25"></span>
+<span id="cb4-26"></span>
+<span id="cb4-27"><span class="fu" style="color: #4758AB;">print</span>(wage_results)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        33.6</code></pre>
+</div>
+</div>
+<p><br><br></p>
+</section>
+<section id="model-explainer-fairness-check" class="level2">
+<h2 class="anchored" data-anchor-id="model-explainer-fairness-check">Model Explainer &amp; Fairness Check</h2>
+<p>First we create the DALEX-based explainer object, which draws upon the fitted Tidymodels Workflow, the training data and our predicted variable, in this instance, Wage. We then use the explainer object to perform a fairness check of the Wage predictions. As the prediction is a value, and not a probability of classification, we use the fairness_check_regression function from Fairmodels.</p>
+<p>It is important to note that the creators of the Fairmodels package consider this funtion to be experimental. The documentation on this function states:</p>
+<blockquote class="blockquote">
+<p>“<em>the metrics in use are independence, separation, and sufficiency. The intuition behind this method is that the closer to 1 the metrics are the better. When all metrics are close to 1 then it means that from the perspective of a predictive model there are no meaningful differences between subgroups</em>.”</p>
+</blockquote>
+<p>Printing the fairness check object provides a summary. Plotting the fairness check object provides a detailed and self-explanatory visualisation of the summary. The visualisation clearly delineates those factor levels that pass the fairness check (i.e., values fall within the green zone), as opposed to those that don’t (i.e., values falling within the red zone).</p>
+<p><br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">wage_explainer <span class="ot" style="color: #003B4F;">&lt;-</span> DALEXtra<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">explain_tidymodels</span>(</span>
+<span id="cb6-2">    wage_fit,</span>
+<span id="cb6-3">    <span class="at" style="color: #657422;">data    =</span> wage_train_tbl <span class="sc" style="color: #5E5E5E;">|&gt;</span> <span class="fu" style="color: #4758AB;">select</span>(<span class="sc" style="color: #5E5E5E;">-</span>wage),</span>
+<span id="cb6-4">    <span class="at" style="color: #657422;">y       =</span> wage_train_tbl<span class="sc" style="color: #5E5E5E;">$</span>wage,</span>
+<span id="cb6-5">    <span class="at" style="color: #657422;">verbose =</span> <span class="cn" style="color: #8f5902;">FALSE</span></span>
+<span id="cb6-6"></span>
+<span id="cb6-7">)</span>
+<span id="cb6-8"></span>
+<span id="cb6-9"></span>
+<span id="cb6-10"><span class="fu" style="color: #4758AB;">model_performance</span>(wage_explainer)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Measures for:  regression
+mse        : 946.0564 
+rmse       : 30.75803 
+r2         : 0.4612749 
+mad        : 14.55176
+
+Residuals:
+          0%          10%          20%          30%          40%          50% 
+-102.6445597  -29.0820629  -20.6263656  -13.8813996   -8.8483464   -4.0898662 
+         60%          70%          80%          90%         100% 
+   0.9815948    7.1601028   15.4004204   29.9078928  190.8156705 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">fairness_object <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">fairness_check_regression</span>(wage_explainer,</span>
+<span id="cb8-2">                          <span class="at" style="color: #657422;">protected  =</span> protected,</span>
+<span id="cb8-3">                          <span class="at" style="color: #657422;">privileged =</span> <span class="st" style="color: #20794D;">"1. White"</span>,</span>
+<span id="cb8-4">                          <span class="at" style="color: #657422;">colorize =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Creating fairness regression object
+-&gt; Privileged subgroup      : character ([32m Ok [39m )
+-&gt; Protected variable       : factor ([32m Ok [39m ) 
+-&gt; Fairness objects     : 0 objects 
+-&gt; Checking explainers      : 1 in total ( [32m compatible [39m )
+-&gt; Metric calculation       : 3/3 metrics calculated for all models
+[32m Fairness regression object created succesfully [39m </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;">print</span>(fairness_object)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Fairness check regression for models: workflow 
+
+[31mworkflow passes 1/3 metrics
+[39mTotal loss:  1.61128 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;">plot</span>(fairness_object)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/index_files/figure-html/explainer-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><br></p>
+<p>Independence, Separation, and Sufficiency are essential metrics when assessing regression-based machine learning models for bias. These metrics help identify potential sources of bias and ensure the reliability and validity of the model’s results.</p>
+<p><br></p>
+<section id="independence" class="level4">
+<h4 class="anchored" data-anchor-id="independence">Independence:</h4>
+<p>Independence is a metric that measures whether the residuals (the differences between predicted and actual values) are independent of one another. In a well-specified regression model, the residuals should not exhibit any patterns or correlations among themselves.</p>
+<p>In our example the Fairness Check suggests that the residuals from the Wage predictions are correlated with the “4. Other” level of the Race variable. This indicates that the model has not adequately accounted for the relationship between the Race predictor and the Wage, which can lead to biased estimates of the effect of Race on Wage. In our example, the “4. Other” group appear to consistently receive lower wage predictions.</p>
+<p><br></p>
+</section>
+<section id="separation" class="level4">
+<h4 class="anchored" data-anchor-id="separation">Separation:</h4>
+<p>Separation is a metric that measures whether there is complete separation between predictor variables and the outcome variable. Separation occurs when a certain variable, like the Race of an employee in this example, has an extremely high predictive value for the Wage predicted by the model. While it may be tempting to use this feature to make predictions, doing so could lead to biased outcomes. In our example the “4. Other” level in the Race feature nears being outside the bounds of being acceptable.</p>
+<p><br></p>
+</section>
+<section id="sufficiency" class="level4">
+<h4 class="anchored" data-anchor-id="sufficiency">Sufficiency:</h4>
+<p>Sufficiency is a metric that measures whether the sample size is sufficient to support reliable inferences from the regression model. In general, larger sample sizes provide more reliable estimates and better model performance.</p>
+<p>With small sample sizes, the risk of overfitting increases, and the model may capture noise rather than true relationships between variables, leading to incorrect conclusions about the significance and magnitude of predictor variables’ effects. In our example, the sample sizes for each level of the Race variable are considered acceptable by the Fairness Check.</p>
+<p><br></p>
+</section>
+<section id="we-found-bias-now-what" class="level4">
+<h4 class="anchored" data-anchor-id="we-found-bias-now-what">We found bias, now what?</h4>
+<p>Where bias is found to exist various pre and post processing techniques are available to minimise the influence of potential sources of bias. These methods, while beyond the scope of the current article, are supported by the Fairmodels package and are detailed in the supporting package <a href="https://modeloriented.github.io/fairmodels/articles/Advanced_tutorial.html#bias-mitigation-strategies-1">documentation</a>.</p>
+<p><br></p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>In conclusion, Independence, Separation, and Sufficiency are crucial metrics for assessing bias in regression models. By understanding these metrics and diagnosing potential violations, researchers can improve the validity and reliability of their models, ultimately leading to more accurate conclusions about the relationships between variables, and thereby minimise bias toward particular groups.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
+  author = {Adam D McKinnon},
+  title = {Assessing {Bias} in {ML} {Models}},
+  date = {2023-04-17},
+  url = {https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas">
+Adam D McKinnon. 2023. <span>“Assessing Bias in ML Models.”</span> April
+17, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models">https://www.adam-d-mckinnon.com//posts/2023-04-16-assessing_bias_in_ml_models</a>.
+</div></div></section></div> ]]></description>
+  <category>Bias</category>
+  <category>Tidymodels</category>
+  <category>Fairmodels</category>
+  <category>R</category>
+  <guid>https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/index.html</guid>
+  <pubDate>Sun, 16 Apr 2023 14:00:00 GMT</pubDate>
+  <media:content url="https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/ai_models_stage.webp" medium="image" type="image/webp"/>
+</item>
 <item>
   <title>Expediting Exploratory Data Analysis</title>
   <dc:creator>Adam D McKinnon</dc:creator>
