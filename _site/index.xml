@@ -28,7 +28,7 @@
 <p><br></p>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Model explainability is a critical component of machine learning (ML) model building. <strong>Ludek Stehlik</strong>, a great contributor in the people analytics community, recently published an excellent <a href="https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/">article</a> on the use of the <strong>ModelStudio</strong> package (R ecosystem) for explaining ML models. Inspired by Ludek’s blog, I’ve created the following blog on the use of the <strong>Fairmodels</strong> package in R.</p>
+<p>Model explainability is a critical component of machine learning (ML) model building. <a href="https://www.linkedin.com/in/ludekstehlik/"><strong>Ludek Stehlik</strong></a>, a great contributor in the people analytics community, recently published an excellent <a href="https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/">article</a> on the use of the <a href="https://modelstudio.drwhy.ai"><strong>ModelStudio</strong></a> package (R ecosystem) for explaining ML models. Inspired by Ludek’s blog, I’ve created the following blog on the use of the <a href="https://fairmodels.drwhy.ai"><strong>Fairmodels</strong></a> package in R.</p>
 <p><br></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
