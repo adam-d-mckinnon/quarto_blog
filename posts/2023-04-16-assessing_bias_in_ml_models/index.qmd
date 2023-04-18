@@ -19,7 +19,7 @@ knitr::include_graphics("ai_models_stage.webp")
 
 # Introduction
 
-Model explainability is a critical component of machine learning (ML) model building. **Ludek Stehlik**, a great contributor in the people analytics community, recently published an excellent [article](https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/) on the use of the **ModelStudio** package (R ecosystem) for explaining ML models. Inspired by Ludek's blog, I've created the following blog on the use of the **Fairmodels** package in R.
+Model explainability is a critical component of machine learning (ML) model building. [**Ludek Stehlik**](https://www.linkedin.com/in/ludekstehlik/), a great contributor in the people analytics community, recently published an excellent [article](https://blog-about-people-analytics.netlify.app/posts/2023-04-13-interpretable-ml/) on the use of the [**ModelStudio**](https://modelstudio.drwhy.ai) package (R ecosystem) for explaining ML models. Inspired by Ludek's blog, I've created the following blog on the use of the [**Fairmodels**](https://fairmodels.drwhy.ai) package in R.
 
 <br>
 
