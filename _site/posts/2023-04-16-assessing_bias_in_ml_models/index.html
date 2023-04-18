@@ -252,11 +252,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 </div>
 <p><br></p>
-<p>Fairmodels, also built by the developers of ModelStudio, is intended for assessing, visualising and mitigating the presence of bias in ML models.</p>
+<p>Fairmodels, also built by the developers of ModelStudio, is intended to support assessing, visualising and mitigating the presence of bias in ML models.</p>
 <p><br></p>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>We’ll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package. In addition, I’ve obtained the average wage by race. This output provides useful context prior to assessing bias in the machine learning model we will build to predict wages.</p>
+<p>We’ll begin by loading the required libraries and loading the dataset. The dataset is the Wage data from the ISLR package, and includes variables such as Age, Marital Status, Education, Region, Job Class, Health Rating, Health Insurance, Race and Wage. To provide context for the article, I’ve calculated the average Wage by Race (spoiler alert!). It’s important to see the potential bias in Wage by Race prior to building the ML model that will predict wages.</p>
 <p><br></p>
 <div class="cell">
 <details>
@@ -274,8 +274,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">"dataset-37830.csv"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># get the average wage by race</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="sc">|&gt;</span> <span class="fu">group_by</span>(race) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_wage =</span> <span class="fu">mean</span>(wage))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># get the average wage by race</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>wage_tbl <span class="sc">|&gt;</span> <span class="fu">group_by</span>(race) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_wage =</span> <span class="fu">mean</span>(wage))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
@@ -465,7 +466,8 @@ Fairness check regression for models: workflow
 <p><br></p>
 </section>
 <section id="we-found-bias-now-what" class="level4">
-<h4 class="anchored" data-anchor-id="we-found-bias-now-what">We found bias, now what?</h4>
+<h4 class="anchored" data-anchor-id="we-found-bias-now-what">We found bias… now what?</h4>
+<p>The current example illustrates that simply omitting a variable, in this case Race, does not eliminate potential bias. The underlying data used for training the model would appear to be biased. Action needs to be taken to mitigate the impact of bias.</p>
 <p>Where bias is found to exist various pre and post processing techniques are available to minimise the influence of potential sources of bias. These methods, while beyond the scope of the current article, are supported by the Fairmodels package and are detailed in the supporting package <a href="https://modeloriented.github.io/fairmodels/articles/Advanced_tutorial.html#bias-mitigation-strategies-1">documentation</a>.</p>
 <p><br></p>
 </section>
@@ -473,7 +475,8 @@ Fairness check regression for models: workflow
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
-<p>In conclusion, Independence, Separation, and Sufficiency are crucial metrics for assessing bias in regression models. By understanding these metrics and diagnosing potential violations, researchers can improve the validity and reliability of their models, ultimately leading to more accurate conclusions about the relationships between variables, and thereby minimise bias toward particular groups.</p>
+<p>Assessing for algorithmic bias is critical prior to applying ML models to support decision making in all spheres of society. Identifying and understanding if algorithms fail certain groups in society ensures that ML models improve decision making to the betterment of all, as opposed to a few.</p>
+<p>The current article illustrates an open-source package, Fairmodels, for assessing, identifying and visualising the presence of bias in ML models. By understanding the metrics for Fairness checks and diagnosing potential violations, researchers can improve the validity and reliability of their models, ultimately leading to more accurate conclusions about the relationships between variables, and thereby mitigating bias toward particular groups. Fair models should lead to the betterment of all!</p>
 
 
 </section>
