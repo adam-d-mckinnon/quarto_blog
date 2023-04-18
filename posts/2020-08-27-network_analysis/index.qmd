@@ -26,8 +26,7 @@ This article explores:
 
 -   Practical use cases of how HR can inform decisions by applying network analysis to open data.
 
-<br>
-<br>
+<br> <br>
 
 # Why Network Analysis?
 
@@ -120,7 +119,6 @@ We first collected relevant data based on keyword searches in publication databa
 ```{r image0, echo=FALSE, fig.cap="Journal article authorship network informing the identification of scientific talent.", out.width = '100%'}
 knitr::include_graphics("journal_network.png")
 ```
-
 
 #### 2. Talent Retention during M&A using Patent Data.
 

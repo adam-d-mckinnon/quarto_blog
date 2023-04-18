@@ -134,6 +134,7 @@ xaringanExtra::use_panelset()
 ::: panelset
 ::: panel
 [Email]{.panel-name}
+
 ```{r email_plot, echo=FALSE}
 
 graphs_tbl$.plot[[1]]
@@ -143,6 +144,7 @@ graphs_tbl$.plot[[1]]
 
 ::: panel
 [Face2Face]{.panel-name}
+
 ```{r face2face_plot, echo=FALSE}
 
 graphs_tbl$.plot[[2]]
@@ -152,6 +154,7 @@ graphs_tbl$.plot[[2]]
 
 ::: panel
 [Mail]{.panel-name}
+
 ```{r mail_plot, echo=FALSE}
 
 graphs_tbl$.plot[[3]]
@@ -161,6 +164,7 @@ graphs_tbl$.plot[[3]]
 
 ::: panel
 [Online]{.panel-name}
+
 ```{r online_plot, echo=FALSE}
 
 graphs_tbl$.plot[[4]]
@@ -170,14 +174,17 @@ graphs_tbl$.plot[[4]]
 
 ::: panel
 [Voice]{.panel-name}
+
 ```{r voice_plot, echo=FALSE}
 
 graphs_tbl$.plot[[5]]
 
 ```
 :::
+
 ::: panel
 [Web]{.panel-name}
+
 ```{r web_plot, echo=FALSE}
 
 graphs_tbl$.plot[[6]]
@@ -186,23 +193,19 @@ graphs_tbl$.plot[[6]]
 :::
 :::
 
-
-
 <br>
 
 ## Data Wrangling & Feature Engineering
 
 The process of creating the full dataset is comprehensive and will therefore be broken down into the following bullet-points:
 
-* We begin by ensuring that the dataset is complete and that there are no missing dates and customer contact volumes. Where dates are missing the date is added and a value of zero is included. 
-* The data is then transformed using a log transformation. Transformations help to minimise the influence of trends or cycles in the data, and enables the forecasting of what is left after these transformations. It is important to apply the inverse of the transformation to the final model forecasts in order get to back to the original scale (i.e., actual customer contact volumes). 
-* The data is joined with the Queensland public holiday data.
-* We extend the dataframe out by our forecast horizon of 28 days.
-* New features are created including Fourier Features, Lags and Rolling Means of our new Lag Features.
-* The timeseries is nested by the id (i.e., customer contact channel). and
-* The data for each channel is split into Training and Test datasets for modelling.
-
-
+-   We begin by ensuring that the dataset is complete and that there are no missing dates and customer contact volumes. Where dates are missing the date is added and a value of zero is included.
+-   The data is then transformed using a log transformation. Transformations help to minimise the influence of trends or cycles in the data, and enables the forecasting of what is left after these transformations. It is important to apply the inverse of the transformation to the final model forecasts in order get to back to the original scale (i.e., actual customer contact volumes).
+-   The data is joined with the Queensland public holiday data.
+-   We extend the dataframe out by our forecast horizon of 28 days.
+-   New features are created including Fourier Features, Lags and Rolling Means of our new Lag Features.
+-   The timeseries is nested by the id (i.e., customer contact channel). and
+-   The data for each channel is split into Training and Test datasets for modelling.
 
 ```{r full_data}
 
@@ -268,12 +271,11 @@ nested_data_tbl <- customer_contact_ts_tbl %>%
 
 <br>
 
-
 # 2. Modeling
 
 ## Data Preprocessing
-The data pre-processing involves use of the Recipes package. This recipe creates a number of new features based on the date variable, removes some unwanted features created, normalises some of the numeric features created so as to minimise undue influence on the models created, and then one-hot encodes all nominal variables. 
 
+The data pre-processing involves use of the Recipes package. This recipe creates a number of new features based on the date variable, removes some unwanted features created, normalises some of the numeric features created so as to minimise undue influence on the models created, and then one-hot encodes all nominal variables.
 
 ```{r recipe}
 
@@ -289,11 +291,9 @@ recipe_spec <- recipes::recipe(value ~ ., data = extract_nested_train_split(nest
 
 <br>
 
+## Create the Machine Learning Models
 
-## Create the Machine Learning Models 
-
-In this section we will create seven models in total. Four will be used for forecasting (XGboost model, Boosted Prophet Time Series model, Random Forest model, and a Neural Net model), while the fifth is used to prove how much better our models are than "guessing". This comparison involves generating what is called a "Naive" forecast. The Naive forecast simply carries the last known value forward as a forecast. The accuracy metrics associated with the Naive forecast can then be compared with the metrics from our more sophisticated models to validate their accuracy, and ultimately their utility. This was something I started doing earlier this year on the back of advice from a colleague. The intent is to ensure your models are good (a simple litmus test), and more importantly, are an excellent way of illustrating the practical utility of the models to non-technical audiences. 
-
+In this section we will create seven models in total. Four will be used for forecasting (XGboost model, Boosted Prophet Time Series model, Random Forest model, and a Neural Net model), while the fifth is used to prove how much better our models are than "guessing". This comparison involves generating what is called a "Naive" forecast. The Naive forecast simply carries the last known value forward as a forecast. The accuracy metrics associated with the Naive forecast can then be compared with the metrics from our more sophisticated models to validate their accuracy, and ultimately their utility. This was something I started doing earlier this year on the back of advice from a colleague. The intent is to ensure your models are good (a simple litmus test), and more importantly, are an excellent way of illustrating the practical utility of the models to non-technical audiences.
 
 ```{r forecasting_models}
 
@@ -361,7 +361,6 @@ wkfl_fit_nnet <- workflows::workflow() %>%
 
 After adding the ML models into a table, we determine their accuracy against the Test dataset. Below you can view a table indicating six accuracy metrics that come standard with the Modeltime package. With the exception of rsq the general rule of thumb is smaller numbers are better. It is important to keep in mind that we initially log transformed our customer contact volumes, which reduces their absolute value and the breadth of the range of values in the time series. Practically this means the accuracy metrics are artificially lower than if we had stayed with the actual volumes. That said, these default models are performing well, even without model tuning. This is further exemplified when comparing the models to the Naive Forecast. If we were to only rely on the rmse values and compare them (i.e., Naive forecast to six ML models) for each customer contact channel volume (e.g., web, face2face, etc.), we could say that our models are between three and five times more accurate than a Naive forecast.
 
-
 ```{r model_fit_table}
 
 # Modeltime Table
@@ -408,7 +407,6 @@ As noted above the models are performing well, even without model tuning. This i
 
 <br>
 
-
 ```{r vis_test_forecasts}
 
 test_forecasts_tbl <- nested_modeltime_tbl %>%
@@ -429,13 +427,14 @@ test_forecasts_tbl <- nested_modeltime_tbl %>%
 
 <br>
 
-We can also visualise the forecasts from each of the models for each customer contact channel. The visualisations produced are interactive (you can zoom by using the slider at bottom of the visualisations and click on the legend to add/remove models from the visualisation) and we can visually inspect how well the models perform relative to one another and the actual data (i.e., the Test dataset). This is another great way of showing to business stakeholders how well our models perform, thereby creating greater confidence, and ideally use, of the model forecasts. 
+We can also visualise the forecasts from each of the models for each customer contact channel. The visualisations produced are interactive (you can zoom by using the slider at bottom of the visualisations and click on the legend to add/remove models from the visualisation) and we can visually inspect how well the models perform relative to one another and the actual data (i.e., the Test dataset). This is another great way of showing to business stakeholders how well our models perform, thereby creating greater confidence, and ideally use, of the model forecasts.
 
 <br>
 
 ::: panelset
 ::: panel
 [Email]{.panel-name}
+
 ```{r email_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[1]]
@@ -445,6 +444,7 @@ test_forecasts_tbl$.plot_forecast[[1]]
 
 ::: panel
 [FaceToFace]{.panel-name}
+
 ```{r f2f_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[2]]
@@ -454,6 +454,7 @@ test_forecasts_tbl$.plot_forecast[[2]]
 
 ::: panel
 [Mail]{.panel-name}
+
 ```{r mail_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[3]]
@@ -463,6 +464,7 @@ test_forecasts_tbl$.plot_forecast[[3]]
 
 ::: panel
 [Online]{.panel-name}
+
 ```{r online_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[4]]
@@ -472,6 +474,7 @@ test_forecasts_tbl$.plot_forecast[[4]]
 
 ::: panel
 [Voice]{.panel-name}
+
 ```{r voice_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[5]]
@@ -481,6 +484,7 @@ test_forecasts_tbl$.plot_forecast[[5]]
 
 ::: panel
 [Web]{.panel-name}
+
 ```{r web_forecast_plot, echo=FALSE}
 
 test_forecasts_tbl$.plot_forecast[[6]]
@@ -489,14 +493,11 @@ test_forecasts_tbl$.plot_forecast[[6]]
 :::
 :::
 
-
 <br>
 
-
-
 ## Determine the Best Models
-We now determine which of our seven models is best for each of the customer contact channels. This is done using the Root Mean Square Error (RMSE) value. The lowest value is indicative of the least error, when compared to our Test dataset. 
 
+We now determine which of our seven models is best for each of the customer contact channels. This is done using the Root Mean Square Error (RMSE) value. The lowest value is indicative of the least error, when compared to our Test dataset.
 
 ```{r best_models_table}
 
@@ -518,7 +519,6 @@ best_nested_modeltime_tbl %>%
 
 ```
 
-
 ```{r best_models_vis}
 
 
@@ -539,7 +539,6 @@ best_test_forecasts_tbl <- best_nested_modeltime_tbl %>%
 
 ```
 
-
 To provide the best outcome we use the best model for each customer contact channel to make the future forecast. The best model, according to its performance on the Test dataset, is also visualised below for inspection.
 
 <br>
@@ -547,6 +546,7 @@ To provide the best outcome we use the best model for each customer contact chan
 ::: panelset
 ::: panel
 [Email]{.panel-name}
+
 ```{r best_email_forecast_plot, echo=FALSE}
 
 best_test_forecasts_tbl$.plot_forecast[[1]]
@@ -554,9 +554,9 @@ best_test_forecasts_tbl$.plot_forecast[[1]]
 ```
 :::
 
-
 ::: panel
 [Face2Face]{.panel-name}
+
 ```{r best_f2f_forecast_plot, echo=FALSE}
 
 best_test_forecasts_tbl$.plot_forecast[[2]]
@@ -566,6 +566,7 @@ best_test_forecasts_tbl$.plot_forecast[[2]]
 
 ::: panel
 [Mail]{.panel-name}
+
 ```{r best_mail_forecast_plot, echo=FALSE}
 
 best_test_forecasts_tbl$.plot_forecast[[3]]
@@ -575,6 +576,7 @@ best_test_forecasts_tbl$.plot_forecast[[3]]
 
 ::: panel
 [Online]{.panel-name}
+
 ```{r best_online_forecast_plot, echo=FALSE}
 
 best_test_forecasts_tbl$.plot_forecast[[4]]
@@ -584,6 +586,7 @@ best_test_forecasts_tbl$.plot_forecast[[4]]
 
 ::: panel
 [Voice]{.panel-name}
+
 ```{r best_voice_forecast_plot, echo=FALSE}
 
 best_test_forecasts_tbl$.plot_forecast[[5]]
@@ -593,6 +596,7 @@ best_test_forecasts_tbl$.plot_forecast[[5]]
 
 ::: panel
 [Web]{.panel-name}
+
 ```{r best_web_forecast_plot, echo=FALSE}
 
 best_test_forecasts_tbl$.plot_forecast[[6]]
@@ -606,6 +610,7 @@ best_test_forecasts_tbl$.plot_forecast[[6]]
 # 3. Forecasting & Rostering
 
 ## Generate Future Channel Forecasts & Determine Staffing Requirements
+
 The final step is to take the best model for each of the customer contact channels to forecast 28-days into the future. Based on the forecasted volumes for each of the customer contact channels we can then determine the number of staff required to work on each day. To do this we simply take the forecasted daily volumes and divide by the number of contacts per day that an employee is expected to meet for each of the contact channels.
 
 <br>
@@ -687,6 +692,7 @@ staff_volumes_tbl <- final_forecasted_volumes_tbl %>%
 ::: panelset
 ::: panel
 [Email]{.panel-name}
+
 ```{r final_email_forecast_plot, echo=FALSE}
 
 staff_volumes_tbl$.plot_personnel_forecast[[1]]
@@ -694,9 +700,9 @@ staff_volumes_tbl$.plot_personnel_forecast[[1]]
 ```
 :::
 
-
 ::: panel
 [Face2Face]{.panel-name}
+
 ```{r final_f2f_forecast_plot, echo=FALSE}
 
 staff_volumes_tbl$.plot_personnel_forecast[[2]]
@@ -706,6 +712,7 @@ staff_volumes_tbl$.plot_personnel_forecast[[2]]
 
 ::: panel
 [Mail]{.panel-name}
+
 ```{r final_mail_forecast_plot, echo=FALSE}
 
 staff_volumes_tbl$.plot_personnel_forecast[[3]]
@@ -715,6 +722,7 @@ staff_volumes_tbl$.plot_personnel_forecast[[3]]
 
 ::: panel
 [Online]{.panel-name}
+
 ```{r final_online_forecast_plot, echo=FALSE}
 
 staff_volumes_tbl$.plot_personnel_forecast[[4]]
@@ -724,6 +732,7 @@ staff_volumes_tbl$.plot_personnel_forecast[[4]]
 
 ::: panel
 [Voice]{.panel-name}
+
 ```{r final_voice_forecast_plot, echo=FALSE}
 
 staff_volumes_tbl$.plot_personnel_forecast[[5]]
@@ -733,6 +742,7 @@ staff_volumes_tbl$.plot_personnel_forecast[[5]]
 
 ::: panel
 [Web]{.panel-name}
+
 ```{r final_web_forecast_plot, echo=FALSE}
 
 staff_volumes_tbl$.plot_personnel_forecast[[6]]
@@ -743,18 +753,17 @@ staff_volumes_tbl$.plot_personnel_forecast[[6]]
 
 <br>
 
-
 # Conclusion
 
 And there we have it - a forecast of the number of staff required to meet future customer contact volumes. With this information in hand, managers of the customer contact centre at Brisbane City Council could accurately roster sufficient staff in advance, manage staff costs with greater accuracy, whilst also providing staff with predictabilty regarding their working hours.
 
 To practically evaluate the efficacy of the models we could:
 
-* Evaluate the accuracy of the rosters, pre and post forecasts, in their ability to meet customer contact demands,
-* Following on from the above point, quantify the accuracy of the rosters in terms of staff expenditure (both pre and post forecasts), and  
-* Monitor changes in customer feedback, volumes handled and resolved, and general feedback from staff regarding rosters.
+-   Evaluate the accuracy of the rosters, pre and post forecasts, in their ability to meet customer contact demands,
+-   Following on from the above point, quantify the accuracy of the rosters in terms of staff expenditure (both pre and post forecasts), and\
+-   Monitor changes in customer feedback, volumes handled and resolved, and general feedback from staff regarding rosters.
 
-As mentioned at the outset, I see Forecasting informing people related decisions such as retail rostering, job design and just general anticipation of future volumes to inform service delivery. More on this in future 
+As mentioned at the outset, I see Forecasting informing people related decisions such as retail rostering, job design and just general anticipation of future volumes to inform service delivery. More on this in future
 
 Happy forecasting!
 

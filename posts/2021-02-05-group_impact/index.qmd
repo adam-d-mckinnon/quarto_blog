@@ -105,7 +105,7 @@ Our descriptive statistics indicate an interesting outcome. It appears a notable
 Before we can perform the t-test we must check several assumptions to ensure a t-test is appropriate. The assumptions are as follows:
 
 | **Assumption**                                                                | **Outcome**                                                                                                                                                       |
-|------------------------------------|------------------------------------|
+|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 1\. The data are continuous (not discrete).                                   | Our assessment outcomes scores are continuous - [**CHECK**]{.underline}                                                                                           |
 | 2\. The data follow the normal probability distribution.                      | We will test for normality using a Q-Q plot (Quantile-Quantile plot) and the Shapiro-Wilk's test.                                                                 |
 | 3\. The variances of the two populations are equal.                           | We will test for equal variance using the Levene Test.                                                                                                            |
