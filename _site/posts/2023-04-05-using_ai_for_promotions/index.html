@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adam D McKinnon">
+<meta name="author" content="Martha Curioni">
+<meta name="dcterms.date" content="2023-04-19">
+<meta name="description" content="Describing a high level approach for accurately and comprehensively assessing the gender pay gap, and informing corrective action if needed.">
+
+<title>Adam D McKinnon - Using AI to Make Better Promotion Decisions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>
+    .quarto-title-block .quarto-title-banner {
+      color: white;
+    }
+    </style>
+
+
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Adam D McKinnon</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/adamdmckinnon/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/adam-d-mckinnon"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Using AI to Make Better Promotion Decisions</h1>
+                  <div>
+        <div class="description">
+          Describing a high level approach for accurately and comprehensively assessing the gender pay gap, and informing corrective action if needed.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">AI</div>
+                <div class="quarto-category">Bias</div>
+                <div class="quarto-category">Promotions</div>
+                <div class="quarto-category">People Analytics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Adam D McKinnon </p>
+               <p>Martha Curioni </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 19, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#why-use-ml-to-inform-promotion-decisions" id="toc-why-use-ml-to-inform-promotion-decisions" class="nav-link" data-scroll-target="#why-use-ml-to-inform-promotion-decisions"><strong>Why Use ML to Inform Promotion Decisions?</strong></a></li>
+  <li><a href="#surfacing-candidates" id="toc-surfacing-candidates" class="nav-link" data-scroll-target="#surfacing-candidates"><strong>Surfacing Candidates</strong></a></li>
+  <li><a href="#audit-promotions-before-theyre-finalized" id="toc-audit-promotions-before-theyre-finalized" class="nav-link" data-scroll-target="#audit-promotions-before-theyre-finalized"><strong>Audit Promotions Before They're Finalized</strong></a></li>
+  <li><a href="#start-with-a-pilot" id="toc-start-with-a-pilot" class="nav-link" data-scroll-target="#start-with-a-pilot"><strong>Start With a Pilot</strong></a></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell" data-code_folding="false">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="michael-dziedzic-web.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption"><a href="https://unsplash.com/de/@lazycreekimages">Photo by Michael Dziedzic on Unsplash</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<blockquote class="blockquote">
+<p>"I have been passed over for promotion multiple times over the last few years. Those promotions always seem to go to younger workers. When pressed for reasons, I have heard some version of the response: 'we are looking for someone with more long-term prospects.' I've also been asked when I planned to retire in a couple of interviews. Is this possibly discriminatory? What can I do?"&nbsp;</p>
+</blockquote>
+<p>– James</p>
+<p><br></p>
+<p><br></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The above question is a real example of age discrimination, which was featured in an <a href="https://www.usatoday.com/story/money/columnist/2022/06/14/age-discrimination-keeping-me-getting-promotion-ask-hr/7573349001/">Ask HR column in USA Today</a> on the 14th June 2022. Unfortunately, discrimination within society and its organisations comes in many different formats, including gender identity, race, disability, sexual orientation, pregnancy, family responsibilities, and relationship status (to name but a few).</p>
+<p>HR should be a key partner in shepherding organisations towards bias-free decision making, to ensure optimal outcomes for both employees and employers. It is the position of these authors that data and Machine Learning (ML) (i.e., a subset of Artificial Intelligence) can play a significant role in enhancing the conditions for minimising bias in decision making at all stages of the employee lifecycle.</p>
+<p>In this article, we would like to explore why HR practitioners should consider using ML as another resource to inform promotion decisions, and explore ways in which ML could be embraced in modern organisations.</p>
+<p><br></p>
+</section>
+<section id="why-use-ml-to-inform-promotion-decisions" class="level2">
+<h2 class="anchored" data-anchor-id="why-use-ml-to-inform-promotion-decisions"><strong>Why Use ML to Inform Promotion Decisions?</strong></h2>
+<p>We believe there are several reasons ML should be embraced by modern organisations to augment promotion decisions and support fairer processes. These reasons include:</p>
+<ul>
+<li><p><u><strong>Objective:</strong></u> In contrast to humans, ML can remove personal biases by relying solely on data when making decisions. Biases which are prevalent in many human decisions (e.g., proximity bias, gender bias, favouritism, etc.), can be mitigated by data.</p></li>
+<li><p><u><strong>Representative:</strong></u> ML can analyse large amounts of data to identify patterns and make predictions, in this case promotion recommendations. The data provided to a model can come from across the entire spectrum of an employee’s experience, and in doing so provides a holistic assessment of an employee's potential.&nbsp;</p></li>
+<li><p><u><strong>Consistent:</strong></u> The use of ML ensures that criteria and standards are applied consistently to all employees, and across the time in which the ML model is used (i.e., unlike leaders that come and go) when making promotion decisions.&nbsp;</p></li>
+<li><p><u><strong>Auditable:</strong></u>MLmodels require historic data to be developed (i.e., in our context past promotion decisions). It is possible that the historic decisions were biased and that an ML model could perpetuate that bias. We recommend auditing AI models to understand the factors driving model decisions, and identify whether certain groups of employees are more or less favoured by an ML model. Doing so ensures past biases do not influence future promotion recommendations. (More to come from us on this topic.)</p></li>
+<li><p><strong>Augmented:</strong> ML enables promotion decisions&nbsp; to be more objective, representative, consistent and fair. These characteristics can then be supplemented by human judgement (i.e., often called Human-in-the-Loop), ensuring consideration of factors for which data may not be available, and delivery of decisions in an empathetic and human manner.</p></li>
+</ul>
+<p>Enough theory… how can an organisation use an ML model for promotion decisions?</p>
+<p><br></p>
+</section>
+<section id="surfacing-candidates" class="level2">
+<h2 class="anchored" data-anchor-id="surfacing-candidates"><strong>Surfacing Candidates</strong></h2>
+<p>Many organisations promote employees when there is a vacant position. Others promote a percentage of employees at each grade with each promotion cycle. In either case, ML can be used to create a pool of "ready to promote" candidates that can be referenced when making promotion decisions. This ensures that a broad and optimised range of employees are considered in the process, not just those known or favoured by decision makers.</p>
+<p><br></p>
+</section>
+<section id="audit-promotions-before-theyre-finalized" class="level2">
+<h2 class="anchored" data-anchor-id="audit-promotions-before-theyre-finalized"><strong>Audit Promotions Before They're Finalized</strong></h2>
+<p>As a final step in the promotion process, the same ML model can be used to audit promotion decisions before they are finalised. HR can review the list of "ready to promote" employees compared to those that were recommended for promotion. They can then look closely at cases where there was a mis-match between the model predictions and human recommendations to ensure fair and justifiable decisions are made.</p>
+<p>This conversation also has the potential to pick up factors that exceed current data capture—known only to human decision makers and not the model. Such conversation could inform the expansion of future data collection and potential enhancements of the ML model itself.</p>
+<p><br></p>
+</section>
+<section id="start-with-a-pilot" class="level2">
+<h2 class="anchored" data-anchor-id="start-with-a-pilot"><strong>Start With a Pilot</strong></h2>
+<p>Consider running a pilot to work out all the bugs before implementing departmental or organisation wide processes. One way to achieve this is to run concurrent processes, one using the promotion model and one using existing, historical processes to identify and select candidates. The impact from each process can then be assessed and compared using metrics of importance to the organisation.</p>
+<p>Such metrics may include diversity of promotion decisions (e.g., age, gender, ethnicity, etc.); pay gap differences between groups of interest, or retention of minority groups post promotion cycles. Once you understand and quantify the impact of ML augmented promotion decisions in an organisational context, you are in a better position to define a future direction. Assuming ML can positively enhance promotion decisions, which we strongly believe, the data provides the basis for an evidence-based business case, ideally with a quantifiable return-on-investment.&nbsp;</p>
+<p><br></p>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="acknowledgments" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+
+<p>This article was first published on the myHRFuture under the title “<a href="https://www.myhrfuture.com/blog/using-ai-to-make-better-promotion-decisions">Using AI to Make Better Promotion Decisions</a>” on April 5th, 2023.</p>
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
+  author = {Adam D McKinnon and Martha Curioni},
+  title = {Using {AI} to {Make} {Better} {Promotion} {Decisions}},
+  date = {2023-04-19},
+  url = {https://www.adam-d-mckinnon.com//posts/2023-04-05-using_ai_for_promotions},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Adam D McKinnon, and Martha Curioni. 2023. <span>“Using AI to Make
+Better Promotion Decisions.”</span> April 19, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-04-05-using_ai_for_promotions">https://www.adam-d-mckinnon.com//posts/2023-04-05-using_ai_for_promotions</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
