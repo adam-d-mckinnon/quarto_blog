@@ -116,7 +116,7 @@ THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!”</span> April 19, 2023.
 </div>
 <p><br></p>
 <blockquote class="blockquote">
-<p>"I have been passed over for promotion multiple times over the last few years. Those promotions always seem to go to younger workers. When pressed for reasons, I have heard some version of the response: 'we are looking for someone with more long-term prospects.' I've also been asked when I planned to retire in a couple of interviews. Is this possibly discriminatory? What can I do?"&nbsp;</p>
+<p>“I have been passed over for promotion multiple times over the last few years. Those promotions always seem to go to younger workers. When pressed for reasons, I have heard some version of the response: ‘we are looking for someone with more long-term prospects.’ I’ve also been asked when I planned to retire in a couple of interviews. Is this possibly discriminatory? What can I do?”&nbsp;</p>
 </blockquote>
 <p>– James</p>
 <p><br></p>
@@ -133,7 +133,7 @@ THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!”</span> April 19, 2023.
 <p>We believe there are several reasons ML should be embraced by modern organisations to augment promotion decisions and support fairer processes. These reasons include:</p>
 <ul>
 <li><p><u><strong>Objective:</strong></u> In contrast to humans, ML can remove personal biases by relying solely on data when making decisions. Biases which are prevalent in many human decisions (e.g., proximity bias, gender bias, favouritism, etc.), can be mitigated by data.</p></li>
-<li><p><u><strong>Representative:</strong></u> ML can analyse large amounts of data to identify patterns and make predictions, in this case promotion recommendations. The data provided to a model can come from across the entire spectrum of an employee’s experience, and in doing so provides a holistic assessment of an employee's potential.&nbsp;</p></li>
+<li><p><u><strong>Representative:</strong></u> ML can analyse large amounts of data to identify patterns and make predictions, in this case promotion recommendations. The data provided to a model can come from across the entire spectrum of an employee’s experience, and in doing so provides a holistic assessment of an employee’s potential.&nbsp;</p></li>
 <li><p><u><strong>Consistent:</strong></u> The use of ML ensures that criteria and standards are applied consistently to all employees, and across the time in which the ML model is used (i.e., unlike leaders that come and go) when making promotion decisions.&nbsp;</p></li>
 <li><p><u><strong>Auditable:</strong></u>MLmodels require historic data to be developed (i.e., in our context past promotion decisions). It is possible that the historic decisions were biased and that an ML model could perpetuate that bias. We recommend auditing AI models to understand the factors driving model decisions, and identify whether certain groups of employees are more or less favoured by an ML model. Doing so ensures past biases do not influence future promotion recommendations. (More to come from us on this topic.)</p></li>
 <li><p><strong>Augmented:</strong> ML enables promotion decisions&nbsp; to be more objective, representative, consistent and fair. These characteristics can then be supplemented by human judgement (i.e., often called Human-in-the-Loop), ensuring consideration of factors for which data may not be available, and delivery of decisions in an empathetic and human manner.</p></li>
@@ -143,12 +143,12 @@ THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!”</span> April 19, 2023.
 </section>
 <section id="surfacing-candidates" class="level2">
 <h2 class="anchored" data-anchor-id="surfacing-candidates"><strong>Surfacing Candidates</strong></h2>
-<p>Many organisations promote employees when there is a vacant position. Others promote a percentage of employees at each grade with each promotion cycle. In either case, ML can be used to create a pool of "ready to promote" candidates that can be referenced when making promotion decisions. This ensures that a broad and optimised range of employees are considered in the process, not just those known or favoured by decision makers.</p>
+<p>Many organisations promote employees when there is a vacant position. Others promote a percentage of employees at each grade with each promotion cycle. In either case, ML can be used to create a pool of “ready to promote” candidates that can be referenced when making promotion decisions. This ensures that a broad and optimised range of employees are considered in the process, not just those known or favoured by decision makers.</p>
 <p><br></p>
 </section>
 <section id="audit-promotions-before-theyre-finalized" class="level2">
-<h2 class="anchored" data-anchor-id="audit-promotions-before-theyre-finalized"><strong>Audit Promotions Before They're Finalized</strong></h2>
-<p>As a final step in the promotion process, the same ML model can be used to audit promotion decisions before they are finalised. HR can review the list of "ready to promote" employees compared to those that were recommended for promotion. They can then look closely at cases where there was a mis-match between the model predictions and human recommendations to ensure fair and justifiable decisions are made.</p>
+<h2 class="anchored" data-anchor-id="audit-promotions-before-theyre-finalized"><strong>Audit Promotions Before They’re Finalized</strong></h2>
+<p>As a final step in the promotion process, the same ML model can be used to audit promotion decisions before they are finalised. HR can review the list of “ready to promote” employees compared to those that were recommended for promotion. They can then look closely at cases where there was a mis-match between the model predictions and human recommendations to ensure fair and justifiable decisions are made.</p>
 <p>This conversation also has the potential to pick up factors that exceed current data capture—known only to human decision makers and not the model. Such conversation could inform the expansion of future data collection and potential enhancements of the ML model itself.</p>
 <p><br></p>
 </section>

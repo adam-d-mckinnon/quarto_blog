@@ -12,7 +12,7 @@ draft: false
 ---
 
 ```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[MJGraphics/Shutterstock.com](https://www.shutterstock.com/g/micic).",out.width = '100%'}
-knitr::include_graphics("1680481318715.jpeg")
+
 
 ```
 
