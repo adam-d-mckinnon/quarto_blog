@@ -1,7 +1,7 @@
 ---
 title: 'HOW TO ANALYSE THE GENDER PAY GAP ACCURATELY & EFFECTIVELY!'
 date: 2023-04-19
-description: "Assessing the presence of bias against minority groups in Machine Learning models to enhance their ethical strength and equality."
+description: "Describing a high level approach for accurately and comprehensively assessing the gender pay gap, and informing corrective action if needed."
 author: 
     - name: Adam D McKinnon
     - name: Courtenay Howard-Bath
@@ -26,7 +26,7 @@ The *Workplace Gender Equality Amendment (Closing the Gender Pay Gap) Bill 2023
 
 ### **An imperfect tool?**
 
-Some argue that the use of blunt statistics, specifically the Mean, has the potential to misrepresent the pay gap, and does little to inform why a pay gap arises, nor how to solve it. Associate Professor of Finance atUNSW Sydney, Mark Humphery-Jenner**,** states \"Decision-makers, both in public and private sectors, risk making bad decisions on poor-quality data. The wrong fixes could even make things worse. We will not eradicate the gender pay gap using bad statistics.\" Inaccurate reporting resulting from the use of flawed statistics not only hinders efforts to achieve pay equity but could also lead to penalties under the law. This emphasizes the necessity of adopting measures that effectively capture the complexity of the gender pay gap and ensure accurate reporting.
+Some argue that the use of blunt statistics, specifically the Mean, has the potential to misrepresent the pay gap, and does little to inform why a pay gap arises, nor how to solve it. Associate Professor of Finance atUNSW Sydney, Mark Humphery-Jenner**,** states "Decision-makers, both in public and private sectors, risk making bad decisions on poor-quality data. The wrong fixes could even make things worse. We will not eradicate the gender pay gap using bad statistics." Inaccurate reporting resulting from the use of flawed statistics not only hinders efforts to achieve pay equity but could also lead to penalties under the law. This emphasizes the necessity of adopting measures that effectively capture the complexity of the gender pay gap and ensure accurate reporting.
 
 <br>
 
@@ -34,15 +34,11 @@ Some argue that the use of blunt statistics, specifically the Mean, has the pote
 
 People analytics professionals are in a great position to progress the quality of analyses performed on this important topic across Australian organisations. Analysing the gender pay gap in organizations requires a systematic approach that considers multiple factors and variables. The following is a high-level step-by-step approach to analysing the gender pay gap effectively:
 
-1.     **Gather data:** Collect comprehensive data on employee salaries, benefits, job titles, departments, levels, years of experience, education, and performance metrics. Ensure that the data is as accurate as possible, up-to-date, and anonymized to maintain employee privacy.
-
-2.     **Calculate the raw gender pay gap:** Compute the average pay for men and women across the organization (as per the Bill), and then calculate the difference between the two averages. This will give you the raw, unadjusted gender pay gap, which will likely not account for differences in roles, experience, or other factors.
-
-3.     **Perform a multivariate analysis:** Conduct a multivariate analysis, such as multiple regression, to assess the impact of various factors on the gender pay gap. This will help control for differences in roles, experience, education, and other factors that will likely influence pay. The adjusted gender pay gap will provide a more accurate reflection of potential pay disparities between men and women within the organization.
-
-4.     **Analyse pay gaps within job groups:** Break down the analysis by job groups, comparing men and women in similar roles or with similar experience and qualifications. This can help identify specific areas where the pay gap is more pronounced.
-
-5.     **Identify root causes:** Analyse the results of your multivariate analysis and within group comparisons to identify potential root causes for any observed pay disparities. This can be further enhanced by performing a dedicated root cause analysis to identify where in the employee lifecycle (i.e., hiring, promotions, performance evaluations, salary negotiations, etc.) and why biases, and their resulting pay differences, may be occurring. 
+1.  [**Gather data:**]{.underline} Collect comprehensive data on employee salaries, benefits, job titles, departments, levels, years of experience, education, and performance metrics. Ensure that the data is as accurate as possible, up-to-date, and anonymized to maintain employee privacy.
+2.  [**Calculate the raw gender pay gap:**]{.underline} Compute the average pay for men and women across the organization (as per the Bill), and then calculate the difference between the two averages. This will give you the raw, unadjusted gender pay gap, which will likely not account for differences in roles, experience, or other factors.
+3.  [**Perform a multivariate analysis:**]{.underline} Conduct a multivariate analysis, such as multiple regression, to assess the impact of various factors on the gender pay gap. This will help control for differences in roles, experience, education, and other factors that will likely influence pay. The adjusted gender pay gap will provide a more accurate reflection of potential pay disparities between men and women within the organization.
+4.  [**Analyse pay gaps within job groups:**]{.underline} Break down the analysis by job groups, comparing men and women in similar roles or with similar experience and qualifications. This can help identify specific areas where the pay gap is more pronounced.
+5.  [**Identify root causes:**]{.underline} Analyse the results of your multivariate analysis and within group comparisons to identify potential root causes for any observed pay disparities. This can be further enhanced by performing a dedicated root cause analysis to identify where in the employee lifecycle (i.e., hiring, promotions, performance evaluations, salary negotiations, etc.) and why biases, and their resulting pay differences, may be occurring. 
 
 <br>
 
