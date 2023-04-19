@@ -1,0 +1,69 @@
+---
+title: 'HOW TO ANALYSE THE GENDER PAY GAP ACCURATELY & EFFECTIVELY!'
+date: 2023-04-19
+description: "Assessing the presence of bias against minority groups in Machine Learning models to enhance their ethical strength and equality."
+author: 
+    - name: Adam D McKinnon
+    - name: Courtenay Howard-Bath
+categories: [Bias, Gender Pay Gap, People Analytics]
+image: ""
+title-block-banner: true
+draft: false
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[MJGraphics/Shutterstock.com](https://www.shutterstock.com/g/micic).",out.width = '100%'}
+knitr::include_graphics("1680481318715.jpeg")
+
+```
+
+<br>
+
+### Introduction
+
+The *Workplace Gender Equality Amendment (Closing the Gender Pay Gap) Bill 2023* passed both houses of Australian parliament on the 30th March 2023. This legislation is an initiative of the Australian government to publish gender pay gaps of employers with 100 or more workers. The intent of the bill is to drive greater transparency of this important initiative and catalyse action towards closing the gender pay gap in Australia.
+
+<br>
+
+### **An imperfect tool?**
+
+Some argue that the use of blunt statistics, specifically the Mean, has the potential to misrepresent the pay gap, and does little to inform why a pay gap arises, nor how to solve it. Associate Professor of Finance atUNSW Sydney, Mark Humphery-Jenner**,** states \"Decision-makers, both in public and private sectors, risk making bad decisions on poor-quality data. The wrong fixes could even make things worse. We will not eradicate the gender pay gap using bad statistics.\" Inaccurate reporting resulting from the use of flawed statistics not only hinders efforts to achieve pay equity but could also lead to penalties under the law. This emphasizes the necessity of adopting measures that effectively capture the complexity of the gender pay gap and ensure accurate reporting.
+
+<br>
+
+### **A better way for analysing the gender pay gap**
+
+People analytics professionals are in a great position to progress the quality of analyses performed on this important topic across Australian organisations. Analysing the gender pay gap in organizations requires a systematic approach that considers multiple factors and variables. The following is a high-level step-by-step approach to analysing the gender pay gap effectively:
+
+1.     **Gather data:** Collect comprehensive data on employee salaries, benefits, job titles, departments, levels, years of experience, education, and performance metrics. Ensure that the data is as accurate as possible, up-to-date, and anonymized to maintain employee privacy.
+
+2.     **Calculate the raw gender pay gap:** Compute the average pay for men and women across the organization (as per the Bill), and then calculate the difference between the two averages. This will give you the raw, unadjusted gender pay gap, which will likely not account for differences in roles, experience, or other factors.
+
+3.     **Perform a multivariate analysis:** Conduct a multivariate analysis, such as multiple regression, to assess the impact of various factors on the gender pay gap. This will help control for differences in roles, experience, education, and other factors that will likely influence pay. The adjusted gender pay gap will provide a more accurate reflection of potential pay disparities between men and women within the organization.
+
+4.     **Analyse pay gaps within job groups:** Break down the analysis by job groups, comparing men and women in similar roles or with similar experience and qualifications. This can help identify specific areas where the pay gap is more pronounced.
+
+5.     **Identify root causes:** Analyse the results of your multivariate analysis and within group comparisons to identify potential root causes for any observed pay disparities. This can be further enhanced by performing a dedicated root cause analysis to identify where in the employee lifecycle (i.e., hiring, promotions, performance evaluations, salary negotiations, etc.) and why biases, and their resulting pay differences, may be occurring. 
+
+<br>
+
+### Conclusion:
+
+The above high-level approach represents a more accurate way of assessing gender pay disparities within an organisation. Moreover, this approach provides programmatic insights that can inform addressing identified gaps in an ongoing and systemic fashion.
+
+<br>
+
+Please reach out if you have any questions or need guidance on how to conduct a thorough analysis of your organization's gender pay gap under the Bill. Closing the gender pay gap is an important initiative that requires complete data and a systematic approach to drive meaningful change.
+
+## <br>
+
+<br>
+
+*Disclaimer: The views and opinions expressed in this article are solely those of the authors and do no represent, reflect, or express the views, policies, or positions of the authors' current or past employers, colleagues, or any other organisations or individuals with which the authors may be affiliated. This article is written in a personal capacity, and any opinions or interpretations of the content herein are intended for informational and discussion purposes only.*
+
+<br>
+
+<br>
+
+## Acknowledgments {.appendix}
+
+This article was first published on the LinkedIn under the title "[How to analyse the gender pay gap accurately and effectively!](https://www.linkedin.com/pulse/how-analyse-gender-pay-gap-accurately-effectively-adam-mckinnon-phd-/?trackingId=Aq37VzcKsoeHIThwXOt3fg%3D%3D)" on April 3rd, 2023.

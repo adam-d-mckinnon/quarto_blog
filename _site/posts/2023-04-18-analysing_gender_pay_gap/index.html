@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adam D McKinnon">
+<meta name="author" content="Courtenay Howard-Bath">
+<meta name="dcterms.date" content="2023-04-19">
+<meta name="description" content="Assessing the presence of bias against minority groups in Machine Learning models to enhance their ethical strength and equality.">
+
+<title>Adam D McKinnon - HOW TO ANALYSE THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>
+    .quarto-title-block .quarto-title-banner {
+      color: white;
+    }
+    </style>
+
+
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Adam D McKinnon</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/adamdmckinnon/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/adam-d-mckinnon"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">HOW TO ANALYSE THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!</h1>
+                  <div>
+        <div class="description">
+          Assessing the presence of bias against minority groups in Machine Learning models to enhance their ethical strength and equality.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Bias</div>
+                <div class="quarto-category">Gender Pay Gap</div>
+                <div class="quarto-category">People Analytics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Adam D McKinnon </p>
+               <p>Courtenay Howard-Bath </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 19, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#an-imperfect-tool" id="toc-an-imperfect-tool" class="nav-link" data-scroll-target="#an-imperfect-tool"><strong>An imperfect tool?</strong></a></li>
+  <li><a href="#a-better-way-for-analysing-the-gender-pay-gap" id="toc-a-better-way-for-analysing-the-gender-pay-gap" class="nav-link" data-scroll-target="#a-better-way-for-analysing-the-gender-pay-gap"><strong>A better way for analysing the gender pay gap</strong></a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion:</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><br></a></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell" data-code_folding="false">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="1680481318715.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.shutterstock.com/g/micic">MJGraphics/Shutterstock.com</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>The&nbsp;<em>Workplace Gender Equality Amendment (Closing the Gender Pay Gap) Bill 2023</em> passed both houses of Australian parliament on the 30th March 2023. This legislation&nbsp;is an initiative of the Australian government&nbsp;to publish gender pay gaps of employers with 100 or more workers. The intent of the bill is to drive greater transparency of this important initiative and catalyse action towards closing the gender pay gap in Australia.</p>
+<p><br></p>
+</section>
+<section id="an-imperfect-tool" class="level3">
+<h3 class="anchored" data-anchor-id="an-imperfect-tool"><strong>An imperfect tool?</strong></h3>
+<p>Some argue that the use of blunt statistics, specifically the Mean, has the potential to misrepresent the pay gap, and does little to inform why a pay gap arises, nor how to solve it. Associate Professor of Finance atUNSW Sydney, Mark Humphery-Jenner<strong>,</strong>&nbsp;states "Decision-makers, both in public and private sectors, risk making bad decisions on poor-quality data. The wrong fixes could even&nbsp;make things worse. We will not eradicate the gender pay gap using bad statistics."&nbsp;Inaccurate reporting resulting from the use of flawed statistics not only hinders efforts to achieve pay equity but could also lead to penalties under the law. This emphasizes the necessity of adopting measures that effectively capture the complexity of the gender pay gap and ensure accurate reporting.</p>
+<p><br></p>
+</section>
+<section id="a-better-way-for-analysing-the-gender-pay-gap" class="level3">
+<h3 class="anchored" data-anchor-id="a-better-way-for-analysing-the-gender-pay-gap"><strong>A better way for analysing the gender pay gap</strong></h3>
+<p>People analytics professionals are in a great position to progress the quality of analyses performed on this important topic across Australian organisations.&nbsp;Analysing the gender pay gap in organizations requires a systematic approach that considers multiple factors and variables. The following is a high-level step-by-step approach to analysing the gender pay gap effectively:</p>
+<p>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gather data:</strong>&nbsp;Collect comprehensive data on employee salaries, benefits, job titles, departments, levels, years of experience, education, and performance metrics. Ensure that the data is as accurate as possible, up-to-date, and anonymized to maintain employee privacy.</p>
+<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Calculate the raw gender pay gap:</strong>&nbsp;Compute the average pay for men and women across the organization (as per the Bill), and then calculate the difference between the two averages. This will give you the raw, unadjusted gender pay gap, which will likely not account for differences in roles, experience, or other factors.</p>
+<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Perform a multivariate analysis:</strong>&nbsp;Conduct a multivariate analysis, such as multiple regression, to assess the impact of various factors on the gender pay gap. This will help control for differences in roles, experience, education, and other factors that will likely influence pay. The adjusted gender pay gap will provide a more accurate reflection of potential pay disparities between men and women within the organization.</p>
+<p>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Analyse pay gaps within job groups:</strong>&nbsp;Break down the analysis by job groups, comparing men and women in similar roles or with similar experience and qualifications. This can help identify specific areas where the pay gap is more pronounced.</p>
+<p>5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Identify root causes:</strong>&nbsp;Analyse the results of your multivariate analysis and within group comparisons to identify potential root causes for any observed pay disparities. This can be further enhanced by performing a dedicated root cause analysis to identify where in the employee lifecycle (i.e., hiring, promotions, performance evaluations, salary negotiations, etc.) and why biases, and their resulting pay differences, may be occurring.&nbsp;</p>
+<p><br></p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion:</h3>
+<p>The above high-level approach represents a more accurate way of assessing gender pay disparities within an organisation. Moreover, this approach provides programmatic insights that can inform addressing identified gaps in an ongoing and systemic fashion.</p>
+<p><br></p>
+<p>Please reach out if you have any questions or need guidance on how to conduct a thorough analysis of your organization’s gender pay gap under the Bill. Closing the gender pay gap is an important initiative that requires complete data and a systematic approach to drive meaningful change.</p>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"><br></h2>
+<p><br></p>
+<p><em>Disclaimer: The views and opinions expressed in this article are solely those of the authors and do no represent, reflect, or express the views, policies, or positions of the authors’ current or past employers, colleagues, or any other organisations or individuals with which the authors may be affiliated. This article is written in a personal capacity, and any opinions or interpretations of the content herein are intended for informational and discussion purposes only.</em></p>
+<p><br></p>
+<p><br></p>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="acknowledgments" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+
+<p>This article was first published on the LinkedIn under the title “<a href="https://www.linkedin.com/pulse/how-analyse-gender-pay-gap-accurately-effectively-adam-mckinnon-phd-/?trackingId=Aq37VzcKsoeHIThwXOt3fg%3D%3D">How to analyse the gender pay gap accurately and effectively!</a>” on April 3rd, 2023.</p>
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
+  author = {Adam D McKinnon and Courtenay Howard-Bath},
+  title = {HOW {TO} {ANALYSE} {THE} {GENDER} {PAY} {GAP} {ACCURATELY} \&amp;
+    {EFFECTIVELY!}},
+  date = {2023-04-19},
+  url = {https://www.adam-d-mckinnon.com//posts/2023-04-18-analysing_gender_pay_gap},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Adam D McKinnon, and Courtenay Howard-Bath. 2023. <span>“HOW TO ANALYSE
+THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!”</span> April 19, 2023.
+<a href="https://www.adam-d-mckinnon.com//posts/2023-04-18-analysing_gender_pay_gap">https://www.adam-d-mckinnon.com//posts/2023-04-18-analysing_gender_pay_gap</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

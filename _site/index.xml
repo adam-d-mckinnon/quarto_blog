@@ -10,7 +10,87 @@
 <atom:link href="https://www.adam-d-mckinnon.com/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.313</generator>
-<lastBuildDate>Sun, 16 Apr 2023 14:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 18 Apr 2023 14:00:00 GMT</lastBuildDate>
+<item>
+  <title>HOW TO ANALYSE THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!</title>
+  <dc:creator>Adam D McKinnon</dc:creator>
+  <dc:creator>Courtenay Howard-Bath</dc:creator>
+  <link>https://www.adam-d-mckinnon.com/posts/2023-04-18-analysing_gender_pay_gap/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell" data-code_folding="false">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2023-04-18-analysing_gender_pay_gap/1680481318715.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.shutterstock.com/g/micic">MJGraphics/Shutterstock.com</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>The&nbsp;<em>Workplace Gender Equality Amendment (Closing the Gender Pay Gap) Bill 2023</em> passed both houses of Australian parliament on the 30th March 2023. This legislation&nbsp;is an initiative of the Australian government&nbsp;to publish gender pay gaps of employers with 100 or more workers. The intent of the bill is to drive greater transparency of this important initiative and catalyse action towards closing the gender pay gap in Australia.</p>
+<p><br></p>
+</section>
+<section id="an-imperfect-tool" class="level3">
+<h3 class="anchored" data-anchor-id="an-imperfect-tool"><strong>An imperfect tool?</strong></h3>
+<p>Some argue that the use of blunt statistics, specifically the Mean, has the potential to misrepresent the pay gap, and does little to inform why a pay gap arises, nor how to solve it. Associate Professor of Finance atUNSW Sydney, Mark Humphery-Jenner<strong>,</strong>&nbsp;states "Decision-makers, both in public and private sectors, risk making bad decisions on poor-quality data. The wrong fixes could even&nbsp;make things worse. We will not eradicate the gender pay gap using bad statistics."&nbsp;Inaccurate reporting resulting from the use of flawed statistics not only hinders efforts to achieve pay equity but could also lead to penalties under the law. This emphasizes the necessity of adopting measures that effectively capture the complexity of the gender pay gap and ensure accurate reporting.</p>
+<p><br></p>
+</section>
+<section id="a-better-way-for-analysing-the-gender-pay-gap" class="level3">
+<h3 class="anchored" data-anchor-id="a-better-way-for-analysing-the-gender-pay-gap"><strong>A better way for analysing the gender pay gap</strong></h3>
+<p>People analytics professionals are in a great position to progress the quality of analyses performed on this important topic across Australian organisations.&nbsp;Analysing the gender pay gap in organizations requires a systematic approach that considers multiple factors and variables. The following is a high-level step-by-step approach to analysing the gender pay gap effectively:</p>
+<p>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gather data:</strong>&nbsp;Collect comprehensive data on employee salaries, benefits, job titles, departments, levels, years of experience, education, and performance metrics. Ensure that the data is as accurate as possible, up-to-date, and anonymized to maintain employee privacy.</p>
+<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Calculate the raw gender pay gap:</strong>&nbsp;Compute the average pay for men and women across the organization (as per the Bill), and then calculate the difference between the two averages. This will give you the raw, unadjusted gender pay gap, which will likely not account for differences in roles, experience, or other factors.</p>
+<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Perform a multivariate analysis:</strong>&nbsp;Conduct a multivariate analysis, such as multiple regression, to assess the impact of various factors on the gender pay gap. This will help control for differences in roles, experience, education, and other factors that will likely influence pay. The adjusted gender pay gap will provide a more accurate reflection of potential pay disparities between men and women within the organization.</p>
+<p>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Analyse pay gaps within job groups:</strong>&nbsp;Break down the analysis by job groups, comparing men and women in similar roles or with similar experience and qualifications. This can help identify specific areas where the pay gap is more pronounced.</p>
+<p>5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Identify root causes:</strong>&nbsp;Analyse the results of your multivariate analysis and within group comparisons to identify potential root causes for any observed pay disparities. This can be further enhanced by performing a dedicated root cause analysis to identify where in the employee lifecycle (i.e., hiring, promotions, performance evaluations, salary negotiations, etc.) and why biases, and their resulting pay differences, may be occurring.&nbsp;</p>
+<p><br></p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion:</h3>
+<p>The above high-level approach represents a more accurate way of assessing gender pay disparities within an organisation. Moreover, this approach provides programmatic insights that can inform addressing identified gaps in an ongoing and systemic fashion.</p>
+<p><br></p>
+<p>Please reach out if you have any questions or need guidance on how to conduct a thorough analysis of your organization’s gender pay gap under the Bill. Closing the gender pay gap is an important initiative that requires complete data and a systematic approach to drive meaningful change.</p>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"><br></h2>
+<p><br></p>
+<p><em>Disclaimer: The views and opinions expressed in this article are solely those of the authors and do no represent, reflect, or express the views, policies, or positions of the authors’ current or past employers, colleagues, or any other organisations or individuals with which the authors may be affiliated. This article is written in a personal capacity, and any opinions or interpretations of the content herein are intended for informational and discussion purposes only.</em></p>
+<p><br></p>
+<p><br></p>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="acknowledgments" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+
+<p>This article was first published on the LinkedIn under the title “<a href="https://www.linkedin.com/pulse/how-analyse-gender-pay-gap-accurately-effectively-adam-mckinnon-phd-/?trackingId=Aq37VzcKsoeHIThwXOt3fg%3D%3D">How to analyse the gender pay gap accurately and effectively!</a>” on April 3rd, 2023.</p>
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
+  author = {Adam D McKinnon and Courtenay Howard-Bath},
+  title = {HOW {TO} {ANALYSE} {THE} {GENDER} {PAY} {GAP} {ACCURATELY} \&amp;
+    {EFFECTIVELY!}},
+  date = {2023-04-19},
+  url = {https://www.adam-d-mckinnon.com//posts/2023-04-18-analysing_gender_pay_gap},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas">
+Adam D McKinnon, and Courtenay Howard-Bath. 2023. <span>“HOW TO ANALYSE
+THE GENDER PAY GAP ACCURATELY &amp; EFFECTIVELY!”</span> April 19, 2023.
+<a href="https://www.adam-d-mckinnon.com//posts/2023-04-18-analysing_gender_pay_gap">https://www.adam-d-mckinnon.com//posts/2023-04-18-analysing_gender_pay_gap</a>.
+</div></div></section></div> ]]></description>
+  <category>Bias</category>
+  <category>Gender Pay Gap</category>
+  <category>People Analytics</category>
+  <guid>https://www.adam-d-mckinnon.com/posts/2023-04-18-analysing_gender_pay_gap/index.html</guid>
+  <pubDate>Tue, 18 Apr 2023 14:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Assessing Bias in ML Models</title>
   <dc:creator>Adam D McKinnon</dc:creator>
