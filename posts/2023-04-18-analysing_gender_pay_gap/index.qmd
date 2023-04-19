@@ -6,7 +6,7 @@ author:
     - name: Adam D McKinnon
     - name: Courtenay Howard-Bath
 categories: [Bias, Gender Pay Gap, People Analytics]
-image: ""
+image: "1680481318715.jpeg"
 title-block-banner: true
 draft: false
 ---
