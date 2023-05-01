@@ -1,6 +1,6 @@
 ---
 title: 'Predicting Promotions Through Machine Learning'
-date: 2022-12-30
+date: 2023-05-02
 description: "Building an XGBoost model in the Tidymodels ecosystem that predicts whether an employee should be promoted."
 author: 
     - name: Adam D McKinnon
@@ -13,7 +13,10 @@ title-block-banner: true
 knitr::include_graphics("markus-spiske-QozzJpFZ2lg-unsplash.jpg")
 
 ```
+
 <br>
+
+The current article is focussed on tuning an xgboost model in the Tidymodels ecosystem to predict promotions using a fictitious employee dataset. The article is intended to complement and earlier [article](https://www.adam-d-mckinnon.com/posts/2023-04-05-using_ai_for_promotions/) focused on the theoretical utility of promotion models.
 
 # Libraries
 
@@ -22,18 +25,20 @@ knitr::include_graphics("markus-spiske-QozzJpFZ2lg-unsplash.jpg")
 # data manipulation
 library(readxl)
 library(tidyverse)
-library(janitor)
 
 # modelling
 library(tidymodels)
+library(themis)
 library(finetune)
 library(bundle)
-library(plotly)
+library(cvms)
 
 # Processing power
 library(doParallel)
 library(parallelly)
 
+# Visualisation
+library(plotly)
 
 tidymodels_prefer()
 
@@ -49,10 +54,8 @@ tidymodels_prefer()
 promotions_tbl <- readxl::read_excel(path = "2022_12_15_promotions.xlsx")
 
 
-promotions_tbl <- promotions_tbl %>% 
-    mutate(
-        promoted  = forcats::as_factor(promoted) %>% forcats::fct_relevel("promoted", "not promoted")
-    ) %>% 
+promotions_tbl <- promotions_tbl |> 
+    mutate(promoted  = forcats::as_factor(promoted) %>% forcats::fct_relevel("promoted", "not promoted")) |>  
     mutate_at(.vars = c("gender", "work_site", "management_level"), .funs = ~ forcats::as_factor(.))
 
 
@@ -87,17 +90,20 @@ promotion_folds <- bootstraps(promotion_train_tbl,
 
 ```
 
-<br>
+<br> 
 ### 2. Pre-processing the data
 
 ```{r data_preprocessing}
 
 # Data Pre-processing ----
 xgboost_recipe <- 
-    recipe(formula = promoted ~ ., data = promotion_train_tbl) %>% 
-    recipes::update_role(employee_id, new_role = "id") %>% 
-    step_dummy(all_nominal_predictors(), one_hot = TRUE) %>% 
-    step_zv(all_predictors()) 
+    recipe(formula = promoted ~ ., data = promotion_train_tbl) |>  
+    recipes::update_role(employee_id, new_role = "id") |>  
+    step_dummy(all_nominal_predictors(), one_hot = TRUE) |>  
+    step_zv(all_predictors()) |> 
+    step_rose(promoted)
+
+
 
 
 # check the recipe
@@ -106,18 +112,23 @@ xgboost_recipe <-
 ```
 
 <br>
+
 ### 3. Create a model specification
+
+The model specification is created below. With the exception of the number of trees, all other standard parameters are tuned to find the best combination.
+
+<br>
 
 ```{r model_spec}
 
 # Model Set-up ----
 xgboost_spec <- 
     boost_tree(trees = 1000, 
-               tree_depth = tune(), min_n = tune(), 
-               loss_reduction = tune(), 
-               sample_size = tune(), mtry = tune(),
-               learn_rate = tune()) %>% 
-    set_engine("xgboost") %>% 
+               tree_depth = tune(),
+               min_n = tune(),
+               mtry = tune(),
+               learn_rate = tune()) |>  
+    set_engine("xgboost") |>  
     set_mode("classification")
 
 
@@ -127,15 +138,20 @@ xgboost_spec <-
 ```
 
 <br>
+
 ### 4. Workflow setup
+
+Below we simply create the workflow and add the recipe and model specification.
+
+<br>
 
 ```{r workflow_setup}
 
 
 # Workflow setup
 xgboost_workflow <- 
-    workflow() %>% 
-    add_recipe(xgboost_recipe) %>% 
+    workflow() |> 
+    add_recipe(xgboost_recipe) |>  
     add_model(xgboost_spec) 
 
 # Check the workflow
@@ -145,7 +161,18 @@ xgboost_workflow <-
 ```
 
 <br>
+
 ### 5. Tuning the model
+
+Three key activities occur when tuning the model. These are:
+
+1.  Specifying the metrics that will be used to assess the model. In practice only one metric is used in the 'tune_race_anova' function, which is always the first specified in the 'metric_set' function. If a metric is not defined the defaults are either accuracy of RMSE, depending upon the model type.
+
+2.  The next step is to enable parallel processing, using the 'availableCores' function, to expedit the tuning process.
+
+3.  Finally, we define the 'tune_race_anova' function, specifying the workflow, resamples, and metrics. It is important to save the predictions from the tuning process.
+
+<br>
 
 ```{r model_tuning}
 
@@ -159,7 +186,7 @@ promotion_metrics <- metric_set(
                             )
 
 
-# establish parallel processing based on the number of available cores
+# enable parallel processing based on the number of available cores
 doParallel::registerDoParallel(cores = parallelly::availableCores())
 
 
@@ -182,9 +209,15 @@ racing_resamples <- finetune::tune_race_anova(
 
 
 ```
+
 <br>
 
 ### 6. Assess model performance
+
+Here we can look at the results of the model tuning process in two ways:
+
+1.  The model metrics for the combination that "won" the anova race; and
+2.  The plot of the tuning process. The plot shows the number of model combinations that were dropped early in the process (i.e., a considerable time saving) to reach the combination that won the process. This can be an efficient way of testing multiple model parameters efficiently and effectively!
 
 ```{r assess_model}
 
@@ -201,7 +234,7 @@ xaringanExtra::use_panelset()
 
 ```{r echo=FALSE, code_folding = FALSE}
 
-first_model_metrics_tbl %>% gt::gt()
+first_model_metrics_tbl |>  gt::gt()
 
 ```
 :::
@@ -223,18 +256,16 @@ tuning_plot
 
 ```{r finalise_workflow}
 
-last_fit_xgboost_workflow <- xgboost_workflow %>%
-    finalize_workflow(select_best(racing_resamples, "roc_auc")) %>%
+# last_fit_xgboost_workflow
+last_fit_xgboost_workflow <- xgboost_workflow |> 
+    finalize_workflow(select_best(racing_resamples, "roc_auc")) |> 
     last_fit(promotion_split)
 
-
-# last_fit_xgboost_workflow
-
 # test the fit
-collect_metrics(last_fit_xgboost_workflow) %>% gt::gt()
+(final_model_workflow_metrics <- collect_metrics(last_fit_xgboost_workflow) |> gt::gt())
 
 # extract the model workflow for further testing & saving
-final_model_workflow <- last_fit_xgboost_workflow %>%
+final_model_workflow <- last_fit_xgboost_workflow |> 
     extract_workflow()
 
 
@@ -243,18 +274,35 @@ final_model_workflow <- last_fit_xgboost_workflow %>%
 <br>
 
 ### 8. Re-assess model performance
+The confusion matrix provides an overview of our success with the model.
+Interestingly, when the process was run without addressing the class imbalance in the recipe the ability to predict the minority class (i.e., True Positive) decreased by ~12%. However, this came at the expense of the ability to predict the True Negative (bottom right of confusion matrix), which decreased by ~9%. 
+
 
 ```{r predictions}
 
 # test the model
-pred_test <- final_model_workflow %>% 
-    predict(promotion_test_tbl) %>%
+pred_test <- final_model_workflow |> 
+    predict(promotion_test_tbl) |> 
     bind_cols(promotion_test_tbl)
 
 # Visualise the performance using a confusion matrix
-cm <- conf_mat(pred_test, promoted, .pred_class)
-autoplot(cm, type = "heatmap") %>% 
-    plotly::plotly_build()
+pred_test |> 
+    # retrieve the relevant variables
+    select(.pred_class, promoted) |> 
+    # convert the text to numeric format
+    mutate_all(~if_else(.x == "promoted", 1, 0)) |> 
+    # aggregate into a table and then convert the table to tibble
+    table() |> 
+    tibble::as_tibble() |> 
+    # plot the confusion matrix
+    cvms::plot_confusion_matrix(
+        target_col     = "promoted",
+        prediction_col = ".pred_class",
+        counts_col     = "n",
+        palette        = "Greens",
+        add_normalized = FALSE # this removes the normalised count % from the middle of each square - easier to reading the interpretation
+    )
+    
 
 ```
 
@@ -267,6 +315,5 @@ autoplot(cm, type = "heatmap") %>%
 # save the model for future use 
 model_bundle <- bundle::bundle(final_model_workflow)
 readr::write_rds(model_bundle, file = "model_bundle.rds")
-
 
 ```
