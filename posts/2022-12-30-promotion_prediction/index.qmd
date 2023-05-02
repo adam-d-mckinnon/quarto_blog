@@ -16,9 +16,21 @@ knitr::include_graphics("markus-spiske-QozzJpFZ2lg-unsplash.jpg")
 
 <br>
 
-The current article is focussed on tuning an xgboost model in the Tidymodels ecosystem to predict promotions using a fictitious employee dataset. The article is intended to complement and earlier [article](https://www.adam-d-mckinnon.com/posts/2023-04-05-using_ai_for_promotions/) focused on the theoretical utility of promotion models.
+In April 2023, I co-authored an [article](https://www.adam-d-mckinnon.com/posts/2023-04-05-using_ai_for_promotions/) with [Martha Curioni](https://www.linkedin.com/in/marthacurioni/) exploring the benefits of using AI to make better promotion decisions. The current article is intended to complement that article by providing a practical example of building an xgboost model in the Tidymodels ecosystem to predict promotions. By using the Tidymodels ecosystem, the current article also partners nicely with [another article](https://www.adam-d-mckinnon.com/posts/2023-04-16-assessing_bias_in_ml_models/) I wrote in April on the topic of assessing bias in Machine Learning (ML) models.
+
+<br>
 
 # Libraries
+
+The libraries used in this work were reasonably straightforward. The notable call outs are the following libraries:
+
+-   themis: enables a step in the pre-processing recipe that deals with unbalanced data;
+
+-   finetune: for performing the tuning process using the tune_race_anova function;
+
+-   cvms: provides a nice function for visualising a confusion matrix; and
+
+-   bundle: for saving the final model built. <br>
 
 ```{r loading_libraries}
 
@@ -32,6 +44,7 @@ library(themis)
 library(finetune)
 library(bundle)
 library(cvms)
+library(bundle)
 
 # Processing power
 library(doParallel)
@@ -48,6 +61,10 @@ tidymodels_prefer()
 
 # Data
 
+The data is a fictitious dataset of employee promotions. The target variable-promotions-is characterised by two mutually exclusive outcomes: 1. promoted (n=342) or 2. not promoted (n=539). The promoted outcome represents 39% of the dataset, reflecting a modest class imbalance.
+
+<br>
+
 ```{r loading_data}
 
 # Load Data ----
@@ -59,7 +76,6 @@ promotions_tbl <- promotions_tbl |>
     mutate_at(.vars = c("gender", "work_site", "management_level"), .funs = ~ forcats::as_factor(.))
 
 
-
 ```
 
 <br>
@@ -67,6 +83,10 @@ promotions_tbl <- promotions_tbl |>
 # Building an ML Model
 
 ### 1. Splitting the data
+
+The data is split into the train and test datasets, ensuring the promoted cases are proportionally distributed across the two datasets (i.e., the strata). The data is then bootstrapped into 75 different datasets for the model tuning process. Bootstrapping is the process of resampling a single dataset to create many datasets. In bootstrapping, it is possible for a single case to be present in more than one of the resampled datasets. Bootstrapping was employed as the original dataset was not large (n=881), and means we can "spend" our data more effectively for tuning.
+
+<br>
 
 ```{r splitting_data}
 
@@ -90,8 +110,21 @@ promotion_folds <- bootstraps(promotion_train_tbl,
 
 ```
 
-<br> 
-### 2. Pre-processing the data
+<br>
+
+\### 2. Pre-processing the data
+
+The recipe identifies the target variable and dataset, and then performs four pre-processing steps. These steps include:
+
+1.  Update the role of the employee id variable. This variable could have been removed, however, retaining the id can help in potentially identifying cases should the need later arise.
+
+2.  Turn all variables into dummy variables (i.e., 0 or 1) for each of the categorical variables (e.g., gender, work site, management level).
+
+3.  Remove any variables that contains only a single variable, and thereby offers no predictive value to the model. While not relevant in this dataset, the inclusion could be perceived as good discipline.
+
+4.  Generate synthetic data by Randomly Over Sampling Examples (ROSE). This was done as the promoted outcome was fewer in number than not being promoted. ROSE is but one of several techniques for addressing class imbalance in models.
+
+<br>
 
 ```{r data_preprocessing}
 
@@ -115,7 +148,7 @@ xgboost_recipe <-
 
 ### 3. Create a model specification
 
-The model specification is created below. With the exception of the number of trees, all other standard parameters are tuned to find the best combination.
+The model specification is fairly standard. With the exception of the number of trees, all other parameters are tuned to find the best combination.
 
 <br>
 
@@ -141,7 +174,7 @@ xgboost_spec <-
 
 ### 4. Workflow setup
 
-Below we simply create the workflow and add the recipe and model specification.
+The workflow creation is a simply process that involves adding both the recipe and model specification to a workflow object.
 
 <br>
 
@@ -168,7 +201,7 @@ Three key activities occur when tuning the model. These are:
 
 1.  Specifying the metrics that will be used to assess the model. In practice only one metric is used in the 'tune_race_anova' function, which is always the first specified in the 'metric_set' function. If a metric is not defined the defaults are either accuracy of RMSE, depending upon the model type.
 
-2.  The next step is to enable parallel processing, using the 'availableCores' function, to expedit the tuning process.
+2.  The next step is to enable parallel processing, using the 'availableCores' function, to expedite the tuning process. Using the availableCores function strikes me as a more effective/accurate method of specifying the number of processors to employ (i.e., better than registerDoParallel -\> detectCores).
 
 3.  Finally, we define the 'tune_race_anova' function, specifying the workflow, resamples, and metrics. It is important to save the predictions from the tuning process.
 
@@ -214,10 +247,13 @@ racing_resamples <- finetune::tune_race_anova(
 
 ### 6. Assess model performance
 
-Here we can look at the results of the model tuning process in two ways:
+Here we look at the results of the model tuning process in two ways:
 
-1.  The model metrics for the combination that "won" the anova race; and
-2.  The plot of the tuning process. The plot shows the number of model combinations that were dropped early in the process (i.e., a considerable time saving) to reach the combination that won the process. This can be an efficient way of testing multiple model parameters efficiently and effectively!
+1.  The model metrics for the combination(s) that "won" the anova race; and
+
+2.  The plot of the tuning process. The plot shows the number of model combinations that were dropped early in the process (i.e., a considerable time saving) to reach the combination(s) that won the process. The plot nicely illustrates that this approach can be an efficient way of testing multiple model parameters quickly and effectively!
+
+<br>
 
 ```{r assess_model}
 
@@ -254,6 +290,14 @@ tuning_plot
 
 ### 7. Finalise the workflow
 
+Finalising the workflow involves two steps:
+
+1.  Selecting the best performing model, in this case using the ROC value (which can be plotted if desired). The ROC metric lends itself to measuing the performance of classification models. We can see how well the model performs on ROC and accuracy.
+
+2.  Extracting the workflow so that we can make some predictions and assess their performance with the confusion matrix.
+
+<br>
+
 ```{r finalise_workflow}
 
 # last_fit_xgboost_workflow
@@ -274,9 +318,14 @@ final_model_workflow <- last_fit_xgboost_workflow |>
 <br>
 
 ### 8. Re-assess model performance
-The confusion matrix provides an overview of our success with the model.
-Interestingly, when the process was run without addressing the class imbalance in the recipe the ability to predict the minority class (i.e., True Positive) decreased by ~12%. However, this came at the expense of the ability to predict the True Negative (bottom right of confusion matrix), which decreased by ~9%. 
 
+The final model assessment is performed by making predictions on data the model has not previously seen (i.e. out test dataset). We begin by making predictions on the test dataset, and appending those predictions to the dataset. Using the actual and predicted values we can then assess the model performance using the confusion matrix.
+
+The confusion matrix provides an overview of our success with the model, comparing the actual promotion values with those predicted.
+
+Interestingly, when the process was run without addressing the class imbalance in the recipe the ability to predict the minority class (i.e., being promoted or a True Positive) decreased by \~12%. However, this increase came at the expense of the ability to accurately predict not being promoted (i.e., the True Negative--bottom right of confusion matrix), which decreased by \~9%.
+
+<br>
 
 ```{r predictions}
 
@@ -310,6 +359,10 @@ pred_test |>
 
 # Save the model
 
+The model is saved out using the bundle library, which provides a simple and consistent way to prepare R model objects to be saved and re-loaded. This affords users a time saving when deploying workflows.
+
+<br>
+
 ```{r save_model}
 
 # save the model for future use 
@@ -317,3 +370,9 @@ model_bundle <- bundle::bundle(final_model_workflow)
 readr::write_rds(model_bundle, file = "model_bundle.rds")
 
 ```
+
+# Conclusion
+
+The above walk through details the steps for building and tuning an xgboost model that predicts promotions in an employee dataset. The article walks through some interesting nuances such as ROSE to address class imbalance, racing model tuning, a more detailed confusion matrix using the cvms package, and saving models using the bundle package.
+
+Happy coding!
