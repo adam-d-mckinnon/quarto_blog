@@ -30,7 +30,9 @@ The libraries used in this work were reasonably straightforward. The notable cal
 
 -   cvms: provides a nice function for visualising a confusion matrix; and
 
--   bundle: for saving the final model built. <br>
+-   bundle: for saving the final model built. 
+
+<br>
 
 ```{r loading_libraries}
 
@@ -112,7 +114,7 @@ promotion_folds <- bootstraps(promotion_train_tbl,
 
 <br>
 
-\### 2. Pre-processing the data
+### 2. Pre-processing the data
 
 The recipe identifies the target variable and dataset, and then performs four pre-processing steps. These steps include:
 
@@ -287,6 +289,7 @@ tuning_plot
 :::
 
 <br>
+<br>
 
 ### 7. Finalise the workflow
 
@@ -306,12 +309,14 @@ last_fit_xgboost_workflow <- xgboost_workflow |>
     last_fit(promotion_split)
 
 # test the fit
-(final_model_workflow_metrics <- collect_metrics(last_fit_xgboost_workflow) |> gt::gt())
+final_model_workflow_metrics <- collect_metrics(last_fit_xgboost_workflow) |> gt::gt()
 
 # extract the model workflow for further testing & saving
 final_model_workflow <- last_fit_xgboost_workflow |> 
     extract_workflow()
 
+# display the metrics - places at the end of this code chunk for a cleaner presentation on the article
+final_model_workflow_metrics
 
 ```
 
@@ -321,7 +326,7 @@ final_model_workflow <- last_fit_xgboost_workflow |>
 
 The final model assessment is performed by making predictions on data the model has not previously seen (i.e. out test dataset). We begin by making predictions on the test dataset, and appending those predictions to the dataset. Using the actual and predicted values we can then assess the model performance using the confusion matrix.
 
-The confusion matrix provides an overview of our success with the model, comparing the actual promotion values with those predicted.
+The confusion matrix provides an overview of our success with the model, comparing the actual promotion values (i.e., Target) with those predicted. The values in the respective quadrants reflect the number of cases that fell into each category. In addition, the subscript sized values display the proportions corresponding to the direction of interpretation (i.e., looking at the predictions or targets). A detailed guide to interpretation of confusion matrices can be found [here](https://www.analyticsvidhya.com/blog/2021/05/in-depth-understanding-of-confusion-matrix/).
 
 Interestingly, when the process was run without addressing the class imbalance in the recipe the ability to predict the minority class (i.e., being promoted or a True Positive) decreased by \~12%. However, this increase came at the expense of the ability to accurately predict not being promoted (i.e., the True Negative--bottom right of confusion matrix), which decreased by \~9%.
 
@@ -370,6 +375,8 @@ model_bundle <- bundle::bundle(final_model_workflow)
 readr::write_rds(model_bundle, file = "model_bundle.rds")
 
 ```
+
+<br>
 
 # Conclusion
 
