@@ -1,0 +1,233 @@
+---
+title: 'Using ML to Predict Remuneration Levels'
+date: 2023-05-19
+description: "Using the TidyModels ecosystem to apply and tune multiple models to determine optimal performance. This approach could be used, coupling market data and existing employee pay levels, to remunerate staff fairly and effectively."
+author: 
+    - name: Adam D McKinnon
+categories: [AI, Bias, Promotions, People Analytics]
+image: "sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg"
+title-block-banner: true
+draft: true
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Sasun Bughdaryan on Unsplash](https://unsplash.com/fr/@sasun1990).",out.width = '100%'}
+knitr::include_graphics("sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg")
+  
+```
+
+<br>
+
+## Introduction
+
+```{r libraries}
+
+# data manipulation
+library(tidyverse)
+
+# modelling
+library(tidymodels)
+library(rules)
+library(baguette)
+library(finetune)
+library(tictoc)
+library(agua)
+
+# Processing power
+library(doParallel)
+library(parallelly)
+
+# Visualisation
+library(plotly)
+
+tidymodels_prefer()
+
+
+```
+
+```{r data}
+
+original_tbl <- readr::read_csv(file = "dataset-37830.csv") |> 
+    
+    # clean the variable names
+    janitor::clean_names() |> 
+    
+    # convert all character variables to factors
+    dplyr::mutate_if(is.character, ~forcats::as_factor(.)) |> 
+    
+    dplyr::select(-wage)
+
+
+```
+
+```{r data_splits}
+
+# Spending the dataset ----
+
+set.seed(836)
+pay_split     <- initial_split(original_tbl)
+pay_train_tbl <- training(pay_split)
+pay_test_tbl  <- testing(pay_split)
+
+
+set.seed(234)
+pay_folds <- 
+   bootstraps(pay_train_tbl)
+
+# check the pay_folds 
+# pay_folds
+
+```
+
+```{r model_recipes}
+
+normalized_rec <- 
+    recipe(logwage ~ ., data = pay_train_tbl) %>% 
+    # update_role(wage, new_role = "id") |> 
+    step_zv(all_predictors()) |> 
+    step_dummy(all_nominal_predictors(), one_hot = TRUE) |> 
+    step_normalize(all_predictors())
+    
+
+```
+
+```{r model_specs}
+
+rf_spec <- 
+   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+   set_engine("ranger") %>% 
+   set_mode("regression")
+
+xgb_spec <- 
+   boost_tree(tree_depth = tune(), learn_rate = tune(), loss_reduction = tune(), 
+              min_n = tune(), sample_size = tune(), trees = tune()) %>% 
+   set_engine("xgboost") %>% 
+   set_mode("regression")
+
+cubist_spec <-
+   cubist_rules(committees = tune(), neighbors = tune()) %>%
+   set_engine("Cubist")
+
+knn_spec <-
+   nearest_neighbor(neighbors = tune(), dist_power = tune(), weight_func = tune()) %>%
+   set_engine("kknn") %>%
+   set_mode("regression")
+
+linear_reg_spec <-
+   linear_reg(penalty = tune(), mixture = tune()) %>%
+   set_engine("glmnet")
+
+
+```
+
+```{r workflowsets}
+
+
+normalised_wf <-
+    workflow_set(
+        preproc = list(normalized_rec),
+        models = list(rf_spec, xgb_spec, cubist_spec, knn_spec, linear_reg_spec)
+  ) 
+ 
+normalised_wf <- normalised_wf |>  
+     mutate(wflow_id = gsub("(recipe_)", "", wflow_id))
+
+
+
+```
+
+```{r}
+
+race_ctrl <-
+   control_race(
+      save_pred = TRUE,
+      parallel_over = "everything",
+      save_workflow = TRUE
+   )
+
+
+
+doParallel::registerDoParallel(cores = parallelly::availableCores())
+ 
+tic()
+
+fit_wf <- normalised_wf %>%  
+  workflow_map(
+      "tune_race_anova",
+      seed = 44, 
+      grid = 25,           ## parameters to pass to tune grid
+      resamples = pay_folds,
+      control = race_ctrl
+  )
+ 
+toc()
+ 
+# Took 1.6 minutes to fit
+ 
+doParallel::stopImplicitCluster()
+ 
+fit_wf <- fit_wf |> 
+    head(5)
+
+
+```
+
+```{r}
+
+plot <- autoplot(
+   fit_wf,
+   rank_metric = "rmse",  
+   metric = "rmse",
+   select_best = TRUE    
+) +
+    geom_text(aes(y = mean - .005, label = wflow_id), angle = 90, hjust = 1) +
+    lims(y = c(0.265, 0.31)) +
+    theme(legend.position = "none")
+
+
+plotly::plotly_build(plot)
+
+
+```
+
+```{r}
+
+
+best_results <- 
+   fit_wf %>% 
+   extract_workflow_set_result("cubist_rules") %>% 
+   select_best(metric = "rmse")
+
+best_results
+
+
+
+cubist_test_results <- 
+   fit_wf %>% 
+   extract_workflow("cubist_rules") %>% 
+   finalize_workflow(best_results) %>% 
+   last_fit(split = pay_split)
+
+
+collect_metrics(cubist_test_results)
+
+```
+
+```{r}
+
+predictions_plot <- cubist_test_results |>  
+    collect_predictions() |>
+    mutate(
+        wage = exp(logwage),
+        .pred_wage = exp(.pred)
+        ) |> 
+    
+   ggplot(aes(x = wage, y = .pred_wage)) + 
+   geom_abline(color = "red", lty = 2) + 
+   geom_point(alpha = 0.5) + 
+   coord_obs_pred() + 
+   labs(x = "observed", y = "predicted")
+
+
+plotly::plotly_build(predictions_plot)
+
+```

@@ -1,0 +1,14 @@
+{
+  "hash": "b6a71d7e66d6c43b14adc30c4d7f8004",
+  "result": {
+    "markdown": "---\ntitle: 'Using ML to Predict Remuneration Levels'\ndate: 2023-04-19\ndescription: \"Using the TidyModels ecosystem to apply and tune multiple models to determine optimal performance. This approach could be used, coupling market data and existing employee pay levels, to remunerate staff fairly and effectively.\"\nauthor: \n    - name: Adam D McKinnon\ncategories: [AI, Bias, Promotions, People Analytics]\nimage: \"michael-dziedzic-web.jpg\"\ntitle-block-banner: true\ndraft: true\n---\n\n::: {.cell code_folding='false'}\n::: {.cell-output-display}\n![[Photo by Sasun Bughdaryan on Unsplash](https://unsplash.com/fr/@sasun1990).](sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg){width=100%}\n:::\n:::\n\n\n<br>\n\n## Introduction\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
