@@ -11,7 +11,7 @@ draft: true
 ---
 
 ```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Sasun Bughdaryan on Unsplash](https://unsplash.com/fr/@sasun1990).",out.width = '100%'}
-knitr::include_graphics("sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg")
+knitr::include_graphics("ivan-diaz-WuH3qCmAnlA-unsplash.jpg")
   
 ```
 
@@ -93,7 +93,6 @@ auto_spec <-
 
 ```
 
-
 ```{r}
 
 auto_wflow <-
@@ -102,7 +101,6 @@ auto_wflow <-
   add_recipe(normalized_rec)
 
 ```
-
 
 ```{r}
 
@@ -114,7 +112,6 @@ extract_fit_parsnip(auto_fit)
 predict(auto_fit, new_data = pay_test_tbl) |> mutate(.pred_normal = exp(.pred))
 
 ```
-
 
 ```{r}
 
@@ -130,5 +127,3 @@ autoplot(auto_fit, type = "rank", metric = "rmse") +
   theme(legend.position = "none")
 
 ```
-
-

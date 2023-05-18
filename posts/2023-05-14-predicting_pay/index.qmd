@@ -7,7 +7,7 @@ author:
 categories: [AI, Bias, Promotions, People Analytics]
 image: "sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg"
 title-block-banner: true
-draft: true
+draft: false
 ---
 
 ```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Sasun Bughdaryan on Unsplash](https://unsplash.com/fr/@sasun1990).",out.width = '100%'}
@@ -19,6 +19,10 @@ knitr::include_graphics("sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg")
 
 ## Introduction
 
+### Libraries
+
+<br>
+
 ```{r libraries}
 
 # data manipulation
@@ -26,11 +30,13 @@ library(tidyverse)
 
 # modelling
 library(tidymodels)
-library(rules)
-library(baguette)
 library(finetune)
-library(tictoc)
-library(agua)
+library(rules)
+
+# model explaining
+library(DALEX) # model explainer
+library(DALEXtra) # model explainer with tidymodels functionality
+library(modelStudio)
 
 # Processing power
 library(doParallel)
@@ -43,6 +49,12 @@ tidymodels_prefer()
 
 
 ```
+
+<br>
+
+### Data
+
+<br>
 
 ```{r data}
 
@@ -59,10 +71,15 @@ original_tbl <- readr::read_csv(file = "dataset-37830.csv") |>
 
 ```
 
+<br>
+
+### Data Splits
+
+<br>
+
 ```{r data_splits}
 
 # Spending the dataset ----
-
 set.seed(836)
 pay_split     <- initial_split(original_tbl)
 pay_train_tbl <- training(pay_split)
@@ -78,6 +95,12 @@ pay_folds <-
 
 ```
 
+<br>
+
+### Receipe
+
+<br>
+
 ```{r model_recipes}
 
 normalized_rec <- 
@@ -89,6 +112,12 @@ normalized_rec <-
     
 
 ```
+
+<br>
+
+### Model Specifications
+
+<br>
 
 ```{r model_specs}
 
@@ -119,6 +148,12 @@ linear_reg_spec <-
 
 ```
 
+<br>
+
+### Workflowsets
+
+<br>
+
 ```{r workflowsets}
 
 
@@ -135,7 +170,13 @@ normalised_wf <- normalised_wf |>
 
 ```
 
-```{r}
+<br>
+
+### Model Tuning
+
+<br>
+
+```{r model_tuning}
 
 race_ctrl <-
    control_race(
@@ -148,7 +189,6 @@ race_ctrl <-
 
 doParallel::registerDoParallel(cores = parallelly::availableCores())
  
-tic()
 
 fit_wf <- normalised_wf %>%  
   workflow_map(
@@ -159,21 +199,21 @@ fit_wf <- normalised_wf %>%
       control = race_ctrl
   )
  
-toc()
- 
-# Took 1.6 minutes to fit
  
 doParallel::stopImplicitCluster()
- 
-fit_wf <- fit_wf |> 
-    head(5)
 
 
 ```
 
-```{r}
+<br>
 
-plot <- autoplot(
+### Assess Model Performance
+
+<br>
+
+```{r model_performance}
+
+model_performance_plot <- autoplot(
    fit_wf,
    rank_metric = "rmse",  
    metric = "rmse",
@@ -184,13 +224,18 @@ plot <- autoplot(
     theme(legend.position = "none")
 
 
-plotly::plotly_build(plot)
+plotly::plotly_build(model_performance_plot)
 
 
 ```
 
-```{r}
+<br>
 
+### Finalise Workflow
+
+<br>
+
+```{r model_fit}
 
 best_results <- 
    fit_wf %>% 
@@ -200,21 +245,30 @@ best_results <-
 best_results
 
 
-
-cubist_test_results <- 
+cubist_fit <- 
    fit_wf %>% 
    extract_workflow("cubist_rules") %>% 
    finalize_workflow(best_results) %>% 
    last_fit(split = pay_split)
 
+collect_metrics(cubist_fit)
 
-collect_metrics(cubist_test_results)
+
+final_fitted <- cubist_fit$.workflow[[1]]
+predict(final_fitted, pay_test_tbl[10:12, ])
+
 
 ```
 
-```{r}
+<br>
 
-predictions_plot <- cubist_test_results |>  
+### Re-assess Final Model
+
+<br>
+
+```{r model_fit_performance}
+
+predictions_plot <- cubist_fit |>  
     collect_predictions() |>
     mutate(
         wage = exp(logwage),
@@ -231,3 +285,49 @@ predictions_plot <- cubist_test_results |>
 plotly::plotly_build(predictions_plot)
 
 ```
+
+<br>
+
+```{r explainer}
+
+
+pay_explainer <- DALEXtra::explain_tidymodels(
+    final_fitted,
+    data    = pay_test_tbl |> select(-logwage),
+    y       = pay_test_tbl$logwage,
+    verbose = FALSE
+
+)
+
+
+model_performance(pay_explainer)
+
+
+# pick observations
+new_observation <- pay_test_tbl[1:2,]
+rownames(new_observation) <- c("id1", "id2")
+
+
+# make a studio for the model
+modelStudio::modelStudio(pay_explainer, new_observation)
+
+
+```
+
+# Save the model
+
+The model is saved out using the bundle library, which provides a simple and consistent way to prepare R model objects to be saved and re-loaded. This affords users a time saving when deploying workflows.
+
+<br>
+
+```{r save_model}
+
+# save the model for future use 
+model_bundle <- bundle::bundle(final_fitted)
+readr::write_rds(model_bundle, file = "model_bundle.rds")
+
+```
+
+<br>
+
+## Conclusion
