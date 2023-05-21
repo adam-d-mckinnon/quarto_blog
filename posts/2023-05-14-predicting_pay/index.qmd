@@ -66,6 +66,9 @@ original_tbl <- readr::read_csv(file = "dataset-37830.csv") |>
     # convert all character variables to factors
     dplyr::mutate_if(is.character, ~forcats::as_factor(.)) |> 
     
+    # convert the year variable to a factor
+    dplyr::mutate(year = forcats::as_factor(year)) |> 
+    
     dplyr::select(-wage)
 
 
@@ -105,10 +108,9 @@ pay_folds <-
 
 normalized_rec <- 
     recipe(logwage ~ ., data = pay_train_tbl) %>% 
-    # update_role(wage, new_role = "id") |> 
     step_zv(all_predictors()) |> 
     step_dummy(all_nominal_predictors(), one_hot = TRUE) |> 
-    step_normalize(all_predictors())
+    step_normalize(age)
     
 
 ```
@@ -122,27 +124,50 @@ normalized_rec <-
 ```{r model_specs}
 
 rf_spec <- 
-   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
-   set_engine("ranger") %>% 
+   rand_forest(
+       mtry  = tune(), 
+       min_n = tune(), 
+       trees = 1000) |> 
+   set_engine("ranger") |> 
    set_mode("regression")
+
 
 xgb_spec <- 
-   boost_tree(tree_depth = tune(), learn_rate = tune(), loss_reduction = tune(), 
-              min_n = tune(), sample_size = tune(), trees = tune()) %>% 
-   set_engine("xgboost") %>% 
+   boost_tree(
+       tree_depth     = tune(), 
+       learn_rate     = tune(), 
+       loss_reduction = tune(),
+       min_n          = tune(), 
+       sample_size    = tune(), 
+       trees          = tune()
+       ) |> 
+   set_engine("xgboost") |> 
    set_mode("regression")
+
 
 cubist_spec <-
-   cubist_rules(committees = tune(), neighbors = tune()) %>%
+   cubist_rules(
+       committees = tune(), 
+       neighbors  = tune()
+       ) |> 
    set_engine("Cubist")
 
+
 knn_spec <-
-   nearest_neighbor(neighbors = tune(), dist_power = tune(), weight_func = tune()) %>%
-   set_engine("kknn") %>%
+   nearest_neighbor(
+       neighbors   = tune(), 
+       dist_power  = tune(), 
+       weight_func = tune()
+       ) |> 
+   set_engine("kknn") |> 
    set_mode("regression")
 
+
 linear_reg_spec <-
-   linear_reg(penalty = tune(), mixture = tune()) %>%
+   linear_reg(
+       penalty = tune(), 
+       mixture = tune()
+       ) |> 
    set_engine("glmnet")
 
 
@@ -160,9 +185,16 @@ linear_reg_spec <-
 normalised_wf <-
     workflow_set(
         preproc = list(normalized_rec),
-        models = list(rf_spec, xgb_spec, cubist_spec, knn_spec, linear_reg_spec)
+        models = list(
+            rf_spec, 
+            xgb_spec, 
+            cubist_spec, 
+            knn_spec, 
+            linear_reg_spec
+            )
   ) 
  
+
 normalised_wf <- normalised_wf |>  
      mutate(wflow_id = gsub("(recipe_)", "", wflow_id))
 
@@ -180,7 +212,7 @@ normalised_wf <- normalised_wf |>
 
 race_ctrl <-
    control_race(
-      save_pred = TRUE,
+      save_pred     = TRUE,
       parallel_over = "everything",
       save_workflow = TRUE
    )
@@ -189,7 +221,6 @@ race_ctrl <-
 
 doParallel::registerDoParallel(cores = parallelly::availableCores())
  
-
 fit_wf <- normalised_wf %>%  
   workflow_map(
       "tune_race_anova",
@@ -198,8 +229,7 @@ fit_wf <- normalised_wf %>%
       resamples = pay_folds,
       control = race_ctrl
   )
- 
- 
+
 doParallel::stopImplicitCluster()
 
 
@@ -213,13 +243,14 @@ doParallel::stopImplicitCluster()
 
 ```{r model_performance}
 
-model_performance_plot <- autoplot(
-   fit_wf,
-   rank_metric = "rmse",  
-   metric = "rmse",
-   select_best = TRUE    
-) +
-    geom_text(aes(y = mean - .005, label = wflow_id), angle = 90, hjust = 1) +
+model_performance_plot <- 
+    autoplot(
+        fit_wf,
+        rank_metric = "rmse",  
+        metric      = "rmse",
+        select_best = TRUE
+        ) +
+    geom_text(aes(y = mean - .005, label = wflow_id), hjust = 1) +
     lims(y = c(0.265, 0.31)) +
     theme(legend.position = "none")
 
@@ -254,7 +285,7 @@ cubist_fit <-
 collect_metrics(cubist_fit)
 
 
-final_fitted <- cubist_fit$.workflow[[1]]
+final_fitted <- cubist_fit |> extract_workflow()
 predict(final_fitted, pay_test_tbl[10:12, ])
 
 
@@ -268,18 +299,20 @@ predict(final_fitted, pay_test_tbl[10:12, ])
 
 ```{r model_fit_performance}
 
-predictions_plot <- cubist_fit |>  
+predictions_plot <- 
+    cubist_fit |>
     collect_predictions() |>
     mutate(
-        wage = exp(logwage),
-        .pred_wage = exp(.pred)
+        `Actual Wage` = exp(logwage) |> formattable::currency(),
+        `Predicted Wage` = exp(.pred) |> formattable::currency()
         ) |> 
     
-   ggplot(aes(x = wage, y = .pred_wage)) + 
-   geom_abline(color = "red", lty = 2) + 
-   geom_point(alpha = 0.5) + 
-   coord_obs_pred() + 
-   labs(x = "observed", y = "predicted")
+    ggplot(aes(x = `Actual Wage`, y = `Predicted Wage`)) + 
+    geom_abline(color = "red", lty = 10) + 
+    geom_point(alpha = 0.5) + 
+    coord_obs_pred() + 
+    labs(x = "Actual", y = "Predicted") +
+    coord_cartesian(xlim =c(0, 350), ylim = c(50, 200))
 
 
 plotly::plotly_build(predictions_plot)
@@ -309,14 +342,25 @@ rownames(new_observation) <- c("id1", "id2")
 
 
 # make a studio for the model
-modelStudio::modelStudio(pay_explainer, new_observation)
+modelStudio_obj <- modelStudio::modelStudio(pay_explainer, new_observation)
 
 
 ```
 
-# Save the model
+```{r modelstudio_output, include=FALSE, out.width = '100%'}
 
-The model is saved out using the bundle library, which provides a simple and consistent way to prepare R model objects to be saved and re-loaded. This affords users a time saving when deploying workflows.
+knitr::include_url(modelStudio_obj)
+# <iframe width="100%" height="400"
+#   src="modelStudio_obj"
+#   frameborder="0" 
+#   allowfullscreen></iframe>
+
+
+```
+
+## Save the model
+
+The model is saved out using the bundle library, which provides a simple and consistent way to prepare R model objects to be saved and re-loaded. This affords users a time saving when saving, sharing and deploying workflows.
 
 <br>
 
@@ -330,4 +374,4 @@ readr::write_rds(model_bundle, file = "model_bundle.rds")
 
 <br>
 
-## Conclusion
+# Conclusion
