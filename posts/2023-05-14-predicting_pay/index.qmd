@@ -371,23 +371,30 @@ rownames(new_observation) <- c("id1", "id2")
 
 
 # make a studio for the model
-modelStudio_obj <- modelStudio::modelStudio(pay_explainer, new_observation)
+modelStudio_obj <- 
+    modelStudio::modelStudio(
+        explainer       = pay_explainer, 
+        new_observation = new_observation,
+        viewer          = "browser"
+        )
+
+htmltools::save_html(
+    html = modelStudio_obj,
+    file = "model_studio_page.html"
+)
+
 
 
 ```
 
 <br>
 
-<br>
+```{r explainer_output, echo=FALSE}
 
-```{r modelstudio_output, echo=FALSE}
-
-modelStudio_obj
+# htmltools::includeHTML(modelStudio_obj)
 
 
 ```
-
-<br>
 
 ## Save the model
 
