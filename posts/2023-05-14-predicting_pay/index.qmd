@@ -348,6 +348,16 @@ plotly::plotly_build(predictions_plot)
 
 The provided R code first creates an explainer object \`pay_explainer\` for the final fitted model \`final_fitted\` using the \`DALEXtra::explain_tidymodels\` function, using the test dataset \`pay_test_tbl\` and its \`logwage\` outcomes. It then displays the model performance metrics with \`model_performance\`. Following this, it selects two observations from the test data set and assigns them row names. Finally, it uses the \`modelStudio::modelStudio\` function to create an interactive modelStudio object which provides a comprehensive exploration and explanation of the machine learning model's behavior for the selected observations.
 
+You can interact with the modelStudio object below. By clicking on the plot name, or the plus button and then the plot name, you can add visualisations to the page. The three additional plots recommended for inclusion are:
+
+1.  Break Down Plot;
+2.  Shapley Values; and
+3.  Partial Dependence Plot.
+
+For a detailed explanation as to the rationale for inclusion and what the plots signify check out the following [article](https://www.business-science.io/r/2022/02/22/my-4-most-important-explainable-ai-visualizations-modelstudio.html).
+
+## **Break Down Plot**
+
 <br>
 
 ```{r explainer}
@@ -367,7 +377,7 @@ model_performance(pay_explainer)
 
 # pick observations
 new_observation <- pay_test_tbl[1:2,]
-rownames(new_observation) <- c("id1", "id2")
+# rownames(new_observation) <- c("id1", "id2")
 
 
 # make a studio for the model
@@ -378,23 +388,24 @@ modelStudio_obj <-
         viewer          = "browser"
         )
 
-htmltools::save_html(
-    html = modelStudio_obj,
-    file = "model_studio_page.html"
+# save the modelstudio object
+htmlwidgets::saveWidget(
+    widget = modelStudio_obj,
+    file   = "model_studio_page.html"
 )
-
 
 
 ```
 
 <br>
 
-```{r explainer_output, echo=FALSE}
-
-# htmltools::includeHTML(modelStudio_obj)
-
-
+````{=html}
+```{r explainer_output, echo=FALSE, results='asis', out.width="100%"}
+xfun::file_string('model_studio_page.html')
 ```
+````
+
+<br>
 
 ## Save the model
 
