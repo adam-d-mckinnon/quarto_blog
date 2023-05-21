@@ -19,7 +19,19 @@ knitr::include_graphics("sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg")
 
 ## Introduction
 
-### Libraries
+I was recently bemused by a debate on LinkedIn in which different authors stated their preferred machine learning (ML) model for specific HR tasks. I couldn't buy into the discussion. ML models are like wines -- you should find and use the best one to fit the context! To that end I created the following article to illustrate the way in which you could apply and tune multiple ML models in parallel to determine which model performs best. This article uses the Tidymodels ecosystem to predict wages using a dummy wage dataset from the ISLR package.
+
+<br>
+
+##### Why Predict Wages?
+
+ML models can be used by HR functions to optimise pay levels by predicting wages based on relevant features such as the employee's experience, education, skills, job role, and performance. This data-driven approach can help ensure that pay levels are fair and competitive, which can in turn help attract and retain talented employees.
+
+<br>
+
+### Libraries & Data
+
+The provided R code reads a CSV file into a data frame \`original_tbl\`, cleans the variable names, converts all character variables to factors using \`forcats::as_factor()\`, changes the 'year' variable to a factor, and then deselects the 'wage' variable from the data frame.
 
 <br>
 
@@ -48,16 +60,6 @@ library(plotly)
 tidymodels_prefer()
 
 
-```
-
-<br>
-
-### Data
-
-<br>
-
-```{r data}
-
 original_tbl <- readr::read_csv(file = "dataset-37830.csv") |> 
     
     # clean the variable names
@@ -71,12 +73,13 @@ original_tbl <- readr::read_csv(file = "dataset-37830.csv") |>
     
     dplyr::select(-wage)
 
-
 ```
 
 <br>
 
 ### Data Splits
+
+Here we split the \`original_tbl\` into a training set and a testing set using the \`initial_split\` function from the rsample package, which randomly assigns a percentage of data to the training set (default is 75%) and the remaining to the test set. The \`set.seed()\` function is used twice to ensure the reproducibility of the random sampling process. After splitting the dataset, the code then generates bootstrap resamples from the training set, stored in \`pay_folds\`.
 
 <br>
 
@@ -102,6 +105,14 @@ pay_folds <-
 
 ### Receipe
 
+The provided R code creates a recipe for preprocessing the \`pay_train_tbl\` dataset with the target variable \`logwage\` and all other variables as predictors using the \`recipe\` function from the \`recipes\` package in R. This preprocessing includes three steps:
+
+1.  \`step_zv\` which removes predictors with zero variance,
+
+2.  \`step_dummy\` which converts all nominal predictors into dummy variables using one-hot encoding, and
+
+3.  \`step_normalize\` which normalizes the \`age\` predictor.
+
 <br>
 
 ```{r model_recipes}
@@ -118,6 +129,8 @@ normalized_rec <-
 <br>
 
 ### Model Specifications
+
+The provided R code creates specifications for five different regression models (Random Forest, XGBoost, Cubist, K-nearest neighbors (KNN), and Linear Regression) using the \`parsnip\` package in R. Each specification indicates the model type, the hyperparameters to be tuned (using \`tune()\`), the computational engine to be used (like "ranger" for random forest and "xgboost" for XGBoost), and the mode of the model which is set to "regression" in all cases.
 
 <br>
 
@@ -177,6 +190,8 @@ linear_reg_spec <-
 
 ### Workflowsets
 
+The provided R code first creates a set of workflows that combine a preprocessing recipe (\`normalized_rec\`) with a list of different model specifications (Random Forest, XGBoost, Cubist, KNN, Linear Regression) using the \`workflow_set\` function from the \`workflows\` package in R. It then modifies the workflow set by removing the prefix "recipe\_" from the workflow identifiers (\`wflow_id\`) using the \`gsub\` function within a \`mutate\` operation.
+
 <br>
 
 ```{r workflowsets}
@@ -205,6 +220,8 @@ normalised_wf <- normalised_wf |>
 <br>
 
 ### Model Tuning
+
+The provided R code sets up parallel computation, using the \`doParallel\` package to register multiple cores for parallel computation, and then uses the \`tune_race_anova\` method to tune the hyperparameters of each workflow in the \`normalised_wf\` workflow set via the \`workflow_map\` function; it runs the tuning process across a bootstrap resampling of the training data (\`pay_folds\`) with a grid of 25 different hyperparameter combinations and stores the results. After the tuning process is finished, it stops the implicit parallel computing cluster with \`doParallel::stopImplicitCluster()\`.
 
 <br>
 
@@ -239,6 +256,8 @@ doParallel::stopImplicitCluster()
 
 ### Assess Model Performance
 
+The provided R code creates a plot using \`autoplot\` to visualize the performance of the fitted workflows (i.e., models) in \`fit_wf\` based on the root mean square error (RMSE) metric, selecting the best model, and then adds labels, sets the y-axis limits, removes the legend with \`theme\`, and finally transforms the static ggplot2 plot into an interactive Plotly plot with \`plotly::plotly_build()\`.
+
 <br>
 
 ```{r model_performance}
@@ -263,6 +282,8 @@ plotly::plotly_build(model_performance_plot)
 <br>
 
 ### Finalise Workflow
+
+This provided R code selects the best performing hyperparameters based on the RMSE metric for the Cubist model from the tuned workflows (\`fit_wf\`), finalizes the workflow with these parameters, fits it to the original training-testing split (\`pay_split\`), and then evaluates the metrics of this final model; finally, it uses this final fitted model to predict the outcome for the 10th, 11th, and 12th instances in the test set (\`pay_test_tbl\`).
 
 <br>
 
@@ -295,6 +316,8 @@ predict(final_fitted, pay_test_tbl[10:12, ])
 
 ### Re-assess Final Model
 
+The provided R code creates a scatter plot of the actual versus predicted wage values from the Cubist model (\`cubist_fit\`), adds a reference line, sets labels, and specifies the x and y axis limits, before transforming the ggplot into an interactive Plotly plot.
+
 <br>
 
 ```{r model_fit_performance}
@@ -318,6 +341,12 @@ predictions_plot <-
 plotly::plotly_build(predictions_plot)
 
 ```
+
+<br>
+
+### Model Explainer
+
+The provided R code first creates an explainer object \`pay_explainer\` for the final fitted model \`final_fitted\` using the \`DALEXtra::explain_tidymodels\` function, using the test dataset \`pay_test_tbl\` and its \`logwage\` outcomes. It then displays the model performance metrics with \`model_performance\`. Following this, it selects two observations from the test data set and assigns them row names. Finally, it uses the \`modelStudio::modelStudio\` function to create an interactive modelStudio object which provides a comprehensive exploration and explanation of the machine learning model's behavior for the selected observations.
 
 <br>
 
@@ -347,16 +376,18 @@ modelStudio_obj <- modelStudio::modelStudio(pay_explainer, new_observation)
 
 ```
 
-```{r modelstudio_output, include=FALSE, out.width = '100%'}
+<br>
 
-knitr::include_url(modelStudio_obj)
-# <iframe width="100%" height="400"
-#   src="modelStudio_obj"
-#   frameborder="0" 
-#   allowfullscreen></iframe>
+<br>
+
+```{r modelstudio_output, echo=FALSE}
+
+modelStudio_obj
 
 
 ```
+
+<br>
 
 ## Save the model
 
@@ -375,3 +406,11 @@ readr::write_rds(model_bundle, file = "model_bundle.rds")
 <br>
 
 # Conclusion
+
+Machine learning models can be used by HR functions to optimise pay levels by predicting wages based on relevant features, helping to attract and retain talented employees.
+
+Moreover, these models can help reduce bias in pay decisions. By using objective data and transparent algorithms, the influence of subjective or potentially biased factors can be minimized. For example, if the machine learning model does not consider factors such as gender, race, or other protected characteristics, it can help prevent these factors from affecting pay decisions.
+
+The machine learning model's predictions can also be used to identify potential discrepancies or anomalies in pay levels, which might indicate bias or unfair practices. For instance, if the model predicts a certain pay level based on an employee's characteristics and performance, but the actual pay is significantly lower, this discrepancy might warrant further investigation. This use case would work particularly well in an environment that embraces transparency.
+
+It's important to note, however, that while machine learning can be a powerful tool for optimizing pay and reducing bias, it's not a silver bullet. Care must be taken in selecting and interpreting the features used for prediction, as well as in validating and regularly auditing the model, to ensure fairness and avoid inadvertently introducing new biases.
