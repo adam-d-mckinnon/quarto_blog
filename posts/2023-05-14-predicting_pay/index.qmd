@@ -304,10 +304,8 @@ cubist_fit <-
    finalize_workflow(best_results) %>% 
    last_fit(split = pay_split)
 
+
 collect_metrics(cubist_fit)
-
-
-# predict(final_fitted, pay_test_tbl[10:12, ])
 
 
 ```
@@ -400,7 +398,7 @@ htmlwidgets::saveWidget(
 <br>
 
 ````{=html}
-```{r explainer_output, echo=FALSE, results='asis', out.width="100%"}
+```{r explainer_output, echo=FALSE, results='asis'}
 xfun::file_string('model_studio_page.html')
 ```
 ````
