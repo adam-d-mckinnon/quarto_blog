@@ -1,0 +1,14 @@
+{
+  "hash": "9a3a6bbf4c92f05016b0b68016c2b63f",
+  "result": {
+    "markdown": "---\ntitle: \"test_for_embedding_html\"\ndate: 2023-05-29\ndescription: \"Something.\"\nauthor: \n    - name: Adam D McKinnon\ncategories: [Luck, Embedding, Test, People Analytics]\ntitle-block-banner: true\ndraft: true\n---\n\n\n# Libraries\n\n<br>\n\n<!-- :::{.column-screen} -->\n\n<!-- ![](model_studio_page.html) -->\n<!-- ::: -->\n\n<!-- <br> -->\n\n<!-- ```{r} -->\n<!-- #| column: screen -->\n\n<!-- knitr::include_url(\"model_studio_page.html\") -->\n\n<!-- ``` -->\n\n\n\n\n<!-- :::{.column-screen} -->\n\n<!-- <img src=\"model_studio_page.html\"> -->\n<!-- ::: -->\n\n<!-- <br> -->\n\n\n<!-- ````{=html} -->\n<!-- ```{r explainer_output, echo=FALSE, results='asis'} -->\n<!-- knitr::include_url(\"model_studio_page.html\") -->\n<!-- ``` -->\n<!-- ```` -->\n\n\n\n\n![Model Studio Example Output](modelstudio_output.png){width=100%}\n\n\n\n::: {.cell .column-page}\n\n:::\n\n\n\n\n## Save the model\n\nThe model is saved out using the bundle library, which provides a simple and consistent way to prepare R model objects to be saved and re-loaded. This affords users a time saving when saving, sharing and deploying workflows.\n\n<br>\n\n# Conclusion\n\nMachine learning models can be used by HR functions to optimise pay levels by predicting wages based on relevant features, helping to attract and retain talented employees.\n\nMoreover, these models can help reduce bias in pay decisions. By using objective data and transparent algorithms, the influence of subjective or potentially biased factors can be minimized. For example, if the machine learning model does not consider factors such as gender, race, or other protected characteristics, it can help prevent these factors from affecting pay decisions.\n\nThe machine learning model's predictions can also be used to identify potential discrepancies or anomalies in pay levels, which might indicate bias or unfair practices. For instance, if the model predicts a certain pay level based on an employee's characteristics and performance, but the actual pay is significantly lower, this discrepancy might warrant further investigation. This use case would work particularly well in an environment that embraces transparency.\n\nIt's important to note, however, that while machine learning can be a powerful tool for optimizing pay and reducing bias, it's not a silver bullet. Care must be taken in selecting and interpreting the features used for prediction, as well as in validating and regularly auditing the model, to ensure fairness and avoid inadvertently introducing new biases.\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

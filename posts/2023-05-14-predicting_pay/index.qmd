@@ -1,13 +1,12 @@
 ---
 title: 'Using ML to Predict Remuneration Levels'
-date: 2023-05-19
+date: 2023-06-01
 description: "Using the TidyModels ecosystem to apply and tune multiple models to determine optimal performance. This approach could be used, coupling market data and existing employee pay levels, to remunerate staff fairly and effectively."
 author: 
     - name: Adam D McKinnon
 categories: [ML, Remuneration, Bias, People Analytics]
 image: "sasun-bughdaryan-GQ5uX_BlfmY-unsplash.jpg"
 title-block-banner: true
-page-layout: full
 draft: false
 ---
 
@@ -397,11 +396,7 @@ htmlwidgets::saveWidget(
 
 <br>
 
-````{=html}
-```{r explainer_output, echo=FALSE, results='asis'}
-xfun::file_string('model_studio_page.html')
-```
-````
+![](modelstudio_output.png){width=100%}
 
 <br>
 
