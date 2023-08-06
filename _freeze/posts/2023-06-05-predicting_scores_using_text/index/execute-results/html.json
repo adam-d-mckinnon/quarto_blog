@@ -1,0 +1,14 @@
+{
+  "hash": "a05b36a9a25fcd5c5210b1faefdf1227",
+  "result": {
+    "markdown": "---\ntitle: 'Predicting Wine Ratings Using Reviews'\ndate: 2023-05-19\ndescription: \"Using a mix of quantitative and qualitative data to predict wine ratings globally. This approach demonstrates the utility of text based data in ML models for predicting outcomes of interest. \"\nauthor: \n    - name: Adam D McKinnon\ncategories: [AI, Text, Wine Reviews]\nimage: \"kym-ellis-aF1NPSnDQLw-unsplash.jpg\"\ntitle-block-banner: true\ndraft: true\n---\n\n::: {.cell code_folding='false'}\n::: {.cell-output-display}\n![[Photo by Kym Ellis on Unsplash](https://unsplash.com/@kymellis).](kym-ellis-aF1NPSnDQLw-unsplash.jpg){width=100%}\n:::\n:::\n\n\n<br>\n\n## Introduction\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# data manipulation\nlibrary(tidyverse)\n\n# modelling\nlibrary(tidymodels)\nlibrary(agua)\n\n# Processing power\nlibrary(doParallel)\nlibrary(parallelly)\n\n# Visualisation\nlibrary(plotly)\n\ntidymodels_prefer()\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\noriginal_tbl <- readr::read_csv(file = \"winemag-data-2017-2020.csv\") |> \n    \n    # clean the variable names\n    janitor::clean_names()\n```\n:::\n\n\nData was downloaded here: https://www.kaggle.com/datasets/manyregression/updated-wine-enthusiast-review\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

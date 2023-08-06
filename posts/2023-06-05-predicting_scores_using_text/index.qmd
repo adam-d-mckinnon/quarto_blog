@@ -1,0 +1,226 @@
+---
+title: 'Predicting Wine Ratings Using Reviews'
+date: 2023-05-19
+description: "Using a mix of quantitative and qualitative data to predict wine ratings globally. This approach demonstrates the utility of text based data in ML models for predicting outcomes of interest. "
+author: 
+    - name: Adam D McKinnon
+categories: [AI, Text, Wine Reviews]
+image: "kym-ellis-aF1NPSnDQLw-unsplash.jpg"
+title-block-banner: true
+draft: true
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Kym Ellis on Unsplash](https://unsplash.com/@kymellis).",out.width = '100%'}
+knitr::include_graphics("kym-ellis-aF1NPSnDQLw-unsplash.jpg")
+
+```
+
+<br>
+
+## Introduction
+
+```{r libraries}
+
+# data manipulation & exploration
+library(tidyverse)
+library(DataExplorer)
+library(tidytext)
+library(udpipe)
+
+
+# modelling
+library(tidymodels)
+library(textrecipes)
+library(agua)
+
+# Processing power
+library(doParallel)
+library(parallelly)
+
+# Visualisation
+library(plotly)
+
+tidymodels_prefer()
+
+
+```
+
+
+
+
+```{r data_cleaning}
+
+# Data was downloaded here: https://www.kaggle.com/datasets/manyregression/updated-wine-enthusiast-review
+original_tbl <- readr::read_csv(file = "winemag-data-2017-2020.csv") |> 
+    
+    # clean the variable names
+    janitor::clean_names() 
+
+
+# for modelling we will use the following variables
+vars_to_model <- c("variety", "vintage", 
+                  "country", "province",
+                  "title", # retain for identification purposes
+                  "points", "price", "taster_name", "description")
+
+
+# data exploration
+# original_tbl |>
+#     DataExplorer::create_report()
+
+
+cleaned_tbl <- 
+original_tbl |> 
+    dplyr::select(one_of(vars_to_model)) |> 
+    
+    dplyr::mutate_at(c("country", "vintage", "variety", "province"), ~forcats::as_factor(.)) |> 
+    
+    tidyr::drop_na(country, province, taster_name, price)
+    
+
+```
+
+```{r data_exploration}
+
+ud_model <- udpipe_download_model(language = "english")
+ud_model <- udpipe_load_model(ud_model$file_model)
+
+cleaned_identifier_tbl <- cleaned_tbl |> 
+    # convert the doc_id to character to enable joining with the 
+    # product of udpipe_annotate, which produces a character doc_id output
+    mutate(doc_id = row_number() |> as.character())
+
+
+annotated_text <- udpipe::udpipe_annotate(ud_model, x = cleaned_identifier_tbl$description, doc_id = cleaned_identifier_tbl$doc_id)
+
+# write the annotation to file for future reference
+annotated_text |> 
+    tibble::as_tibble() |> 
+    readr::write_rds(file = "annotated_text.rds")
+
+
+
+words_for_plot_tbl <-  
+annotated_text |> 
+    tibble::as_tibble() |> 
+    dplyr::filter(upos %in% c("ADJ", "NOUN", "VERB")) |> 
+    
+    # join the points variable (i.e., the wine rating)
+    dplyr::left_join(cleaned_identifier_tbl |> select(doc_id, points),
+                     by = c("doc_id" = "doc_id")) |> 
+    
+    dplyr::group_by(token) |> 
+    dplyr::summarise(
+        n = n(),
+        rating = mean(points) |> round(digits = 2)
+        ) |> 
+    dplyr::filter(rating >= 90) |> 
+    dplyr::mutate(plot_description = stringr::str_glue(
+        "Descriptor: {token}
+        Frequency: {n}
+        Associated Rating: {rating}
+        "
+    )) 
+
+
+
+# tidy_description <-
+#     cleaned_tbl |> 
+#     unnest_tokens(word, description) |> 
+#     filter(!word %in% stop_words$word)
+#     
+# tidy_description %>%
+#   count(word, sort = TRUE)
+
+
+#  
+# words_for_plot_tbl <- tidy_description |> 
+#     dplyr::group_by(word) |> 
+#     dplyr::summarise(
+#         n = n(),
+#         rating = mean(points) |> round(digits = 2)
+#         ) |> 
+#     dplyr::filter(n >= 2000) |> 
+#     dplyr::mutate(plot_description = stringr::str_glue(
+#         "Descriptor: {word}
+#         Frequency: {n}
+#         Associated Rating: {rating}
+#         "
+#     )) 
+
+words_for_plot_tbl |> 
+    dplyr::arrange(desc(rating)) |> 
+    dplyr::select(token, rating, n) |> 
+    dplyr::top_n(100)
+
+
+word_rating_plot <-
+    words_for_plot_tbl |> 
+    ggplot(aes(x = n, y = rating, text = plot_description)) +
+    geom_hline(
+        yintercept = mean(cleaned_tbl$points), lty = 2,
+        color = "red", size = 1.5
+        ) +
+    geom_jitter(alpha = 0.7) +
+    geom_text(aes(label = token),
+              vjust = "top", hjust = "left"
+              ) +
+  scale_x_log10()
+
+plotly::ggplotly(word_rating_plot, tooltip = "text")
+
+```
+
+
+
+
+
+
+
+```{r data_budget}
+
+set.seed(385)
+wine_split <- initial_split(cleaned_tbl)
+wine_train_tbl <- training(wine_split)
+wine_test_tbl <- testing(wine_split)
+
+set.seed(679)
+wine_folds <- vfold_cv(wine_train_tbl)
+wine_folds
+
+
+
+
+```
+
+
+
+```{r recipe}
+
+wine_recipe <- 
+    recipes::recipe(points ~ description, data = wine_train_tbl) |> 
+    # recipes::update_role(title, new_role = "id") |> # keep the title of the wine for identification purposes only
+    recipes::step_log(price) |> 
+    recipes::step_other(country, variety, vintage, province, threshold = 0.05) |> 
+    recipes::step_dummy(country, variety, vintage, province) |> 
+    textrecipes::step_tokenize(description, engine = "spacyr") |>
+    textrecipes::step_stopwords(description) |> 
+    textrecipes::step_tokenfilter(description, mint_times = 100, max_tokens = 5000) |> 
+    textrecipes::step_lemma(description) |> 
+    textrecipes::step_tfidf(description) |> 
+    textrecipes::step_texthash(taster_name) |> 
+    step_normalize(points, price)
+    
+
+
+output <- prep(wine_recipe) |> bake(new_data = NULL)
+unlist(output)
+
+    
+?step_tokenize()    
+    
+    
+
+
+```
+
