@@ -1,7 +1,7 @@
 ---
 title: 'Creating Synthetic People Analytics Data'
-date: 2023-08-10
-description: "Some simple methods for creating people analytics data."
+date: 2023-09-10
+description: "Simple methods for creating people analytics data that you can reuse in your context."
 author: 
     - name: Stephen Pearce
     - name: Adam D McKinnon
@@ -20,59 +20,114 @@ knitr::include_graphics("maxim-berg-Ac02zYZs22Y-unsplash.jpg")
 
 Practising people analytics methods can be difficult in the absence of data. Unfortunately, privacy concerns associated with employee data can make accessing datasets difficult. As a consequence, it can be useful for analysts, both novice and seasoned, to be able to generate synthetic datatsets for testing and explaining analytical methods.
 
-The current article focuses on the generation of synthetic data using R. We will examine the generation of the following three datasets:
+The current article focuses on the generation of synthetic data using R. We will examine the generation of the following two datasets:
 
-1.  A basic random dataset;
-2.  Creating a relationship between two variables; and
-3.  Creating multiple relationships between variables.
+1.  **A basic random dataset; and**
+2.  **Creating multiple relationships between variables.**
 
 We have approached the above steps in a "recursive" fashion. By this we mean that we have developed functions that you can use "as-is", or modify, to create synthetic datasets in your own context.
 
-## A basic random dataset
+<br>
 
-When the requirements are relatively simple we can get most of the way using R's inbuilt random generators, either sampling from a statistical distribution (eg. \`rnorm\` for a random value from a Normal distribution) or sampling from a defined list of options and probabilities with \`sample\`.
+# 1. A basic random dataset
 
-Using a combination of these functions, we can generate some synthetic data that approximates what we might expect from a people analytics dataset.
+When the dataset requirements are simple we can use R's inbuilt random generators. This can be done in one of two ways:
+
+1.  sampling from a statistical distribution using the \`rnorm\` function (e.g., for a random value from a Normal distribution). This may be appropriate when creating a continuous variable such as age, tenure, or wage.
+
+2.  sampling from a defined list of options and probabilities with \`sample\`. This is more appropriate when creating nominal variables in the dataset such as gender, job family, or location.
+
+Using a combination of these functions, which we do in all three datasets in this article, we can generate synthetic data that approximates real world data.
+
+<br>
+
+## Explanation
+
+This R code below defines a function named \`generate_basic_data\` that creates a dataset with 7 variables. You specify the number of rows you want in the dataset by passing a value to the \`num_rows\` parameter when you call the function.
+
+Here's a step-by-step explanation:
+
+### 1. Function Definition:
+
+The line \`generate_basic_data \<- function(num_rows){ ... }\` creates a function named \`generate_basic_data\`. When you want to use this function later (see the last line of code in the block), you'll tell it how many rows you want by providing a number for \`num_rows\`.
+
+### 2. Custom Sample Function:
+
+Inside the function, there's a nested helper function named \`sample_replace\`. This helper function makes it easier to sample values repeatedly from a given list, with the possibility of repeating values.
+
+### 3. Creating the Dataset:
+
+The \`tibble\` (i.e., 'Tidy' terminology for a data frame) function creates a table of data (similar to an Excel sheet with rows and columns). Each line within this function is defining a column for our table:
+
+-   **`id`**: Just a sequential number from 1 to the number of rows you've asked for. Think of this as a unique identifier for each row.
+
+-   **`age`**: Generates random ages that are normally distributed with an average age of 40 and a standard deviation of 5. This means most ages will be close to 40, but there will be some variation.
+
+-   **`hire_date`**: Randomly selects dates between January 1, 1990, and today. Since \`sample_replace\` is used, some dates might be repeated in different rows.
+
+-   **`job_family`**: Randomly selects a job family from the choices "Engineering", "Sales", and "Administration". There's a 60% chance of picking "Engineering", 25% chance for "Sales", and 15% for "Administration".
+
+-   **`contract_type`**: Randomly selects contract type status. "Full Time" will be picked 90% of the time, while "Part Time" will be picked 10% of the time.
+
+-   `employment_type`: Randomly selects the employment type. "Permanent" jobs will appear 70% of the time, while "Contract" jobs will appear 30% of the time.
+
+-   `state`: Randomly selects a state from "VIC", "NSW", and "QLD" with respective probabilities of 50%, 30%, and 20%.
+
+Once you run the function, for example \`generate_basic_data(100)\`, it will generate a dataset with 100 rows, filled with the kinds of values described above. In essence, this function is useful for generating a synthetic dataset about employees, including information about their ages, hiring dates, job families, employment types, etc.
+
+Click on the word `code` below to see the code being used.
+
+<br>
 
 ```{r basic_data}
 
+# libraries
 library(dplyr)
 library(purrr)
 library(lubridate)
 library(ggplot2)
 
 
-generate_basic_data <- function(num_rows) {
-  # Going to be doing a lot of repeated sampling of a fixed size with 
-  # replacement, so customise the sample function with the right defaults
-  sample_replace <- function(x, prob = NULL) {
-    sample(x = x, prob = prob, size = num_rows, replace = T)
-  }
+
+# create a function that will generate 7 variables with fixed responses
+generate_basic_data <- function(num_rows){
   
-  data_frame(
-    ID = 1:num_rows,
-    age = rnorm(num_rows, mean = 40, sd = 5),
-    hire_date = sample_replace(seq.Date(from = dmy("01/01/1990"), to = today(), by = "1 day")),
-    job_family = sample_replace(c("Engineering", "Sales", "Administration"), prob = c(0.6,0.25, 0.15)),
-    engagement = sample_replace(c("Full Time", "Part Time"), prob = c(0.9, 0.1)),
-    employment = sample_replace(c("Permanent", "Contract"), prob = c(0.7,0.3)),
-    state = sample_replace(c("VIC","NSW","QLD"), prob = c(0.5, 0.3, 0.2))
+    
+  sample_replace <- function(x, prob = NULL) {
+    base::sample(x = x, prob = prob, size = num_rows, replace = T)
+  }
+
+
+tibble::tibble(
+    id              = 1:num_rows,
+    age             = rnorm(num_rows, mean = 40, sd = 5),
+    hire_date       = sample_replace(seq.Date(from = dmy("01/01/1990"), to = today(), by = "1 day")),
+    job_family      = sample_replace(c("Engineering", "Sales", "Administration"), prob = c(0.6,0.25, 0.15)),
+    contract_type   = sample_replace(c("Full Time", "Part Time"), prob = c(0.9, 0.1)),
+    employment_type = sample_replace(c("Permanent", "Contract"), prob = c(0.7,0.3)),
+    state           = sample_replace(c("VIC","NSW","QLD"), prob = c(0.5, 0.3, 0.2))
   )
 }
 
+
+# generate 10 rows of data
 generate_basic_data(num_rows = 10)
 
 
 
 ```
 
-## Related variables
+<br>
 
-To make a list behave realistically however, we shouldn't allow all the data points to be randomly generated independently of each other. There are often correlations and dependencies between variables and it may be important to include these in your synthetic data set.
+<br>
 
-If you are trying to create something that has similar properties to a real dataset, perform an exploratory analysis to understand what correlations are present in the existing data and decide which are relevant for your purpose. Then, we will need to adjust the data generation code to take these differences into account. It is a bit more work because we will now need to have a separate data generation function for each correlated variable, but it is necessary if we want these observed interactions to be in the final data.
+# 2. Creating multiple relationships between variables
+
+If you are trying to create something that has similar properties to a real dataset, perform an exploratory analysis to understand what correlations are present in the existing data and decide which are relevant for your purpose (i.e., those you want to replicate). Then, we will need to adjust the data generation code to take these differences into account.We will need to create a separate data generation function for each correlated variable, but it is necessary if we want these observed interactions.
 
 For example, say the main office for our example company was in Victoria. We would expect the administrative staff to be more likely to work there rather than being randomly distributed across the states. To make this work we will need to change how we randomly select a state to be dependent on the job family.
+
+<br>
 
 ```{r dependency_example}
 
@@ -96,13 +151,19 @@ sample_state <- function(job) {
 
 ```
 
+<br>
+
 The first part of this process is to create a way to adjust the state probability weightings based on a job family. We can keep things simple in this example by using a named list where the names are the three job families and the values are the probabilities to select each state for that job family. Here, we have left the Engineering and Sales families at 50% VIC, 30% NSW, and 20% QLD from the original example but changed the Administration family to be 80%/10%/10% respectively.
 
 Next, we randomly generate the state data. In order to change the probability weightings each time we will use \`map_chr\` to apply our sample function over the job families, randomly selecting one state each time, but using the probabilities we defined above.
 
+<br>
+
 ## More complex interactions
 
 This same approach can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on \*both\* the hire date and the job family. How would we generate a data set in which more recent hires (\\\<5 years) are more likely to be on short-term contracts, as are Sales staff.
+
+<br>
 
 ```{r dual_dependency_example}
 
@@ -138,11 +199,15 @@ sample_employment <- function(hired, job) {
 
 ```
 
+<br>
+
 While a bit more involved to determine the probability weightings than the previous example, the overall structure remains the same.
 
 ## Making use of it
 
 To bring it all together, we can now swap out how we randomly selected state and employment type in the first basic example with our two functions above that randomly generate data dependent on other data columns. These other data columns are generated earlier in the process and then passed along to our new functions.
+
+<br>
 
 ```{r complex_data}
 
@@ -152,7 +217,7 @@ generate_complex_data <- function(num_rows) {
     sample(x = x, prob = prob, size = num_rows, replace = T)
   }
   
-data_frame(
+tibble::tibble(
     ID = 1:num_rows,
     age = rnorm(num_rows, mean = 40, sd = 5),
     hire_date = sample_replace(seq.Date(from = dmy("01/01/1990"), to = today(), by = "1 day")),
@@ -168,8 +233,12 @@ generate_complex_data(num_rows = 10)
 
 ```
 
+<br>
+
 This produces a randomised data set with our desired characteristics that can then be saved and reused later.
 
-## Other suggestions
+<br>
+
+## Conclusion
 
 The approach shown here works well enough when there are a relatively small number of variables and interactions that you need to account for. It is capable of being expanded by creating extra data generating functions however at some point things will become challenging to maintain. Once your needs for synthetic data have outgrown this approach, there are alternatives that may be worth exploring. The \[fabricatr\] (https://declaredesign.org/r/fabricatr/) package provides a method to generate synthetic datasets with quite sophisticated interactions between variables. Or if you have a specific real dataset whose characteristics you are looking to create, the \[synthpop\](https://www.synthpop.org.uk) package may be appropriate.
