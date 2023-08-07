@@ -23,6 +23,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -151,7 +214,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
+  <li><a href="#related-variables" id="toc-related-variables" class="nav-link active" data-scroll-target="#related-variables">Related variables</a></li>
+  <li><a href="#more-complex-interactions" id="toc-more-complex-interactions" class="nav-link" data-scroll-target="#more-complex-interactions">More complex interactions</a></li>
   </ul>
 </nav>
 </nav>
@@ -175,8 +239,166 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <p><br></p>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_linedraw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>## Rationale</p>
+<p>Synthetic datasets can be useful for testing and explaining analytical methods, especially in the people analytics field where real-world data is not able to be shared. While there are a number of example datasets out there for use (eg. IBM Employee Attrition &amp; Performance (canonical link?)) in many situations there is a need for data with a specific set of characteristics. In this case, it may be easier to generate the data yourself to fit the specific need.</p>
+<p>## Generating a basic dataset</p>
+<p>When the requirements are relatively simple we can get most of the way using R’s inbuilt random generators, either sampling from a statistical distribution (eg. `rnorm` for a random value from a Normal distribution) or sampling from a defined list of options and probabilities with `sample`.</p>
+<p>Using a combination of these functions, we can generate some synthetic data that approximates what we might expect from a people analytics dataset.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>generate_basic_data <span class="ot">&lt;-</span> <span class="cf">function</span>(num_rows) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Going to be doing a lot of repeated sampling of a fixed size with </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># replacement, so customise the sample function with the right defaults</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  sample_replace <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">prob =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(<span class="at">x =</span> x, <span class="at">prob =</span> prob, <span class="at">size =</span> num_rows, <span class="at">replace =</span> T)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_frame</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="dv">1</span><span class="sc">:</span>num_rows,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">rnorm</span>(num_rows, <span class="at">mean =</span> <span class="dv">40</span>, <span class="at">sd =</span> <span class="dv">5</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">hire_date =</span> <span class="fu">sample_replace</span>(<span class="fu">seq.Date</span>(<span class="at">from =</span> <span class="fu">dmy</span>(<span class="st">"01/01/1990"</span>), <span class="at">to =</span> <span class="fu">today</span>(), <span class="at">by =</span> <span class="st">"1 day"</span>)),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">job_family =</span> <span class="fu">sample_replace</span>(<span class="fu">c</span>(<span class="st">"Engineering"</span>, <span class="st">"Sales"</span>, <span class="st">"Administration"</span>), <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.6</span>,<span class="fl">0.25</span>, <span class="fl">0.15</span>)),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">engagement =</span> <span class="fu">sample_replace</span>(<span class="fu">c</span>(<span class="st">"Full Time"</span>, <span class="st">"Part Time"</span>), <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>)),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">employment =</span> <span class="fu">sample_replace</span>(<span class="fu">c</span>(<span class="st">"Permanent"</span>, <span class="st">"Contract"</span>), <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.7</span>,<span class="fl">0.3</span>)),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">state =</span> <span class="fu">sample_replace</span>(<span class="fu">c</span>(<span class="st">"VIC"</span>,<span class="st">"NSW"</span>,<span class="st">"QLD"</span>), <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_basic_data</span>(<span class="at">num_rows =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 7
+      ID   age hire_date  job_family     engagement employment state
+   &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;
+ 1     1  42.0 2004-10-02 Engineering    Full Time  Permanent  QLD  
+ 2     2  43.5 2013-08-20 Sales          Full Time  Permanent  QLD  
+ 3     3  46.7 2011-04-21 Engineering    Full Time  Permanent  VIC  
+ 4     4  45.6 1993-03-15 Engineering    Full Time  Permanent  VIC  
+ 5     5  39.3 2004-08-20 Administration Full Time  Permanent  QLD  
+ 6     6  40.4 2004-06-03 Engineering    Full Time  Permanent  VIC  
+ 7     7  36.4 2019-06-03 Administration Full Time  Contract   VIC  
+ 8     8  46.5 2004-10-16 Engineering    Full Time  Contract   NSW  
+ 9     9  33.9 2015-12-07 Engineering    Full Time  Permanent  NSW  
+10    10  41.3 1993-05-03 Engineering    Full Time  Permanent  VIC  </code></pre>
+</div>
+</div>
+<section id="related-variables" class="level2">
+<h2 class="anchored" data-anchor-id="related-variables">Related variables</h2>
+<p>To make a list behave realistically however, we shouldn’t allow all the data points to be randomly generated independently of each other. There are often correlations and dependencies between variables and it may be important to include these in your synthetic data set.</p>
+<p>If you are trying to create something that has similar properties to a real dataset, perform an exploratory analysis to understand what correlations are present in the existing data and decide which are relevant for your purpose. Then, we will need to adjust the data generation code to take these differences into account. It is a bit more work because we will now need to have a separate data generation function for each correlated variable, but it is necessary if we want these observed interactions to be in the final data.</p>
+<p>For example, say the main office for our example company was in Victoria. We would expect the administrative staff to be more likely to work there rather than being randomly distributed across the states. To make this work we will need to change how we randomly select a state to be dependent on the job family.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sample_state <span class="ot">&lt;-</span> <span class="cf">function</span>(job) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Different State probabilities depending on job family</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  prob_for_family <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Engineering"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sales"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Administration"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Randomly select the state using the per-job probabilities</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_chr</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    job, </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"VIC"</span>,<span class="st">"NSW"</span>,<span class="st">"QLD"</span>), <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> prob_for_family[[.]])</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The first part of this process is to create a way to adjust the state probability weightings based on a job family. We can keep things simple in this example by using a named list where the names are the three job families and the values are the probabilities to select each state for that job family. Here, we have left the Engineering and Sales families at 50% VIC, 30% NSW, and 20% QLD from the original example but changed the Administration family to be 80%/10%/10% respectively.</p>
+<p>Next, we randomly generate the state data. In order to change the probability weightings each time we will use `map_chr` to apply our sample function over the job families, randomly selecting one state each time, but using the probabilities we defined above.</p>
+</section>
+<section id="more-complex-interactions" class="level2">
+<h2 class="anchored" data-anchor-id="more-complex-interactions">More complex interactions</h2>
+<p>This same approach can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on *both* the hire date and the job family. How would we generate a data set in which more recent hires (\&lt;5 years) are more likely to be on short-term contracts, as are Sales staff.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sample_employment <span class="ot">&lt;-</span> <span class="cf">function</span>(hired, job) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Probability map of Permanent/Contract employment for combinations of </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># new/old hires and job family</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    prob_map <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">new_hire =</span> <span class="fu">list</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Engineering"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.3</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Sales"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Administration"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.3</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">old_hire =</span> <span class="fu">list</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Engineering"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Sales"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.3</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Administration"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    hire_status <span class="ot">=</span> <span class="fu">ifelse</span>(</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">time_length</span>(hired <span class="sc">%--%</span> <span class="fu">today</span>(), <span class="st">"years"</span>) <span class="sc">&lt;</span> <span class="dv">5</span>, </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="st">"new_hire"</span>, </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>      <span class="st">"old_hire"</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map2_chr</span>(</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      hire_status, job, </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Permanent"</span>, <span class="st">"Contract"</span>), <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> prob_map[[.x]][[.y]])</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>While a bit more involved to determine the probability weightings than the previous example, the overall structure remains the same.</p>
+<p>## Making use of it</p>
+<p>To bring it all together, we can now swap out how we randomly selected state and employment type in the first basic example with our two functions above that randomly generate data dependent on other data columns. These other data columns are generated earlier in the process and then passed along to our new functions.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>generate_complex_data <span class="ot">&lt;-</span> <span class="cf">function</span>(num_rows) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  sample_replace <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">prob =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(<span class="at">x =</span> x, <span class="at">prob =</span> prob, <span class="at">size =</span> num_rows, <span class="at">replace =</span> T)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data_frame</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID =</span> <span class="dv">1</span><span class="sc">:</span>num_rows,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">rnorm</span>(num_rows, <span class="at">mean =</span> <span class="dv">40</span>, <span class="at">sd =</span> <span class="dv">5</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">hire_date =</span> <span class="fu">sample_replace</span>(<span class="fu">seq.Date</span>(<span class="at">from =</span> <span class="fu">dmy</span>(<span class="st">"01/01/1990"</span>), <span class="at">to =</span> <span class="fu">today</span>(), <span class="at">by =</span> <span class="st">"1 day"</span>)),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">job_family =</span> <span class="fu">sample_replace</span>(<span class="fu">c</span>(<span class="st">"Engineering"</span>, <span class="st">"Sales"</span>, <span class="st">"Administration"</span>), <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.6</span>,<span class="fl">0.25</span>, <span class="fl">0.15</span>)),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">engagement =</span> <span class="fu">sample_replace</span>(<span class="fu">c</span>(<span class="st">"Full Time"</span>, <span class="st">"Part Time"</span>), <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>)),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">employment =</span> <span class="fu">sample_employment</span>(hire_date, job_family),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">state =</span> <span class="fu">sample_state</span>(job_family) </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_complex_data</span>(<span class="at">num_rows =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 7
+      ID   age hire_date  job_family     engagement employment state
+   &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;
+ 1     1  45.2 1991-03-19 Sales          Full Time  Contract   VIC  
+ 2     2  48.3 1993-03-13 Administration Full Time  Permanent  VIC  
+ 3     3  35.2 1993-05-07 Administration Full Time  Permanent  VIC  
+ 4     4  39.8 2004-05-15 Engineering    Full Time  Permanent  QLD  
+ 5     5  31.6 2010-05-30 Engineering    Full Time  Permanent  NSW  
+ 6     6  39.9 2001-04-04 Engineering    Full Time  Permanent  VIC  
+ 7     7  38.3 2010-08-22 Engineering    Full Time  Contract   NSW  
+ 8     8  42.1 2018-06-01 Sales          Full Time  Permanent  VIC  
+ 9     9  46.8 2000-10-17 Administration Full Time  Permanent  VIC  
+10    10  41.2 2012-05-16 Administration Full Time  Permanent  VIC  </code></pre>
+</div>
+</div>
+<p>This produces a randomised data set with our desired characteristics that can then be saved and reused later.</p>
+<p>## Other suggestions</p>
+<p>The approach shown here works well enough when there are a relatively small number of variables and interactions that you need to account for. It is capable of being expanded by creating extra data generating functions however at some point things will become challenging to maintain. Once your needs for synthetic data have outgrown this approach, there are alternatives that may be worth exploring. The [fabricatr] (https://declaredesign.org/r/fabricatr/) package provides a method to generate synthetic datasets with quite sophisticated interactions between variables. Or if you have a specific real dataset whose characteristics you are looking to create, the [synthpop](https://www.synthpop.org.uk) package may be appropriate.</p>
 
 
 </section>
