@@ -13,6 +13,7 @@
 <lastBuildDate>Wed, 09 Aug 2023 14:00:00 GMT</lastBuildDate>
 <item>
   <title>Creating Synthetic People Analytics Data</title>
+  <dc:creator>Stephen Pearce</dc:creator>
   <dc:creator>Adam D McKinnon</dc:creator>
   <link>https://www.adam-d-mckinnon.com/posts/2023-08-10-synthetic_data/index.html</link>
   <description><![CDATA[ 
@@ -42,9 +43,12 @@
 <span id="cb1-6"><span class="fu" style="color: #4758AB;">theme_set</span>(<span class="fu" style="color: #4758AB;">theme_linedraw</span>() <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">theme</span>(<span class="at" style="color: #657422;">legend.position =</span> <span class="st" style="color: #20794D;">"bottom"</span>))</span></code></pre></div>
 </details>
 </div>
-<p>## Rationale</p>
+<section id="rationale" class="level2">
+<h2 class="anchored" data-anchor-id="rationale">Rationale</h2>
 <p>Synthetic datasets can be useful for testing and explaining analytical methods, especially in the people analytics field where real-world data is not able to be shared. While there are a number of example datasets out there for use (eg. IBM Employee Attrition &amp; Performance (canonical link?)) in many situations there is a need for data with a specific set of characteristics. In this case, it may be easier to generate the data yourself to fit the specific need.</p>
-<p>## Generating a basic dataset</p>
+</section>
+<section id="generating-a-basic-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="generating-a-basic-dataset">Generating a basic dataset</h2>
 <p>When the requirements are relatively simple we can get most of the way using R’s inbuilt random generators, either sampling from a statistical distribution (eg. `rnorm` for a random value from a Normal distribution) or sampling from a defined list of options and probabilities with `sample`.</p>
 <p>Using a combination of these functions, we can generate some synthetic data that approximates what we might expect from a people analytics dataset.</p>
 <div class="cell">
@@ -72,20 +76,21 @@
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 7
-      ID   age hire_date  job_family     engagement employment state
-   &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;
- 1     1  42.0 2004-10-02 Engineering    Full Time  Permanent  QLD  
- 2     2  43.5 2013-08-20 Sales          Full Time  Permanent  QLD  
- 3     3  46.7 2011-04-21 Engineering    Full Time  Permanent  VIC  
- 4     4  45.6 1993-03-15 Engineering    Full Time  Permanent  VIC  
- 5     5  39.3 2004-08-20 Administration Full Time  Permanent  QLD  
- 6     6  40.4 2004-06-03 Engineering    Full Time  Permanent  VIC  
- 7     7  36.4 2019-06-03 Administration Full Time  Contract   VIC  
- 8     8  46.5 2004-10-16 Engineering    Full Time  Contract   NSW  
- 9     9  33.9 2015-12-07 Engineering    Full Time  Permanent  NSW  
-10    10  41.3 1993-05-03 Engineering    Full Time  Permanent  VIC  </code></pre>
+      ID   age hire_date  job_family  engagement employment state
+   &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;
+ 1     1  54.0 1997-02-27 Sales       Full Time  Permanent  VIC  
+ 2     2  32.9 2022-11-26 Sales       Full Time  Contract   VIC  
+ 3     3  32.8 2008-08-22 Engineering Part Time  Permanent  VIC  
+ 4     4  43.0 1994-05-19 Engineering Full Time  Contract   VIC  
+ 5     5  43.4 2012-12-26 Engineering Full Time  Permanent  NSW  
+ 6     6  45.0 2007-03-21 Engineering Part Time  Permanent  VIC  
+ 7     7  35.3 2020-11-18 Engineering Part Time  Contract   QLD  
+ 8     8  45.4 1999-12-02 Engineering Full Time  Permanent  NSW  
+ 9     9  45.1 1991-05-12 Engineering Full Time  Permanent  VIC  
+10    10  38.7 2006-08-08 Engineering Full Time  Permanent  VIC  </code></pre>
 </div>
 </div>
+</section>
 <section id="related-variables" class="level2">
 <h2 class="anchored" data-anchor-id="related-variables">Related variables</h2>
 <p>To make a list behave realistically however, we shouldn’t allow all the data points to be randomly generated independently of each other. There are often correlations and dependencies between variables and it may be important to include these in your synthetic data set.</p>
@@ -149,7 +154,9 @@
 </details>
 </div>
 <p>While a bit more involved to determine the probability weightings than the previous example, the overall structure remains the same.</p>
-<p>## Making use of it</p>
+</section>
+<section id="making-use-of-it" class="level2">
+<h2 class="anchored" data-anchor-id="making-use-of-it">Making use of it</h2>
 <p>To bring it all together, we can now swap out how we randomly selected state and employment type in the first basic example with our two functions above that randomly generate data dependent on other data columns. These other data columns are generated earlier in the process and then passed along to our new functions.</p>
 <div class="cell">
 <details>
@@ -176,35 +183,37 @@
 <pre><code># A tibble: 10 × 7
       ID   age hire_date  job_family     engagement employment state
    &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;
- 1     1  45.2 1991-03-19 Sales          Full Time  Contract   VIC  
- 2     2  48.3 1993-03-13 Administration Full Time  Permanent  VIC  
- 3     3  35.2 1993-05-07 Administration Full Time  Permanent  VIC  
- 4     4  39.8 2004-05-15 Engineering    Full Time  Permanent  QLD  
- 5     5  31.6 2010-05-30 Engineering    Full Time  Permanent  NSW  
- 6     6  39.9 2001-04-04 Engineering    Full Time  Permanent  VIC  
- 7     7  38.3 2010-08-22 Engineering    Full Time  Contract   NSW  
- 8     8  42.1 2018-06-01 Sales          Full Time  Permanent  VIC  
- 9     9  46.8 2000-10-17 Administration Full Time  Permanent  VIC  
-10    10  41.2 2012-05-16 Administration Full Time  Permanent  VIC  </code></pre>
+ 1     1  37.1 1990-01-05 Engineering    Full Time  Permanent  NSW  
+ 2     2  36.8 2017-10-15 Sales          Full Time  Permanent  NSW  
+ 3     3  39.4 2010-01-06 Engineering    Full Time  Contract   VIC  
+ 4     4  44.7 2016-09-12 Administration Full Time  Permanent  VIC  
+ 5     5  46.4 2004-05-17 Engineering    Full Time  Contract   QLD  
+ 6     6  38.6 2020-11-02 Administration Full Time  Permanent  VIC  
+ 7     7  48.5 2003-05-05 Administration Full Time  Permanent  NSW  
+ 8     8  36.8 2014-11-15 Engineering    Full Time  Permanent  VIC  
+ 9     9  39.6 2013-02-11 Engineering    Full Time  Permanent  VIC  
+10    10  36.7 2010-10-08 Engineering    Full Time  Permanent  QLD  </code></pre>
 </div>
 </div>
 <p>This produces a randomised data set with our desired characteristics that can then be saved and reused later.</p>
-<p>## Other suggestions</p>
+</section>
+<section id="other-suggestions" class="level2">
+<h2 class="anchored" data-anchor-id="other-suggestions">Other suggestions</h2>
 <p>The approach shown here works well enough when there are a relatively small number of variables and interactions that you need to account for. It is capable of being expanded by creating extra data generating functions however at some point things will become challenging to maintain. Once your needs for synthetic data have outgrown this approach, there are alternatives that may be worth exploring. The [fabricatr] (https://declaredesign.org/r/fabricatr/) package provides a method to generate synthetic datasets with quite sophisticated interactions between variables. Or if you have a specific real dataset whose characteristics you are looking to create, the [synthpop](https://www.synthpop.org.uk) package may be appropriate.</p>
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2023,
-  author = {Adam D McKinnon},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{pearce2023,
+  author = {Stephen Pearce and Adam D McKinnon},
   title = {Creating {Synthetic} {People} {Analytics} {Data}},
   date = {2023-08-10},
   url = {https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2023" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon. 2023. <span>“Creating Synthetic People Analytics
-Data.”</span> August 10, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data">https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data</a>.
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-pearce2023" class="csl-entry quarto-appendix-citeas">
+Stephen Pearce, and Adam D McKinnon. 2023. <span>“Creating Synthetic
+People Analytics Data.”</span> August 10, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data">https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data</a>.
 </div></div></section></div> ]]></description>
   <category>Synthetic Data</category>
   <category>People Analytics</category>

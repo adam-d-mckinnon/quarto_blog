@@ -3,6 +3,7 @@ title: 'Creating Synthetic People Analytics Data'
 date: 2023-08-10
 description: "Some simple methods for creating people analytics data."
 author: 
+    - name: Stephen Pearce
     - name: Adam D McKinnon
 categories: [Synthetic Data, People Analytics]
 image: "maxim-berg-Ac02zYZs22Y-unsplash.jpg"
@@ -29,18 +30,15 @@ theme_set(theme_linedraw() + theme(legend.position = "bottom"))
 
 ```
 
-\## Rationale
-
+## Rationale
 
 Synthetic datasets can be useful for testing and explaining analytical methods, especially in the people analytics field where real-world data is not able to be shared. While there are a number of example datasets out there for use (eg. IBM Employee Attrition & Performance (canonical link?)) in many situations there is a need for data with a specific set of characteristics. In this case, it may be easier to generate the data yourself to fit the specific need.
 
-\## Generating a basic dataset
-
+## Generating a basic dataset
 
 When the requirements are relatively simple we can get most of the way using R's inbuilt random generators, either sampling from a statistical distribution (eg. \`rnorm\` for a random value from a Normal distribution) or sampling from a defined list of options and probabilities with \`sample\`.
 
 Using a combination of these functions, we can generate some synthetic data that approximates what we might expect from a people analytics dataset.
-
 
 ```{r basic_data}
 
@@ -69,7 +67,6 @@ generate_basic_data(num_rows = 10)
 
 ```
 
-
 ## Related variables
 
 To make a list behave realistically however, we shouldn't allow all the data points to be randomly generated independently of each other. There are often correlations and dependencies between variables and it may be important to include these in your synthetic data set.
@@ -77,7 +74,6 @@ To make a list behave realistically however, we shouldn't allow all the data poi
 If you are trying to create something that has similar properties to a real dataset, perform an exploratory analysis to understand what correlations are present in the existing data and decide which are relevant for your purpose. Then, we will need to adjust the data generation code to take these differences into account. It is a bit more work because we will now need to have a separate data generation function for each correlated variable, but it is necessary if we want these observed interactions to be in the final data.
 
 For example, say the main office for our example company was in Victoria. We would expect the administrative staff to be more likely to work there rather than being randomly distributed across the states. To make this work we will need to change how we randomly select a state to be dependent on the job family.
-
 
 ```{r dependency_example}
 
@@ -108,7 +104,6 @@ Next, we randomly generate the state data. In order to change the probability we
 ## More complex interactions
 
 This same approach can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on \*both\* the hire date and the job family. How would we generate a data set in which more recent hires (\\\<5 years) are more likely to be on short-term contracts, as are Sales staff.
-
 
 ```{r dual_dependency_example}
 
@@ -144,17 +139,11 @@ sample_employment <- function(hired, job) {
 
 ```
 
-
-
 While a bit more involved to determine the probability weightings than the previous example, the overall structure remains the same.
 
-
-
-\## Making use of it
-
+## Making use of it
 
 To bring it all together, we can now swap out how we randomly selected state and employment type in the first basic example with our two functions above that randomly generate data dependent on other data columns. These other data columns are generated earlier in the process and then passed along to our new functions.
-
 
 ```{r complex_data}
 
@@ -180,12 +169,8 @@ generate_complex_data(num_rows = 10)
 
 ```
 
-
 This produces a randomised data set with our desired characteristics that can then be saved and reused later.
 
-
-
-\## Other suggestions
-
+## Other suggestions
 
 The approach shown here works well enough when there are a relatively small number of variables and interactions that you need to account for. It is capable of being expanded by creating extra data generating functions however at some point things will become challenging to maintain. Once your needs for synthetic data have outgrown this approach, there are alternatives that may be worth exploring. The \[fabricatr\] (https://declaredesign.org/r/fabricatr/) package provides a method to generate synthetic datasets with quite sophisticated interactions between variables. Or if you have a specific real dataset whose characteristics you are looking to create, the \[synthpop\](https://www.synthpop.org.uk) package may be appropriate.
