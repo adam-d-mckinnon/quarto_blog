@@ -5,7 +5,7 @@ description: "Some simple methods for creating people analytics data."
 author: 
     - name: Stephen Pearce
     - name: Adam D McKinnon
-categories: [Synthetic Data, People Analytics]
+categories: [Synthetic Data, People Analytics, R]
 image: "maxim-berg-Ac02zYZs22Y-unsplash.jpg"
 title-block-banner: true
 draft: false
@@ -18,29 +18,28 @@ knitr::include_graphics("maxim-berg-Ac02zYZs22Y-unsplash.jpg")
 
 <br>
 
-```{r libraries}
+Practising people analytics methods can be difficult in the absence of data. Unfortunately, privacy concerns associated with employee data can make accessing datasets difficult. As a consequence, it can be useful for analysts, both novice and seasoned, to be able to generate synthetic datatsets for testing and explaining analytical methods.
 
+The current article focuses on the generation of synthetic data using R. We will examine the generation of the following three datasets:
 
-library(dplyr)
-library(purrr)
-library(lubridate)
-library(ggplot2)
+1.  A basic random dataset;
+2.  Creating a relationship between two variables; and
+3.  Creating multiple relationships between variables.
 
-theme_set(theme_linedraw() + theme(legend.position = "bottom"))
+We have approached the above steps in a "recursive" fashion. By this we mean that we have developed functions that you can use "as-is", or modify, to create synthetic datasets in your own context.
 
-```
-
-## Rationale
-
-Synthetic datasets can be useful for testing and explaining analytical methods, especially in the people analytics field where real-world data is not able to be shared. While there are a number of example datasets out there for use (eg. IBM Employee Attrition & Performance (canonical link?)) in many situations there is a need for data with a specific set of characteristics. In this case, it may be easier to generate the data yourself to fit the specific need.
-
-## Generating a basic dataset
+## A basic random dataset
 
 When the requirements are relatively simple we can get most of the way using R's inbuilt random generators, either sampling from a statistical distribution (eg. \`rnorm\` for a random value from a Normal distribution) or sampling from a defined list of options and probabilities with \`sample\`.
 
 Using a combination of these functions, we can generate some synthetic data that approximates what we might expect from a people analytics dataset.
 
 ```{r basic_data}
+
+library(dplyr)
+library(purrr)
+library(lubridate)
+library(ggplot2)
 
 
 generate_basic_data <- function(num_rows) {
