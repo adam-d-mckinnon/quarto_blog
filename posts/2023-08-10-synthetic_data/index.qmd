@@ -121,47 +121,51 @@ generate_basic_data(num_rows = 10)
 
 <br>
 
-# 2. Creating multiple relationships between variables
+# 2. Creating relationships between variables
 
-If you are trying to create something that has similar properties to a real dataset, perform an exploratory analysis to understand what correlations are present in the existing data and decide which are relevant for your purpose (i.e., those you want to replicate). Then, we will need to adjust the data generation code to take these differences into account.We will need to create a separate data generation function for each correlated variable, but it is necessary if we want these observed interactions.
+If you're trying to create data that has similar properties to a real dataset, you may want to begin by performing an exploratory analysis to understand what relationships are present in the existing data and decide which are relevant for your synthetic data (i.e., those you want to replicate). The previous code can be updated to take these differences into account. A separate data generation function will need to be created for each variable relationship.
 
-For example, say the main office for our example company was in Victoria. We would expect the administrative staff to be more likely to work there rather than being randomly distributed across the states. To make this work we will need to change how we randomly select a state to be dependent on the job family.
+### 1. Simple two variable relationship
+
+Say the main office for our example company was in the Australian state of Victoria. We would expect the administrative staff to be more likely to work there, as opposed to being randomly distributed across the Australian states. To make this work we will need to change how we randomly select a state to be dependent on the job family. The code below brings this relationship to life.
 
 <br>
 
-```{r dependency_example}
+```{r simple_relationships}
 
 
-sample_state <- function(job) {
-  # Different State probabilities depending on job family
-  prob_for_family <- list(
-    "Engineering" = c(0.5, 0.3, 0.2),
-    "Sales" = c(0.5, 0.3, 0.2),
-    "Administration" = c(0.8, 0.1, 0.1)
-  )
+sample_state <- function(job_family){
+  
+    # Different State probabilities depending on job family
+    prob_for_family <- list(
+                        "Engineering"    = c(0.5, 0.3, 0.2),
+                        "Sales"          = c(0.5, 0.3, 0.2),
+                        "Administration" = c(0.8, 0.1, 0.1)
+                            )
 
   # Randomly select the state using the per-job probabilities
-  map_chr(
-    job, 
-    ~sample(c("VIC","NSW","QLD"), size = 1, prob = prob_for_family[[.]])
+  map_chr(job, ~sample(c("VIC","NSW","QLD"), size = 1, prob = prob_for_family[[.]])
     )
 }
-
 
 
 ```
 
 <br>
 
-The first part of this process is to create a way to adjust the state probability weightings based on a job family. We can keep things simple in this example by using a named list where the names are the three job families and the values are the probabilities to select each state for that job family. Here, we have left the Engineering and Sales families at 50% VIC, 30% NSW, and 20% QLD from the original example but changed the Administration family to be 80%/10%/10% respectively.
+This code defines a function named \`sample_state\` that randomly samples (selects) a state ("VIC", "NSW", or "QLD") based on the given job family. Different job families have different probabilities of being associated with a particular state. The probabilities are provided in the same order as the states.
 
-Next, we randomly generate the state data. In order to change the probability weightings each time we will use \`map_chr\` to apply our sample function over the job families, randomly selecting one state each time, but using the probabilities we defined above.
+Let's break down the function:
+
+`sample_state <- function(job_family){ … }` defines a function that takes a single argument \`job_family\` (e.g., "Engineering"). Inside the function, a list named `prob_for_family` is created. This list provides the probabilities of each state being selected for each job family. Engineering and Sales both have the same probabilities, while Administration has a much higher probability of being in Victoria ("VIC").
+
+The `map_chr` function does all the work. Essentially, for each job_family provided it samples a state based on the respective probabilities provided in the prob_for_family list, and the state is generated.
 
 <br>
 
-## More complex interactions
+### 2. Complex multi-variable relationships
 
-This same approach can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on \*both\* the hire date and the job family. How would we generate a data set in which more recent hires (\\\<5 years) are more likely to be on short-term contracts, as are Sales staff.
+The approach above can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on \*both\* the hire date and the job family. How would we generate a data set in which more recent hires (\\\<5 years) are more likely to be on short-term contracts, as are Sales staff.
 
 <br>
 
