@@ -33,49 +33,11 @@ We have approached the above steps in a "recursive" fashion. By this we mean tha
 
 When the dataset requirements are simple we can use R's inbuilt random generators. This can be done in one of two ways:
 
-1.  sampling from a statistical distribution using the \`rnorm\` function (e.g., for a random value from a Normal distribution). This may be appropriate when creating a continuous variable such as age, tenure, or wage.
+1.  sampling from a statistical distribution using the `rnorm` function (e.g., for a random value from a Normal distribution). This may be appropriate when creating a continuous variable such as age, tenure, or wage.
 
-2.  sampling from a defined list of options and probabilities with \`sample\`. This is more appropriate when creating nominal variables in the dataset such as gender, job family, or location.
+2.  sampling from a defined list of options and probabilities with `sample`. This is more appropriate when creating nominal variables in the dataset such as gender, job family, or location.
 
-Using a combination of these functions, which we do in all three datasets in this article, we can generate synthetic data that approximates real world data.
-
-<br>
-
-## Explanation
-
-This R code below defines a function named \`generate_basic_data\` that creates a dataset with 7 variables. You specify the number of rows you want in the dataset by passing a value to the \`num_rows\` parameter when you call the function.
-
-Here's a step-by-step explanation:
-
-### 1. Function Definition:
-
-The line \`generate_basic_data \<- function(num_rows){ ... }\` creates a function named \`generate_basic_data\`. When you want to use this function later (see the last line of code in the block), you'll tell it how many rows you want by providing a number for \`num_rows\`.
-
-### 2. Custom Sample Function:
-
-Inside the function, there's a nested helper function named \`sample_replace\`. This helper function makes it easier to sample values repeatedly from a given list, with the possibility of repeating values.
-
-### 3. Creating the Dataset:
-
-The \`tibble\` (i.e., 'Tidy' terminology for a data frame) function creates a table of data (similar to an Excel sheet with rows and columns). Each line within this function is defining a column for our table:
-
--   **`id`**: Just a sequential number from 1 to the number of rows you've asked for. Think of this as a unique identifier for each row.
-
--   **`age`**: Generates random ages that are normally distributed with an average age of 40 and a standard deviation of 5. This means most ages will be close to 40, but there will be some variation.
-
--   **`hire_date`**: Randomly selects dates between January 1, 1990, and today. Since \`sample_replace\` is used, some dates might be repeated in different rows.
-
--   **`job_family`**: Randomly selects a job family from the choices "Engineering", "Sales", and "Administration". There's a 60% chance of picking "Engineering", 25% chance for "Sales", and 15% for "Administration".
-
--   **`contract_type`**: Randomly selects contract type status. "Full Time" will be picked 90% of the time, while "Part Time" will be picked 10% of the time.
-
--   `employment_type`: Randomly selects the employment type. "Permanent" jobs will appear 70% of the time, while "Contract" jobs will appear 30% of the time.
-
--   `state`: Randomly selects a state from "VIC", "NSW", and "QLD" with respective probabilities of 50%, 30%, and 20%.
-
-Once you run the function, for example \`generate_basic_data(100)\`, it will generate a dataset with 100 rows, filled with the kinds of values described above. In essence, this function is useful for generating a synthetic dataset about employees, including information about their ages, hiring dates, job families, employment types, etc.
-
-Click on the word `code` below to see the code being used.
+Using a combination of these functions, the following code can be used to generate synthetic data that approximates real world data.
 
 <br>
 
@@ -119,15 +81,53 @@ generate_basic_data(num_rows = 10)
 
 <br>
 
+## Explanation
+
+This R code above defines a function named `generate_basic_data` that creates a dataset with seven variables. You specify the number of rows you want in the dataset by passing a value to the `num_rows` parameter when you call the function.
+
+Here's a step-by-step explanation:
+
+### a. Function Definition
+
+The line `generate_basic_data <- function(num_rows){ … }` creates a function named `generate_basic_data`. When you want to use this function later (see the last line of code in the block), you'll tell it how many rows you want by providing a number for `num_rows`.
+
+### b. Custom Sample Function
+
+Inside the function, there's a nested helper function named `sample_replace`. This helper function makes it easier to sample values repeatedly from a given list, with the possibility of repeating values.
+
+### c. Creating the Dataset
+
+The `tibble` (i.e., Tidy terminology for a data frame) function creates a table of data (similar to an Excel sheet with rows and columns). Each line within this function is defining a column for our table:
+
+-   **`id`**: Just a sequential number from 1 to the number of rows you've asked for. Think of this as a unique identifier for each row.
+
+-   **`age`**: Generates random ages that are normally distributed with an average age of 40 and a standard deviation of 5. This means most ages will be close to 40, but there will be some variation.
+
+-   **`hire_date`**: Randomly selects dates between January 1, 1990, and today. Since `sample_replace` is used, some dates might be repeated in different rows.
+
+-   **`job_family`**: Randomly selects a job family from the choices "Engineering", "Sales", and "Administration". There's a 60% chance of picking "Engineering", 25% chance for "Sales", and 15% for "Administration".
+
+-   **`contract_type`**: Randomly selects contract type status. "Full Time" will be picked 90% of the time, while "Part Time" will be picked 10% of the time.
+
+-   `employment_type`: Randomly selects the employment type. "Permanent" jobs will appear 70% of the time, while "Contract" jobs will appear 30% of the time.
+
+-   `state`: Randomly selects a state from "VIC", "NSW", and "QLD" with respective probabilities of 50%, 30%, and 20%.
+
+Once you run the function, for example `generate_basic_data(100)`, it will generate a dataset with 100 rows, filled with the kinds of values described above. In essence, this function is useful for generating a synthetic dataset about employees, including information about their ages, hiring dates, job families, employment types, etc.
+
+<br>
+
 <br>
 
 # 2. Creating relationships between variables
 
 If you're trying to create data that has similar properties to a real dataset, you may want to begin by performing an exploratory analysis to understand what relationships are present in the existing data and decide which are relevant for your synthetic data (i.e., those you want to replicate). The previous code can be updated to take these differences into account. A separate data generation function will need to be created for each variable relationship.
 
+<br>
+
 ### 1. Simple two variable relationship
 
-Say the main office for our example company was in the Australian state of Victoria. We would expect the administrative staff to be more likely to work there, as opposed to being randomly distributed across the Australian states. To make this work we will need to change how we randomly select a state to be dependent on the job family. The code below brings this relationship to life.
+Say the main office for our example company was in the Australian state of Victoria. We would expect the administrative staff to be more likely to work there, as opposed to being randomly distributed across the Australian states. To make this work we will need to change how we randomly select a state to be dependent on the job family. The following code below brings this relationship to life.
 
 <br>
 
@@ -143,8 +143,8 @@ sample_state <- function(job_family){
                         "Administration" = c(0.8, 0.1, 0.1)
                             )
 
-  # Randomly select the state using the per-job probabilities
-  map_chr(job, ~sample(c("VIC","NSW","QLD"), size = 1, prob = prob_for_family[[.]])
+    # Randomly select the state using the per-job probabilities
+    purrr::map_chr(job_family, ~sample(c("VIC","NSW","QLD"), size = 1, prob = prob_for_family[[.]])
     )
 }
 
@@ -153,11 +153,11 @@ sample_state <- function(job_family){
 
 <br>
 
-This code defines a function named \`sample_state\` that randomly samples (selects) a state ("VIC", "NSW", or "QLD") based on the given job family. Different job families have different probabilities of being associated with a particular state. The probabilities are provided in the same order as the states.
+This code defines a function named `sample_state` that randomly samples (selects) a state ("VIC", "NSW", or "QLD") based on the given job family. Different job families have different probabilities of being associated with a particular state. The probabilities are provided in the same order as the states.
 
 Let's break down the function:
 
-`sample_state <- function(job_family){ … }` defines a function that takes a single argument \`job_family\` (e.g., "Engineering"). Inside the function, a list named `prob_for_family` is created. This list provides the probabilities of each state being selected for each job family. Engineering and Sales both have the same probabilities, while Administration has a much higher probability of being in Victoria ("VIC").
+`sample_state <- function(job_family){ … }` defines a function that takes a single argument `job_family` (e.g., "Engineering"). Inside the function, a list named `prob_for_family` is created. This list provides the probabilities of each state being selected for each job family. Engineering and Sales both have the same probabilities, while Administration has a much higher probability of being in Victoria ("VIC").
 
 The `map_chr` function does all the work. Essentially, for each job_family provided it samples a state based on the respective probabilities provided in the prob_for_family list, and the state is generated.
 
@@ -165,11 +165,17 @@ The `map_chr` function does all the work. Essentially, for each job_family provi
 
 ### 2. Complex multi-variable relationships
 
-The approach above can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on \*both\* the hire date and the job family. How would we generate a data set in which more recent hires (\\\<5 years) are more likely to be on short-term contracts, as are Sales staff.
+The approach above can be extended as the interactions become more complex. For example, we could imagine a scenario in which employment type is dependent on both the hire date and the job family. More specifically, short-term contracts could be more likely to be attributable to the following two conditions:
+
+1.  Sales staff; or
+
+2.  Less tenured hires--those with less than 5 years tenure.
+
+The following code documents how these relationships are achieved when generating synthetic data.
 
 <br>
 
-```{r dual_dependency_example}
+```{r dual_relationship}
 
 
 sample_employment <- function(hired, job) {
@@ -189,12 +195,12 @@ sample_employment <- function(hired, job) {
     )
  
     hire_status = ifelse(
-      time_length(hired %--% today(), "years") < 5, 
+      lubridate::time_length(hired %--% today(), "years") < 5, 
       "new_hire", 
       "old_hire"
     )
     
-    map2_chr(
+    purrr::map2_chr(
       hire_status, job, 
       ~sample(c("Permanent", "Contract"), size = 1, prob = prob_map[[.x]][[.y]])
     )
@@ -205,44 +211,75 @@ sample_employment <- function(hired, job) {
 
 <br>
 
-While a bit more involved to determine the probability weightings than the previous example, the overall structure remains the same.
+Let's explain this code in simple terms.
 
-## Making use of it
+### a. Setting up probabilities
 
-To bring it all together, we can now swap out how we randomly selected state and employment type in the first basic example with our two functions above that randomly generate data dependent on other data columns. These other data columns are generated earlier in the process and then passed along to our new functions.
+First, it creates a set of rules (the `prob_map` list). This set of rules gives different chances of having a "Permanent" or "Contract" job based on the job role and whether the person was newly hired (less than 5 years ago) or has been with the company longer.
+
+For example, according to the rules:
+
+-   A new engineer has a 70% chance of being permanent and 30% chance of being on contract.
+
+-   An engineer who's been hired for over 5 years has a 90% chance of being permanent.
+
+### b. Determining Hire Status
+
+For each person, the code checks how long ago they were hired using the `lubridate::time_length` function. If it's less than 5 years, they are labeled as "new_hire". Otherwise, they're an "old_hire".
+
+### c. Assigning Employment Type
+
+Based on the hire status and job role of each person, the code uses the rules set up in the first step to take a guess at whether they have a "Permanent" or "Contract" job. This is done using the `purrr::map2_chr` function, which applies the `sample` function to assign an employment type based on the given probabilities for each combination of hire status and job role.
+
+So, by using this `sample_employment` function and providing a list of hiring dates and job roles, you'd get a list of assignments of whether each person has a "Permanent" or "Contract" job based on their job role and how long they've been hired.
+
+<br>
+
+<br>
+
+# 3. Pulling it all together
+
+To bring it all together, we can now swap out how we randomly selected state and employment type in the first basic example with our two functions above that randomly generate data based on the relationship with other variables. These other variables are generated earlier (e.g. `hire_date` & `job_family`), so that they can be used to inform the generation of `employment_type`.
+
+The following code produces a randomised dataset with our desired relationships that can then be saved and used later for trialing and/or learning analytics methods.
 
 <br>
 
 ```{r complex_data}
 
 
-generate_complex_data <- function(num_rows) {
-  sample_replace <- function(x, prob = NULL) {
-    sample(x = x, prob = prob, size = num_rows, replace = T)
-  }
-  
+generate_complex_data <- function(num_rows){
+
+    sample_replace <- function(x, prob = NULL){
+        sample(x = x, prob = prob, size = num_rows, replace = T)
+        }
+
+
 tibble::tibble(
-    ID = 1:num_rows,
-    age = rnorm(num_rows, mean = 40, sd = 5),
-    hire_date = sample_replace(seq.Date(from = dmy("01/01/1990"), to = today(), by = "1 day")),
-    job_family = sample_replace(c("Engineering", "Sales", "Administration"), prob = c(0.6,0.25, 0.15)),
-    engagement = sample_replace(c("Full Time", "Part Time"), prob = c(0.9, 0.1)),
-    employment = sample_employment(hire_date, job_family),
-    state = sample_state(job_family) 
+    id              = 1:num_rows,
+    age             = rnorm(num_rows, mean = 40, sd = 5),
+    hire_date       = sample_replace(seq.Date(from = dmy("01/01/1990"), to = today(), by = "1 day")),
+    job_family      = sample_replace(c("Engineering", "Sales", "Administration"), prob = c(0.6,0.25, 0.15)),
+    contract_type   = sample_replace(c("Full Time", "Part Time"), prob = c(0.9, 0.1)),
+    employment_type = sample_employment(hire_date, job_family),
+    state           = sample_state(job_family) 
   )
 }
 
-generate_complex_data(num_rows = 10)
 
+# call the generate_complex_data function to create a dataset of 10 rows
+generate_complex_data(num_rows = 10)
 
 ```
 
 <br>
 
-This produces a randomised data set with our desired characteristics that can then be saved and reused later.
-
 <br>
 
-## Conclusion
+# Conclusion
 
-The approach shown here works well enough when there are a relatively small number of variables and interactions that you need to account for. It is capable of being expanded by creating extra data generating functions however at some point things will become challenging to maintain. Once your needs for synthetic data have outgrown this approach, there are alternatives that may be worth exploring. The \[fabricatr\] (https://declaredesign.org/r/fabricatr/) package provides a method to generate synthetic datasets with quite sophisticated interactions between variables. Or if you have a specific real dataset whose characteristics you are looking to create, the \[synthpop\](https://www.synthpop.org.uk) package may be appropriate.
+The above approach works well when there are a smaller number of variables and relationships to account for. It is capable of creating synthetic datasets with a greater number of variables, howver, at the risk of greater complexity and difficulty to maintain.
+
+Once your needs for synthetic data have outgrown the approach above, there are alternatives that may be worth exploring. The [fabricatr](https://declaredesign.org/r/fabricatr/) package provides a method to generate synthetic datasets with quite sophisticated interactions between variables. Or if you have a specific real dataset whose characteristics you are looking to re-create, the [synthpop](https://www.synthpop.org.uk) package may be appropriate.
+
+Irrespective, we hope the example above is useful in helping you develop realistic synthetic data that facilitates greater learning and experimentation in the field of People Analytics.
