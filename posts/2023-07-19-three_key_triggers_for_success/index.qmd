@@ -1,14 +1,14 @@
 ---
 title: 'Data-Driven People Experience: The Three Key Triggers for Success'
 date: 2023-07-19
-description: "Simple methods for creating people analytics data that you can reuse in your context."
+description: "Data and analytics are the key to making better decisions, improving employee engagement, and driving business results. This article covers the three key triggers for HR practitioners to utilise data iin their work."
 author: 
     - name: Adam D McKinnon
     - name: Courtenay Howard-Bath Pearce
 categories: [People Analytics, Data Literacy]
 image: "1689248662162.jpeg"
 title-block-banner: true
-draft: true
+draft: false
 ---
 
 ```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by MJGraphics/Shutterstock.com](https://www.shutterstock.com/g/micic).",out.width = '100%'}
@@ -22,7 +22,9 @@ People Analytics has experienced a meteoric rise in recent years, and for good r
 
 But data-driven People Experience (PEx) isn't just about making better decisions. It's also about creating a more compelling employee experience. That's why it's so important for PEx leaders to champion the use of data and analytics, and cultivate an environment where employees feel secure sharing their data. Leaders can empower data-driven decision-making by inviting PEx practitioners to use data and analytics to explore three common scenarios: Reconnaissance, Business Case Development, and Measuring Impact.
 
-### **1. Reconnaissance**
+<br>
+
+# **1. Reconnaissance**
 
 "Time spent in reconnaissance is seldom wasted." This quote from German Field Marshal Erwin Rommel is a reminder that gathering information is essential to success. Rommel was a master of reconnaissance, and he believed that it was essential to understand the enemy and the terrain before launching an attack. He often conducted reconnaissance missions personally to ensure that his intelligence was current, accurate, and understandable in context.
 
@@ -30,11 +32,13 @@ Similarly, any new organisational challenge experienced by PEx practitioners sho
 
 The act of Reconnaissance can encapsulate both intra-company and external research, data gathering and exploratory analyses, and more sophisticated forms of analysis where data and skills prevail. It is an opportunity to establish the evidence base that will inform and drive future action.
 
-### **2. Business Case Development**
+<br>
 
-If you\'re asking people to change their behaviour, you better provide a compelling reason why! In the face of challenging economic conditions, PEx functions will be competing for scarce resources. That's why it's so important to clearly articulate a considered approach to expenditure. By doing so, they can attract confident investment in initiatives and help their organisations succeed.
+# **2. Business Case Development**
 
-A business case is a document that shows senior leaders why they should invest in your initiative. As a natural extension of the Reconnaissance performed, it\'s a chance to demonstrate that you've thoroughly considered the challenge, identified one or more evidence-backed solutions, and can execute to realise desired outcomes.
+If you're asking people to change their behaviour, you better provide a compelling reason why! In the face of challenging economic conditions, PEx functions will be competing for scarce resources. That's why it's so important to clearly articulate a considered approach to expenditure. By doing so, they can attract confident investment in initiatives and help their organisations succeed.
+
+A business case is a document that shows senior leaders why they should invest in your initiative. As a natural extension of the Reconnaissance performed, it's a chance to demonstrate that you've thoroughly considered the challenge, identified one or more evidence-backed solutions, and can execute to realise desired outcomes.
 
 The business case should include the following sections:
 
@@ -52,9 +56,11 @@ The business case should include the following sections:
 
 By writing a compelling business case, you can show senior leaders that you're serious about improving the colleague experience in your organisation. And most importantly, you can give them the confidence to invest in your initiative.
 
-**3. Measuring Impact**
+<br>
 
-You\'ve introduced one or more new pilot interventions, be it a referral programme, training content, compensation change, ticket-based resolution system, or even a new People Analytics platform. Congratulations! But the hard work doesn't stop there. We need to determine whether our efforts have had an impact.
+# **3. Measuring Impact**
+
+You've introduced one or more new pilot interventions, be it a referral programme, training content, compensation change, ticket-based resolution system, or even a new People Analytics platform. Congratulations! But the hard work doesn't stop there. We need to determine whether our efforts have had an impact.
 
 For PEx functions to make sound data-driven decisions, they need to be able to measure the impact of their actions (action without accountability equals anarchy!). Measuring Impact can be done through the analysis of data. People Analytics can help organisations identify whether initiatives are having the desired impact; whether adjustments to initiatives - even ceasing them to preserve resources - are required, what ROI has been generated from an initiative, and ideally, which initiative is the best among several options (tip: ideally consider multiple interventions in parallel to determine the most effective - don't just back one option in your context).
 
@@ -72,7 +78,9 @@ Measuring the impact of your work can help you achieve several goals.
 
 So don't wait! Start measuring the impact of your work today. The benefits are worth it.
 
-### **Conclusion**
+<br>
+
+# **Conclusion**
 
 Data-driven PEx is a powerful tool that can be used to improve the employee experience and drive better business results. By using data and analytics, PEx leaders can make better decisions, identify areas for improvement, and track the impact of their interventions.
 
