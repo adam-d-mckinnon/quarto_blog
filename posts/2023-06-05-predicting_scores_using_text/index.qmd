@@ -5,13 +5,14 @@ description: "Using a mix of quantitative and qualitative data to predict wine r
 author: 
     - name: Adam D McKinnon
 categories: [AI, Text, Wine Reviews]
-image: "kym-ellis-aF1NPSnDQLw-unsplash.jpg"
+image: "hermes-rivera-aK6WGqxyHFw-unsplash.jpg"
 title-block-banner: true
 draft: true
 ---
 
-```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Kym Ellis on Unsplash](https://unsplash.com/@kymellis).",out.width = '100%'}
-knitr::include_graphics("kym-ellis-aF1NPSnDQLw-unsplash.jpg")
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Hermes Riveria on Unsplash](https://unsplash.com/@hermez777).",out.width = '100%'}
+knitr::include_graphics("hermes-rivera-aK6WGqxyHFw-unsplash.jpg")
+  
 
 ```
 
@@ -45,9 +46,6 @@ tidymodels_prefer()
 
 ```
 
-
-
-
 ```{r data_cleaning}
 
 # Data was downloaded here: https://www.kaggle.com/datasets/manyregression/updated-wine-enthusiast-review
@@ -71,95 +69,140 @@ vars_to_model <- c("variety", "vintage",
 
 cleaned_tbl <- 
 original_tbl |> 
+    
+    # select the variables of interest defined above
     dplyr::select(one_of(vars_to_model)) |> 
-    
+    # convert the following variables into factors 
     dplyr::mutate_at(c("country", "vintage", "variety", "province"), ~forcats::as_factor(.)) |> 
-    
-    tidyr::drop_na(country, province, taster_name, price)
+    # drop any missing data
+    tidyr::drop_na(country, province, taster_name, price) |> 
+    # retain only those enties that have a unique description
+    dplyr::distinct(description, .keep_all = TRUE)
     
 
 ```
 
+
+```{r filtering_dataset}
+
+# cleaned_tbl |> 
+#     DataExplorer::create_report()
+
+
+vintages <- 
+cleaned_tbl |> 
+    count(vintage) |> 
+    arrange(desc(n)) |> 
+    filter(n > 5000) |> 
+    pull(vintage)
+
+
+cleaned_vintages_tbl <- 
+    cleaned_tbl |> 
+    dplyr::filter(vintage %in% vintages)
+
+cleaned_vintages_tbl |> 
+    count(vintage) |> 
+    arrange(desc(n))
+
+
+unacceptable_whites <- c("Chardonnay", "Riesling", "Rosé", "Sauvignon Blanc")
+
+acceptable_reds <- 
+cleaned_vintages_tbl |> 
+    count(variety) |> 
+    arrange(desc(n)) |> 
+    dplyr::filter(n > 1000) |> 
+    dplyr::filter(!variety %in% unacceptable_whites) |> 
+    pull(variety)
+
+
+cleaned_red_vintages_tbl <- cleaned_vintages_tbl |> 
+    dplyr::filter(variety %in% acceptable_reds)
+
+
+```
+
+
+
 ```{r data_exploration}
 
-ud_model <- udpipe_download_model(language = "english")
-ud_model <- udpipe_load_model(ud_model$file_model)
-
-cleaned_identifier_tbl <- cleaned_tbl |> 
-    # convert the doc_id to character to enable joining with the 
-    # product of udpipe_annotate, which produces a character doc_id output
+# # ud_model <- udpipe_download_model(language = "english")
+# ud_model <- udpipe_load_model(file = "english-ewt-ud-2.5-191206.udpipe")
+# 
+# 
+# # create doc_id and convert to character to enable joining with the
+# # output of udpipe_annotate, which produces a character doc_id output
+cleaned_identifier_tbl <- cleaned_red_vintages_tbl |>
     mutate(doc_id = row_number() |> as.character())
+# 
+# 
+# # annotate the text using udpipe and save as a tibble
+# annotated_text <- udpipe::udpipe_annotate(
+#                                         ud_model,
+#                                         x      = cleaned_identifier_tbl$description,
+#                                         doc_id = cleaned_identifier_tbl$doc_id) |>
+#                   tibble::as_tibble()
+# 
+# 
+# # write the annotation to file for future reference
+# annotated_text |>
+#     readr::write_rds(file = "annotated_text_tbl.rds")
+# 
+
+# read the annotated text file
+annotated_text_tbl <- readr::read_rds(file = "annotated_text_tbl.rds")
 
 
-annotated_text <- udpipe::udpipe_annotate(ud_model, x = cleaned_identifier_tbl$description, doc_id = cleaned_identifier_tbl$doc_id)
-
-# write the annotation to file for future reference
-annotated_text |> 
-    tibble::as_tibble() |> 
-    readr::write_rds(file = "annotated_text.rds")
+```
 
 
+```{r visualise_annotated_text}
 
-words_for_plot_tbl <-  
-annotated_text |> 
-    tibble::as_tibble() |> 
-    dplyr::filter(upos %in% c("ADJ", "NOUN", "VERB")) |> 
-    
-    # join the points variable (i.e., the wine rating)
-    dplyr::left_join(cleaned_identifier_tbl |> select(doc_id, points),
-                     by = c("doc_id" = "doc_id")) |> 
-    
+
+cleaned_annotated_text_tbl <- annotated_text_tbl |> 
+                              dplyr::filter(upos %in% c("ADJ", "NOUN", "VERB")) |> 
+                                
+                              # turn the token and lemma variables to lower case
+                              dplyr::mutate_at(vars(token, lemma), ~ stringr::str_to_lower(.)) |> 
+                                
+                              # join the points variable (i.e., the wine rating)
+                              dplyr::left_join(cleaned_identifier_tbl, by = c("doc_id" = "doc_id"))
+
+
+
+
+words_for_plot_tbl <- cleaned_annotated_text_tbl |> 
+    # group by the "word" from the description and see the frequency and the 
+    # mean score it was associated with.
     dplyr::group_by(token) |> 
     dplyr::summarise(
         n = n(),
-        rating = mean(points) |> round(digits = 2)
+        rating = mean(points, na.rm = TRUE) |> round(digits = 2)
         ) |> 
-    dplyr::filter(rating >= 90) |> 
+    
+    # only show words associated with an average rating of 90 or more
+    # dplyr::filter(rating >= 90) |> 
+    
+    # create a detailed description for plotting
     dplyr::mutate(plot_description = stringr::str_glue(
         "Descriptor: {token}
         Frequency: {n}
-        Associated Rating: {rating}
+        Average Rating: {rating}
         "
     )) 
 
 
 
-# tidy_description <-
-#     cleaned_tbl |> 
-#     unnest_tokens(word, description) |> 
-#     filter(!word %in% stop_words$word)
-#     
-# tidy_description %>%
-#   count(word, sort = TRUE)
-
-
-#  
-# words_for_plot_tbl <- tidy_description |> 
-#     dplyr::group_by(word) |> 
-#     dplyr::summarise(
-#         n = n(),
-#         rating = mean(points) |> round(digits = 2)
-#         ) |> 
-#     dplyr::filter(n >= 2000) |> 
-#     dplyr::mutate(plot_description = stringr::str_glue(
-#         "Descriptor: {word}
-#         Frequency: {n}
-#         Associated Rating: {rating}
-#         "
-#     )) 
-
-words_for_plot_tbl |> 
-    dplyr::arrange(desc(rating)) |> 
-    dplyr::select(token, rating, n) |> 
-    dplyr::top_n(100)
-
-
 word_rating_plot <-
     words_for_plot_tbl |> 
+    arrange(desc(n), desc(rating)) |> 
+    dplyr::select(token, rating, n, plot_description) |>
+    dplyr::slice(1:150) |> 
     ggplot(aes(x = n, y = rating, text = plot_description)) +
     geom_hline(
         yintercept = mean(cleaned_tbl$points), lty = 2,
-        color = "red", size = 1.5
+        color = "red", size = 0.5
         ) +
     geom_jitter(alpha = 0.7) +
     geom_text(aes(label = token),
@@ -169,7 +212,49 @@ word_rating_plot <-
 
 plotly::ggplotly(word_rating_plot, tooltip = "text")
 
+
 ```
+
+
+```{r text_network}
+
+
+cleaned_annotated_text_dt <- cleaned_annotated_text_tbl |> 
+    data.table::as.data.table()
+
+cooc_tbl <- cooccurrence(x = cleaned_annotated_text_dt, 
+                     term = "token", 
+                     group = c("doc_id", "paragraph_id", "sentence_id")) |> 
+    
+            tibble::as_tibble() |> 
+            dplyr::filter(!term1 == "wine") |> 
+            dplyr::filter(!term2 == "wine")
+
+
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+
+wordnetwork <- head(cooc_tbl, 500)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+
+set.seed(2020)
+ggraph(wordnetwork, layout = "fr") +
+    geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "pink") +
+    geom_node_point(color = "darkblue", size = 2, alpha = .3) +
+    geom_node_text(aes(label = name), vjust = 1, hjust = 1, size = 3) +
+    theme_graph(base_family = "Arial Narrow") +
+    theme(legend.position = "none") +
+    labs(title = "Cooccurrences within sentence", subtitle = "Nouns, Verbs & Adjective")
+
+
+```
+
+
+
+
+
 
 
 
@@ -192,8 +277,6 @@ wine_folds
 
 
 ```
-
-
 
 ```{r recipe}
 
@@ -223,4 +306,3 @@ unlist(output)
 
 
 ```
-

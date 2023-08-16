@@ -1,6 +1,6 @@
 ---
 title: 'Creating Synthetic People Analytics Data'
-date: 2023-09-10
+date: 2023-08-10
 description: "Simple methods for creating people analytics data that you can reuse in your context."
 author: 
     - name: Stephen Pearce

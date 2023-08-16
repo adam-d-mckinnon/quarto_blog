@@ -8,7 +8,7 @@
 
 <meta name="author" content="Stephen Pearce">
 <meta name="author" content="Adam D McKinnon">
-<meta name="dcterms.date" content="2023-09-10">
+<meta name="dcterms.date" content="2023-08-10">
 <meta name="description" content="Simple methods for creating people analytics data that you can reuse in your context.">
 
 <title>Adam D McKinnon - Creating Synthetic People Analytics Data</title>
@@ -202,7 +202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 10, 2023</p>
+        <p class="date">August 10, 2023</p>
       </div>
     </div>
     
@@ -315,16 +315,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code># A tibble: 10 × 7
       id   age hire_date  job_family     contract_type employment_type state
    &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;
- 1     1  42.9 2000-01-09 Engineering    Full Time     Permanent       VIC  
- 2     2  39.9 2003-11-20 Engineering    Part Time     Contract        NSW  
- 3     3  39.1 1996-01-15 Sales          Full Time     Permanent       VIC  
- 4     4  34.2 2008-07-13 Engineering    Full Time     Permanent       NSW  
- 5     5  52.8 1998-05-23 Engineering    Full Time     Permanent       VIC  
- 6     6  47.1 2008-01-05 Engineering    Part Time     Contract        QLD  
- 7     7  40.3 2015-07-17 Sales          Full Time     Permanent       VIC  
- 8     8  42.4 2013-07-15 Administration Full Time     Contract        VIC  
- 9     9  41.2 1992-06-12 Engineering    Full Time     Permanent       VIC  
-10    10  38.6 2000-08-23 Administration Full Time     Contract        QLD  </code></pre>
+ 1     1  35.2 2022-08-13 Engineering    Full Time     Permanent       NSW  
+ 2     2  43.4 2023-03-16 Administration Full Time     Contract        QLD  
+ 3     3  36.9 2010-10-26 Administration Full Time     Contract        VIC  
+ 4     4  35.9 2019-07-21 Sales          Full Time     Permanent       QLD  
+ 5     5  33.9 1999-08-26 Administration Full Time     Permanent       QLD  
+ 6     6  35.4 2003-02-11 Engineering    Full Time     Contract        VIC  
+ 7     7  41.2 2010-08-24 Engineering    Part Time     Permanent       VIC  
+ 8     8  43.5 2015-03-19 Engineering    Full Time     Permanent       VIC  
+ 9     9  37.8 2006-06-28 Engineering    Full Time     Permanent       VIC  
+10    10  38.7 2006-05-07 Engineering    Full Time     Permanent       QLD  </code></pre>
 </div>
 </div>
 <p><br></p>
@@ -488,18 +488,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 7
-      id   age hire_date  job_family  contract_type employment_type state
-   &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;
- 1     1  41.3 1999-04-20 Sales       Full Time     Contract        VIC  
- 2     2  46.2 2001-03-17 Sales       Full Time     Permanent       NSW  
- 3     3  36.3 1993-03-26 Engineering Full Time     Permanent       NSW  
- 4     4  40.5 2021-03-12 Engineering Full Time     Permanent       VIC  
- 5     5  46.1 2001-08-27 Sales       Full Time     Contract        VIC  
- 6     6  38.2 1998-03-28 Sales       Full Time     Permanent       NSW  
- 7     7  39.7 1990-12-14 Engineering Part Time     Permanent       VIC  
- 8     8  35.0 2019-08-02 Engineering Full Time     Permanent       VIC  
- 9     9  36.4 2012-07-09 Sales       Full Time     Permanent       VIC  
-10    10  42.0 1993-09-17 Engineering Full Time     Permanent       NSW  </code></pre>
+      id   age hire_date  job_family     contract_type employment_type state
+   &lt;int&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;
+ 1     1  43.8 2008-09-27 Engineering    Full Time     Permanent       NSW  
+ 2     2  33.6 2010-06-04 Engineering    Full Time     Permanent       VIC  
+ 3     3  35.0 1990-11-27 Engineering    Full Time     Permanent       NSW  
+ 4     4  34.0 1991-07-25 Sales          Full Time     Permanent       VIC  
+ 5     5  43.8 2022-10-12 Administration Part Time     Contract        VIC  
+ 6     6  35.3 2021-11-24 Engineering    Full Time     Permanent       VIC  
+ 7     7  44.5 2016-02-27 Engineering    Full Time     Permanent       NSW  
+ 8     8  42.2 2013-06-23 Engineering    Full Time     Permanent       VIC  
+ 9     9  39.3 2021-06-18 Sales          Part Time     Contract        NSW  
+10    10  41.8 2002-08-05 Engineering    Full Time     Permanent       VIC  </code></pre>
 </div>
 </div>
 <p><br></p>
@@ -517,13 +517,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{pearce2023,
   author = {Stephen Pearce and Adam D McKinnon},
   title = {Creating {Synthetic} {People} {Analytics} {Data}},
-  date = {2023-09-10},
+  date = {2023-08-10},
   url = {https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-pearce2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
 Stephen Pearce, and Adam D McKinnon. 2023. <span>“Creating Synthetic
-People Analytics Data.”</span> September 10, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data">https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data</a>.
+People Analytics Data.”</span> August 10, 2023. <a href="https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data">https://www.adam-d-mckinnon.com//posts/2023-08-10-synthetic_data</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
