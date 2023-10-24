@@ -1,6 +1,6 @@
 ---
 title: 'Predicting Wine Ratings Using Reviews'
-date: 2023-05-19
+date: 2023-08-19
 description: "Using a mix of quantitative and qualitative data to predict wine ratings globally. This approach demonstrates the utility of text based data in ML models for predicting outcomes of interest. "
 author: 
     - name: Adam D McKinnon
@@ -27,6 +27,7 @@ library(tidyverse)
 library(DataExplorer)
 library(tidytext)
 library(udpipe)
+library(BTM)
 
 
 # modelling
@@ -38,10 +39,9 @@ library(agua)
 library(doParallel)
 library(parallelly)
 
-# Visualisation
-library(plotly)
-
-tidymodels_prefer()
+# visualisations
+library(igraph)
+library(ggraph)
 
 
 ```
@@ -82,7 +82,6 @@ original_tbl |>
 
 ```
 
-
 ```{r filtering_dataset}
 
 # cleaned_tbl |> 
@@ -91,10 +90,10 @@ original_tbl |>
 
 vintages <- 
 cleaned_tbl |> 
-    count(vintage) |> 
-    arrange(desc(n)) |> 
-    filter(n > 5000) |> 
-    pull(vintage)
+    dplyr::count(vintage) |> 
+    dplyr::arrange(desc(n)) |> 
+    dplyr::filter(n > 5000) |> 
+    dplyr::pull(vintage)
 
 
 cleaned_vintages_tbl <- 
@@ -102,19 +101,19 @@ cleaned_vintages_tbl <-
     dplyr::filter(vintage %in% vintages)
 
 cleaned_vintages_tbl |> 
-    count(vintage) |> 
-    arrange(desc(n))
+    dplyr::count(vintage) |> 
+    dplyr::arrange(desc(n))
 
 
 unacceptable_whites <- c("Chardonnay", "Riesling", "Rosé", "Sauvignon Blanc")
 
 acceptable_reds <- 
 cleaned_vintages_tbl |> 
-    count(variety) |> 
-    arrange(desc(n)) |> 
+    dplyr::count(variety) |> 
+    dplyr::arrange(desc(n)) |> 
     dplyr::filter(n > 1000) |> 
     dplyr::filter(!variety %in% unacceptable_whites) |> 
-    pull(variety)
+    dplyr::pull(variety)
 
 
 cleaned_red_vintages_tbl <- cleaned_vintages_tbl |> 
@@ -122,8 +121,6 @@ cleaned_red_vintages_tbl <- cleaned_vintages_tbl |>
 
 
 ```
-
-
 
 ```{r data_exploration}
 
@@ -134,7 +131,10 @@ cleaned_red_vintages_tbl <- cleaned_vintages_tbl |>
 # # create doc_id and convert to character to enable joining with the
 # # output of udpipe_annotate, which produces a character doc_id output
 cleaned_identifier_tbl <- cleaned_red_vintages_tbl |>
-    mutate(doc_id = row_number() |> as.character())
+    dplyr::mutate(doc_id = dplyr::row_number() |> as.character())
+
+
+
 # 
 # 
 # # annotate the text using udpipe and save as a tibble
@@ -156,15 +156,14 @@ annotated_text_tbl <- readr::read_rds(file = "annotated_text_tbl.rds")
 
 ```
 
-
 ```{r visualise_annotated_text}
 
 
 cleaned_annotated_text_tbl <- annotated_text_tbl |> 
-                              dplyr::filter(upos %in% c("ADJ", "NOUN", "VERB")) |> 
+                              dplyr::filter(upos %in% c("ADJ", "NOUN")) |> 
                                 
                               # turn the token and lemma variables to lower case
-                              dplyr::mutate_at(vars(token, lemma), ~ stringr::str_to_lower(.)) |> 
+                              dplyr::mutate_at(dplyr::vars(token, lemma), ~ stringr::str_to_lower(.)) |> 
                                 
                               # join the points variable (i.e., the wine rating)
                               dplyr::left_join(cleaned_identifier_tbl, by = c("doc_id" = "doc_id"))
@@ -175,7 +174,7 @@ cleaned_annotated_text_tbl <- annotated_text_tbl |>
 words_for_plot_tbl <- cleaned_annotated_text_tbl |> 
     # group by the "word" from the description and see the frequency and the 
     # mean score it was associated with.
-    dplyr::group_by(token) |> 
+    dplyr::group_by(lemma) |> 
     dplyr::summarise(
         n = n(),
         rating = mean(points, na.rm = TRUE) |> round(digits = 2)
@@ -186,7 +185,7 @@ words_for_plot_tbl <- cleaned_annotated_text_tbl |>
     
     # create a detailed description for plotting
     dplyr::mutate(plot_description = stringr::str_glue(
-        "Descriptor: {token}
+        "Descriptor: {lemma}
         Frequency: {n}
         Average Rating: {rating}
         "
@@ -197,7 +196,7 @@ words_for_plot_tbl <- cleaned_annotated_text_tbl |>
 word_rating_plot <-
     words_for_plot_tbl |> 
     arrange(desc(n), desc(rating)) |> 
-    dplyr::select(token, rating, n, plot_description) |>
+    dplyr::select(lemma, rating, n, plot_description) |>
     dplyr::slice(1:150) |> 
     ggplot(aes(x = n, y = rating, text = plot_description)) +
     geom_hline(
@@ -205,7 +204,7 @@ word_rating_plot <-
         color = "red", size = 0.5
         ) +
     geom_jitter(alpha = 0.7) +
-    geom_text(aes(label = token),
+    geom_text(aes(label = lemma),
               vjust = "top", hjust = "left"
               ) +
   scale_x_log10()
@@ -215,29 +214,112 @@ plotly::ggplotly(word_rating_plot, tooltip = "text")
 
 ```
 
-
 ```{r text_network}
 
 
-cleaned_annotated_text_dt <- cleaned_annotated_text_tbl |> 
-    data.table::as.data.table()
-
-cooc_tbl <- cooccurrence(x = cleaned_annotated_text_dt, 
-                     term = "token", 
-                     group = c("doc_id", "paragraph_id", "sentence_id")) |> 
-    
-            tibble::as_tibble() |> 
-            dplyr::filter(!term1 == "wine") |> 
-            dplyr::filter(!term2 == "wine")
+biterms <- data.table::as.data.table(annotated_text_tbl)
 
 
+# 
+# cooc_tbl <- cooccurrence(x = cleaned_annotated_text_dt, 
+#                      term = "lemma", 
+#                      group = c("doc_id", "paragraph_id", "sentence_id")) |> 
+#     
+#             tibble::as_tibble() |> 
+#             dplyr::filter(!term1 == "wine") |> 
+#             dplyr::filter(!term2 == "wine")
+# 
 
-library(igraph)
+
+## Get cooccurrences of nouns / adjectives and proper nouns
+# biterms <- data.table::as.data.table(annotated_text_dt)
+biterms <- biterms[, cooccurrence(x = lemma, 
+                                  relevant = upos %in% c("NOUN", "PROPN", "ADJ"),
+                                  skipgram = 2), 
+                   by = list(doc_id)]
+
+
+
+plt <- textplot::textplot_cooccurrence(
+                                    biterms,
+                                    title = "Nouns + Adjectives",
+                                    top_n = 1175,
+                                    vertex_color = "orange", 
+                                    edge_color = "black",
+                                    fontface = "bold")
+
+plt
+plotly::plotly_build(plt)
+
+
+
+## Build the model
+set.seed(123456)
+x     <- annotated_text_tbl |> 
+    dplyr::filter(upos %in% c("NOUN", "PROPN", "ADJ")) |> 
+    dplyr::select(doc_id, lemma)
+
+model <- BTM::BTM(x, k = 10, beta = 0.01, iter = 200, background = TRUE, 
+             biterms = biterms, trace = 100)
+
+
+plt <- plot(model, title = "Biterm topic model", subtitle = "Topics 2 to 10", which = 2:10, top_n = 10)
+plt
+
+
+topicterms <- terms(model, top_n = 15)
+topicterms
+
+
+library(textplot)
 library(ggraph)
-library(ggplot2)
+library(concaveman)
+plot(model)
 
-wordnetwork <- head(cooc_tbl, 500)
-wordnetwork <- graph_from_data_frame(wordnetwork)
+
+
+cooc_tbl |> view()
+
+
+
+
+
+wordnetwork <- head(biterms, 500)
+wordnetwork <- biterms
+# wordnetwork <- cooc_tbl |> filter(cooc>300) 
+wordnetwork <- igraph::graph_from_data_frame(wordnetwork, directed = FALSE)
+
+l <- layout_with_fr(wordnetwork)
+plot(wordnetwork, rescale=F, layout=l*0.4)
+
+
+g4s <- simplify(wordnetwork, remove.multiple = T, remove.loops = T, 
+                 edge.attr.comb=c(weight="sum", type="ignore") )
+
+plot(g4s, vertex.label.dist=1.5)
+
+
+
+
+# Find group membership
+wt <- igraph::cluster_leiden(wordnetwork)
+members <- membership(wt)
+
+# Convert to object suitable for networkD3
+karate_d3 <- igraph_to_networkD3(wordnetwork, group = members)
+
+# Create force directed network plot
+forceNetwork(Links = karate_d3$links, Nodes = karate_d3$nodes,
+             Source = 'source', Target = 'target', NodeID = 'name',
+             Group = 'group')
+
+
+
+
+
+
+
+
 
 set.seed(2020)
 ggraph(wordnetwork, layout = "fr") +
@@ -246,21 +328,64 @@ ggraph(wordnetwork, layout = "fr") +
     geom_node_text(aes(label = name), vjust = 1, hjust = 1, size = 3) +
     theme_graph(base_family = "Arial Narrow") +
     theme(legend.position = "none") +
-    labs(title = "Cooccurrences within sentence", subtitle = "Nouns, Verbs & Adjective")
+    labs(title = "Cooccurrences within sentence", subtitle = "Nouns & Adjective")
 
 
 ```
 
+```{r}
+library(visNetwork)
+visNetwork::visIgraph(wordnetwork) |> 
+    visNodes(
+        shape = "circle", 
+        size = 5,
+        color = list(background = "lightblue"), 
+        font = list(color = "black", size = 35),
+        shapeProperties = list(useBorderWithImage = TRUE)
+        
+        ) |> 
+    visEdges(
+        arrows = 'none', 
+        color = "grey"
+        
+        ) |> 
+    visOptions(
+        highlightNearest = list(enabled = T, 
+                                degree = 1,
+                                hover = T),
+        width = "100%",
+        height = "100%"
+        
+        ) |> 
+     visIgraphLayout(layout = "layout.star")
+    # visIgraphLayout(layout = "layout_on_sphere")
+    
 
 
 
 
 
+```
+
+```{r}
+
+library(networkD3)
+# Extract nodes
+nodes <- data.frame(name=V(wordnetwork)$name)
+
+# Extract edges
+edges <- get.data.frame(wordnetwork, what="edges")[,1:2]
+
+edges$from <- match(edges$from, nodes$name) - 1  # Subtracting 1 to make indices start from 0
+edges$to <- match(edges$to, nodes$name) - 1
 
 
+edges$from_name <- match(edges$from_name, nodes$name) -1
 
+net <- simpleNetwork(edges)
+net
 
-
+```
 
 ```{r data_budget}
 

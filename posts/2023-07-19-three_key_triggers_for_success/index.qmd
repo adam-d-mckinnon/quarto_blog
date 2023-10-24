@@ -4,7 +4,7 @@ date: 2023-07-19
 description: "Data and analytics are the key to making better decisions, improving employee engagement, and driving business results. This article covers the three key triggers for HR practitioners to utilise data iin their work."
 author: 
     - name: Adam D McKinnon
-    - name: Courtenay Howard-Bath Pearce
+    - name: Courtenay Howard-Bath
 categories: [People Analytics, Data Literacy]
 image: "1689248662162.jpeg"
 title-block-banner: true
