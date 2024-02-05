@@ -12,7 +12,7 @@
 <generator>quarto-1.2.313</generator>
 <lastBuildDate>Sun, 04 Feb 2024 13:00:00 GMT</lastBuildDate>
 <item>
-  <title>Lex - Australian Employment Law Suppot AI</title>
+  <title>Lex - Australian Employment Law Support AI</title>
   <dc:creator>Adam D McKinnon</dc:creator>
   <link>https://www.adam-d-mckinnon.com/posts/2024-02-05-lex_chatbot/index.html</link>
   <description><![CDATA[ 
@@ -64,13 +64,13 @@
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2024,
   author = {Adam D McKinnon},
-  title = {Lex - {Australian} {Employment} {Law} {Suppot} {AI}},
+  title = {Lex - {Australian} {Employment} {Law} {Support} {AI}},
   date = {2024-02-05},
   url = {https://www.adam-d-mckinnon.com//posts/2024-02-05-lex_chatbot},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2024" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon. 2024. <span>“Lex - Australian Employment Law Suppot
+Adam D McKinnon. 2024. <span>“Lex - Australian Employment Law Support
 AI.”</span> February 5, 2024. <a href="https://www.adam-d-mckinnon.com//posts/2024-02-05-lex_chatbot">https://www.adam-d-mckinnon.com//posts/2024-02-05-lex_chatbot</a>.
 </div></div></section></div> ]]></description>
   <category>Chatbot</category>
