@@ -1,0 +1,58 @@
+---
+title: 'Lex - Australian Employment Law Suppot AI'
+date: 2024-02-05
+description: "A chatbot, based on ChatGPT Turbo 3.5, that has been trained on Australian workplace legislation. Lex is intended to synthesise the complexity of legal documentation for the average person."
+author: 
+    - name: Adam D McKinnon
+categories: [Chatbot, ChatGPT, LLMs, People Analytics]
+image: "conny-schneider-3hkKv6WzjcE-unsplash.jpg"
+title-block-banner: true
+draft: false
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Conny Schneider on Unsplash](https://unsplash.com/@choys_).",out.width = '100%'}
+knitr::include_graphics("conny-schneider-3hkKv6WzjcE-unsplash.jpg")
+  
+```
+
+<br>
+
+### Introducing Lex - Australian Employment Law Support AI
+
+To address the complexity of Australian workplace legislation the current Chatbot has been created. The Chatbot is called "Lex", named after the Latin word for "Law". Lex is intended to act as an intelligent and approachable Australian employment law support AI. It is limited in its responses to the documentation it has been trained upon (see a list of legislation and regulations below) and the context provided by users.
+
+Lex has been trained not to make up answers, and it should refuse to answer any question that can not be answered using the legal documents it has been trained on. Lex will answer questions in simple explainable language that could be understood by a person with high school reading ability and no legal knowledge. In addition, it will provide exact references to the parts of the documentation it is trained upon when providing answers.
+
+<br>
+
+### Training Documents
+
+The Chatbot is trained on the following data sources:
+
+-   Age Discrimination Act 2004
+
+-   Disability Discrimination Act 1992
+
+-   Fair Work Act 2009
+
+-   Fair Work Regulations 2009
+
+-   Freedom of Information Act 1982
+
+-   Racial Discrimination Act 1975
+
+-   Sex Discrimination Act 1984
+
+-   Work Health & Safety Act 2011
+
+I welcome suggestions as to other legislation that should inform the future training of Lex.
+
+<br>
+
+```{=html}
+
+<script src="https://embed.chatnode.ai/b9f2f0363d718df2/popup.js"></script>
+```
+### **Disclaimer**
+
+Lex is an AI-powered virtual assistant and the responses are based on the information provided. While Lex strives to provide accurate and up-to-date information, it is not a qualified legal professional. The information provided by Lex should not be considered as legal advice. For specific legal advice, it is always recommended to consult with a qualified legal practitioner. Use of this service does not create a solicitor-client relationship.

@@ -10,7 +10,77 @@
 <atom:link href="https://www.adam-d-mckinnon.com/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.313</generator>
-<lastBuildDate>Wed, 09 Aug 2023 14:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 04 Feb 2024 13:00:00 GMT</lastBuildDate>
+<item>
+  <title>Lex - Australian Employment Law Suppot AI</title>
+  <dc:creator>Adam D McKinnon</dc:creator>
+  <link>https://www.adam-d-mckinnon.com/posts/2024-02-05-lex_chatbot/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell" data-code_folding="false">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.adam-d-mckinnon.com/posts/2024-02-05-lex_chatbot/conny-schneider-3hkKv6WzjcE-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption"><a href="https://unsplash.com/@choys_">Photo by Conny Schneider on Unsplash</a>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<section id="introducing-lex---australian-employment-law-support-ai" class="level3">
+<h3 class="anchored" data-anchor-id="introducing-lex---australian-employment-law-support-ai">Introducing Lex - Australian Employment Law Support AI</h3>
+<p>To address the complexity of Australian workplace legislation the current Chatbot has been created. The Chatbot is called “Lex”, named after the Latin word for “Law”. Lex is intended to act as an intelligent and approachable Australian employment law support AI. It is limited in its responses to the documentation it has been trained upon (see a list of legislation and regulations below) and the context provided by users.</p>
+<p>Lex has been trained not to make up answers, and it should refuse to answer any question that can not be answered using the legal documents it has been trained on. Lex will answer questions in simple explainable language that could be understood by a person with high school reading ability and no legal knowledge. In addition, it will provide exact references to the parts of the documentation it is trained upon when providing answers.</p>
+<p><br></p>
+</section>
+<section id="training-documents" class="level3">
+<h3 class="anchored" data-anchor-id="training-documents">Training Documents</h3>
+<p>The Chatbot is trained on the following data sources:</p>
+<ul>
+<li><p>Age Discrimination Act 2004</p></li>
+<li><p>Disability Discrimination Act 1992</p></li>
+<li><p>Fair Work Act 2009</p></li>
+<li><p>Fair Work Regulations 2009</p></li>
+<li><p>Freedom of Information Act 1982</p></li>
+<li><p>Racial Discrimination Act 1975</p></li>
+<li><p>Sex Discrimination Act 1984</p></li>
+<li><p>Work Health &amp; Safety Act 2011</p></li>
+</ul>
+<p>I welcome suggestions as to other legislation that should inform the future training of Lex.</p>
+<p><br></p>
+
+<script src="https://embed.chatnode.ai/b9f2f0363d718df2/popup.js"></script>
+</section>
+<section id="disclaimer" class="level3">
+<h3 class="anchored" data-anchor-id="disclaimer"><strong>Disclaimer</strong></h3>
+<p>Lex is an AI-powered virtual assistant and the responses are based on the information provided. While Lex strives to provide accurate and up-to-date information, it is not a qualified legal professional. The information provided by Lex should not be considered as legal advice. For specific legal advice, it is always recommended to consult with a qualified legal practitioner. Use of this service does not create a solicitor-client relationship.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2024,
+  author = {Adam D McKinnon},
+  title = {Lex - {Australian} {Employment} {Law} {Suppot} {AI}},
+  date = {2024-02-05},
+  url = {https://www.adam-d-mckinnon.com//posts/2024-02-05-lex_chatbot},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2024" class="csl-entry quarto-appendix-citeas">
+Adam D McKinnon. 2024. <span>“Lex - Australian Employment Law Suppot
+AI.”</span> February 5, 2024. <a href="https://www.adam-d-mckinnon.com//posts/2024-02-05-lex_chatbot">https://www.adam-d-mckinnon.com//posts/2024-02-05-lex_chatbot</a>.
+</div></div></section></div> ]]></description>
+  <category>Chatbot</category>
+  <category>ChatGPT</category>
+  <category>LLMs</category>
+  <category>People Analytics</category>
+  <guid>https://www.adam-d-mckinnon.com/posts/2024-02-05-lex_chatbot/index.html</guid>
+  <pubDate>Sun, 04 Feb 2024 13:00:00 GMT</pubDate>
+  <media:content url="https://www.adam-d-mckinnon.com/posts/2024-02-05-lex_chatbot/conny-schneider-3hkKv6WzjcE-unsplash.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Creating Synthetic People Analytics Data</title>
   <dc:creator>Stephen Pearce</dc:creator>
@@ -7144,99 +7214,6 @@ Machine Learning for HR Practitioners.”</span> June 19, 2020. <a href="https:/
   <guid>https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/index.html</guid>
   <pubDate>Thu, 18 Jun 2020 14:00:00 GMT</pubDate>
   <media:content url="https://www.adam-d-mckinnon.com/posts/2020-06-19-a-beginners-guide-to-machine-learning-for-hr-practitioners/pietro-jeng-n6B49lTx7NM-unsplash.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>4 Key Insights on the HR Tech Landscape… Analysis from London Unleash 2019</title>
-  <dc:creator>Adam D McKinnon</dc:creator>
-  <dc:creator>Leandra Griep</dc:creator>
-  <link>https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/jj-ying-8bghKxNU1j0-unsplash.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/@jjying">JJ Ying</a> on <a href="https://unsplash.com/">Unsplash</a>.</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<p><br></p>
-<section id="data-collection" class="level2">
-<h2 class="anchored" data-anchor-id="data-collection">Data collection</h2>
-<p>We obtained data from the 2019 Unleash Conference in London, specifically the 35 start-ups and 64 sponsors that were present at the conference. Conference attendees were provided a list of company names and their “tags”, which were descriptors of the technology or HR domain that characterize the respective companies.</p>
-<p><br></p>
-</section>
-<section id="network-analyses-how-we-did-what-we-did" class="level2">
-<h2 class="anchored" data-anchor-id="network-analyses-how-we-did-what-we-did">Network Analyses — How we did what we did?</h2>
-<p>We examined the tags using network analysis, in a technology called <a href="https://www.kenelyze.com/">Kenelyze</a> (kudos to our partner <a href="https://www.linkedin.com/in/andrevermeij/">André Vermeij</a>).</p>
-<p>The current network examines the “influence” of HR tech among those vendors present at the 2019 Unleash Conference in London. Network Nodes were the company Tags, and company name was included as a node attribute. The network was undirected and displayed using the Force Atlas 2 layout. Nodes (i.e.&nbsp;Tags) were sized according to the number of times the Tag was used to describe an organization, and coloured according to the PageRank score (i.e.&nbsp;influence measure). The network is presented below.</p>
-<p><br> <br></p>
-<iframe width="1000" height="700" src="https://www.kenedict.com/networks/hr_tech/" title="HR Tech Network"></iframe>
-<p>Network Output of Analysis of HR Tech at 2019 Unleash Conference in London</p>
-<p><br></p>
-</section>
-<section id="data-interpretation-what-did-we-discover-what-are-main-insights" class="level1">
-<h1>Data interpretation: What did we discover? / What are main insights?</h1>
-<p><br></p>
-<section id="what-are-prominent-technologies-in-the-hr-tech-landscape" class="level2">
-<h2 class="anchored" data-anchor-id="what-are-prominent-technologies-in-the-hr-tech-landscape">What are prominent technologies in the HR Tech landscape?</h2>
-<p><br></p>
-<section id="talent-acquisition-is-a-main-influencer" class="level4">
-<h4 class="anchored" data-anchor-id="talent-acquisition-is-a-main-influencer">1. Talent acquisition is a main influencer</h4>
-<p>The most frequent Tag, most connected to other Tags, and most influential was “Talent Acquisition (incl.&nbsp;Referrals)”. It is perhaps unsurprising that Talent Acquisition is both a common and influential domain in HR Technology. This may in part reflect the discrete nature of the recruiting process, characterized by a definitive start and end point, and a clear, binary success measure—hired or not hired. In addition, Talent Acquisition also lends itself to performance measurement, evidenced by metrics such as source of hire, time to hire, applicants per hire, cost per hire, offer acceptance per hire, etc. All discrete metrics that the technology domain has progressively digitized. Good news for Talent Acquisition functions, what about the rest of us?</p>
-<p><br></p>
-</section>
-<section id="people-analytics-and-employee-experience-are-up-and-coming" class="level4">
-<h4 class="anchored" data-anchor-id="people-analytics-and-employee-experience-are-up-and-coming">2. People Analytics and Employee Experience are “up and coming”</h4>
-<p>Following Talent Acquisition the next most frequent and influential Tags included Employee Engagement, Learning &amp; Development, People Analytics, Talent Management, and Employee Experience (EX). These Tags reflect what we interpret as a mix of established HR domains (e.g.&nbsp;Employee Engagement, Learning &amp; Development, Talent Management, HR Transformation), and “up and coming” (e.g.&nbsp;People Analytics and EX). The latter two topics have experienced a meteoric rise in prominence in recent years. However, both People Analytics and EX we anecdotally know to be technology related, and both benefit from a historical connection to data collection network nodes such as “Employee Engagement” and “Surveys (incl.&nbsp;Employee Listening)”.</p>
-<p>We note two points about People Analytics and EX—first, their collective network metrics and second, the various companies that identify themselves with these two capabilities (i.e.&nbsp;click on nodes to see company listings). To us the network metrics and network position suggest that People Analytics is currently more influential (e.g.&nbsp;frequency, degree, PageRank), more central to the network (i.e.&nbsp;position), and consequently likely to play a more significant role in connecting technologies in the HR Tech landscape in the immediate future. Longer term, only time and repeated assessment of the market will tell.</p>
-<p>Secondly, the companies identifying themselves with these two capabilities are varied! Our interpretation of this variation is that the terms People Analytics and EX (also applicable to “Workforce Planning”) mean many things to different people, perhaps driven by maturity of practice in the consumer population. Alternatively, it may also represent future use cases that aren’t currently mainstream, or the potential for partnership or acquisition among technology vendors. Finally, it may represent opportunistic thinking by marketing professionals!</p>
-<p><br></p>
-</section>
-<section id="skills-are-the-new-currency" class="level4">
-<h4 class="anchored" data-anchor-id="skills-are-the-new-currency">3. Skills are the new currency</h4>
-<p>A special call out to the topic of Skills Matching, which we at Merck KGaA have invested in during 2019, and will further explore in 2020. As evidenced in the network, we believe there is real world connectivity between Skills Matching and domains such as People Analytics (our team currently owns the Skills Matching topic at Merck KGaA), Strategic Workforce Planning (i.e.&nbsp;bridging the current with the future), Talent Management, Learning &amp; Development (i.e.&nbsp;to get from the present to the future what training interventions are required), Talent Sourcing (incl.&nbsp;Referrals), and Performance Management (i.e.&nbsp;among other things a useful source of data to inform Skills Matching!). As referenced in recent predictions for 2020 by a variety of authors (e.g.&nbsp;<a href="https://www.linkedin.com/pulse/putting-h-back-hr-10-predictions-2020-david-green/">David Green</a>, <a href="https://hello.visier.com/hr-trends-2020-ebook/">Visier</a>, <a href="https://joshbersin.com/hr-and-talent-predictions-for-2020/">Bersin</a>, etc.), we believe that “Skills are the new currency”! Kudos to <a href="https://www.linkedin.com/in/ianbailie/">Ian Bailie</a> for one of our favourite stakeholder pitch lines.</p>
-<p><br></p>
-</section>
-<section id="social-networks-appear-niche" class="level4">
-<h4 class="anchored" data-anchor-id="social-networks-appear-niche">4. Social Networks appear niche</h4>
-<p>Tech Tags that appeared less frequently than expected, at least considering public hype, included Digital HR and Social Networks. This may simply reflect the companies present at Unleash 2019. However, it may also be suggestive of the niche nature of this technology / approach, and the slow rate of adoption among companies due to various reasons (e.g.&nbsp;data privacy implications, prevalence of skills, lack of available use cases, etc.).</p>
-<p><br></p>
-</section>
-</section>
-</section>
-<section id="next-steps" class="level1">
-<h1>Next Steps</h1>
-<p>The analysis provides a data driven exploration of the HR Tech landscape present at Unleash London in 2019. While the dataset does not claim to capture the universe of HR Tech, it does provide an interesting perspective of available technologies and how these technologies relate to one another. We encourage further exploration of the interactive network—reflect on your own hypotheses, look at the edges for new trends, examine the network structure, and consider what it might mean for the future. To make the article digestible we intentionally did not address many relationships in the network.</p>
-<p>We welcome your comments, particularly additional interpretation of the network, that may generate insights and practical value for other readers. Stay tuned! We may look to squeeze further insights from this analysis (e.g.&nbsp;different algorithms, node configurations, etc.).</p>
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{dmckinnon2020,
-  author = {Adam D McKinnon and Leandra Griep},
-  title = {4 {Key} {Insights} on the {HR} {Tech} {Landscape…} {Analysis}
-    from {London} {Unleash} 2019},
-  date = {2020-03-16},
-  url = {https://www.adam-d-mckinnon.com//posts/2020-03-16-hrtechanalysis},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-dmckinnon2020" class="csl-entry quarto-appendix-citeas">
-Adam D McKinnon, and Leandra Griep. 2020. <span>“4 Key Insights on the
-HR Tech Landscape… Analysis from London Unleash 2019.”</span> March 16,
-2020. <a href="https://www.adam-d-mckinnon.com//posts/2020-03-16-hrtechanalysis">https://www.adam-d-mckinnon.com//posts/2020-03-16-hrtechanalysis</a>.
-</div></div></section></div> ]]></description>
-  <category>HR Tech</category>
-  <category>Network Analysis</category>
-  <category>Kenelyze</category>
-  <guid>https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/index.html</guid>
-  <pubDate>Sun, 15 Mar 2020 13:00:00 GMT</pubDate>
-  <media:content url="https://www.adam-d-mckinnon.com/posts/2020-03-16-hrtechanalysis/jj-ying-8bghKxNU1j0-unsplash.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
