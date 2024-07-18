@@ -396,7 +396,7 @@ htmlwidgets::saveWidget(
 
 <br>
 
-![](modelstudio_output.png){width=100%}
+![](modelstudio_output.png){width="100%"}
 
 <br>
 
