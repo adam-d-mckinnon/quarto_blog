@@ -1,0 +1,21 @@
+---
+title: "Time for another GPT Model"
+date: 2024-07-19
+description: "Using TimeGPT to: 1. forecast values in a recruitment setting, and 2. detect anomalies in a safety data."
+author: 
+    - name: Adam D McKinnon
+categories: [TimeGPT, Forecasting, Anomaly Detection, Safety, Recruiting, People Analytics]
+image: "liam-charmer-Aifb5-daBPs-unsplash.jpg"
+title-block-banner: true
+draft: true
+---
+
+```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Liam Charmer on Unsplash](https://unsplash.com/@liamcharmer).",out.width = '100%'}
+knitr::include_graphics("liam-charmer-Aifb5-daBPs-unsplash.jpg")
+```
+
+<br>
+
+Introducing TimeGPT
+
+To address the complexity of Australian workplace legislation the current Chatbot has been created. The Chatbot is called "Lex", named after the Latin word for "Law". Lex is intended to act as an intelligent and approachable Australian employment law support AI. It is limited in its responses to the documentation it has been trained upon (see a list of legislation and regulations below) and the context provided by users.

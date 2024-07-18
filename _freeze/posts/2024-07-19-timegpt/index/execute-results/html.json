@@ -1,0 +1,14 @@
+{
+  "hash": "dc0ac3568b3654395ff0b28e18834a56",
+  "result": {
+    "markdown": "---\ntitle: \"Time for another GPT Model\"\ndate: 2024-07-19\ndescription: \"Using TimeGPT to: 1. forecast values in a recruitment setting, and 2. detect anomalies in a safety data.\"\nauthor: \n    - name: Adam D McKinnon\ncategories: [TimeGPT, Forecasting, Anomaly Detection, Safety, Recruiting, People Analytics]\nimage: \"liam-charmer-Aifb5-daBPs-unsplash.jpg\"\ntitle-block-banner: true\ndraft: false\n---\n\n::: {.cell code_folding='false'}\n::: {.cell-output-display}\n![[Photo by Liam Charmer on Unsplash](https://unsplash.com/@liamcharmer).](liam-charmer-Aifb5-daBPs-unsplash.jpg){width=100%}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
