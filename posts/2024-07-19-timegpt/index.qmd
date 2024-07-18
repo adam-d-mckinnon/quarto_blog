@@ -24,7 +24,7 @@ TimeGPT is a generative pretrained transformer for time series forecasting, deve
 
 ## Setup
 
-The set-up here is fairly straightforward.
+The set-up here is fairly straightforward. The first thing required is to register an account with nixtla to obtain API credentials (<https://www.nixtla.io/>).
 
 ```{r setup, echo=FALSE}
 
@@ -32,7 +32,6 @@ library(nixtlar) # required for TimeGPT
 library(tidyverse)
 
 nixtla_set_api_key(api_key = "NIXTLA_API_KEY")
-
 
 ```
 
@@ -60,4 +59,4 @@ Here we forecast recruitment volumes for three months. The forecast uses a combi
 
 ## Conclusion
 
-asdasdsad
+TimeGPT enables greater accessibility to cutting-edge forecasting and anomaly detection insights by reducing reliance on specialist skillsets in the domain. As demonstarted in this article TimeGPT is simple to use and can deliver insight fast!
