@@ -16,6 +16,48 @@ knitr::include_graphics("liam-charmer-Aifb5-daBPs-unsplash.jpg")
 
 <br>
 
-Introducing TimeGPT
+## Introducing TimeGPT
 
-To address the complexity of Australian workplace legislation the current Chatbot has been created. The Chatbot is called "Lex", named after the Latin word for "Law". Lex is intended to act as an intelligent and approachable Australian employment law support AI. It is limited in its responses to the documentation it has been trained upon (see a list of legislation and regulations below) and the context provided by users.
+TimeGPT is a generative pretrained transformer for time series forecasting, developed by Nixtla. It can perform both time series forecasts (i.e., predictions) and detect anomalies in only a few lines of code, thereby lowering the barriers of entry to time series analysis!
+
+<br>
+
+## Setup
+
+The set-up here is fairly straightforward.
+
+```{r setup, echo=FALSE}
+
+library(nixtlar) # required for TimeGPT
+library(tidyverse)
+
+nixtla_set_api_key(api_key = "NIXTLA_API_KEY")
+
+
+```
+
+<br>
+
+## Forecasting
+
+Here we forecast recruitment volumes for three months. The forecast uses a combination of both historic volumes and turnover volumes. It is important to note that any exogenous variables (i.e., the turnover volume in this example) values must be present for the entire forecast window. Therefore, we will "lag" the turnover values by three months. This action assumes a relationship between turnover three months prior on recruitment volumes in the current month. In a business context this may reflect the required business approvals required prior to a requisition being approved and created.
+
+```{r}
+
+
+
+```
+
+<br>
+
+## Anomaly Detection
+
+```{r}
+
+```
+
+<br>
+
+## Conclusion
+
+asdasdsad

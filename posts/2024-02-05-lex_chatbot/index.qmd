@@ -10,11 +10,9 @@ title-block-banner: true
 draft: false
 ---
 
-
 ```{r header, echo=FALSE, code_folding = FALSE, fig.cap="[Photo by Conny Schneider on Unsplash](https://unsplash.com/@choys_).",out.width = '100%'}
 knitr::include_graphics("hammer.jpg")
-```  
-      
+```
 
 <br>
 
@@ -64,7 +62,6 @@ I welcome suggestions as to other legislation that should inform the future trai
 
 <script src="https://embed.chatnode.ai/b9f2f0363d718df2/popup.js"></script>
 ```
-
 ### **Disclaimer**
 
 Lex is an AI-powered virtual assistant and the responses are based on the information provided. While Lex strives to provide accurate and up-to-date information, it is not a qualified legal professional. The information provided by Lex should not be considered as legal advice. For specific legal advice, it is always recommended to consult with a qualified legal practitioner. Use of this service does not create a solicitor-client relationship.
