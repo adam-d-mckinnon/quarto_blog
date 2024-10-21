@@ -1,10 +1,10 @@
 ---
 title: "Time for another GPT Model"
-date: 2024-07-19
-description: "Using TimeGPT to: 1. forecast values in a recruitment setting, and 2. detect anomalies in a safety data."
+date: 2024-10-21
+description: "Exploring the use of TimeGPT, a GPT model designed to enable efficient forecastiing. In this instance TimeGPT is used to forecast future recruitment volumes."
 author: 
     - name: Adam D McKinnon
-categories: [TimeGPT, Forecasting, Anomaly Detection, Safety, Recruiting, People Analytics]
+categories: [TimeGPT, Forecasting, Recruiting, People Analytics]
 image: "liam-charmer-Aifb5-daBPs-unsplash.jpg"
 title-block-banner: true
 draft: true
@@ -24,7 +24,7 @@ TimeGPT is a generative pretrained transformer for time series forecasting, deve
 
 ## Setup
 
-The set-up here is fairly straightforward. The first thing required is to register an account with nixtla to obtain API credentials (<https://www.nixtla.io/>).
+The set-up here is fairly straightforward. The first requirement is to register an account with Nixtla to obtain API credentials (<https://www.nixtla.io/>).
 
 ```{r setup, echo=FALSE}
 
@@ -39,7 +39,7 @@ nixtla_set_api_key(api_key = "NIXTLA_API_KEY")
 
 ## Forecasting
 
-Here we forecast recruitment volumes for three months. The forecast uses a combination of both historic volumes and turnover volumes. It is important to note that any exogenous variables (i.e., the turnover volume in this example) values must be present for the entire forecast window. Therefore, we will "lag" the turnover values by three months. This action assumes a relationship between turnover three months prior on recruitment volumes in the current month. In a business context this may reflect the required business approvals required prior to a requisition being approved and created.
+Here we forecast recruitment volumes for three months. The forecast uses a combination of both historic volumes and turnover volumes. It is important to note that any exogenous variables values, the turnover volume in this example, must be present for the entire forecast window. Therefore, we will "lag" the turnover values by three months. This assumes a relationship between turnover three months prior on recruitment volumes in the current month. In a business setting this may reflect the required business approvals required prior to a requisition being approved and created.
 
 ```{r}
 
@@ -59,4 +59,4 @@ Here we forecast recruitment volumes for three months. The forecast uses a combi
 
 ## Conclusion
 
-TimeGPT enables greater accessibility to cutting-edge forecasting and anomaly detection insights by reducing reliance on specialist skillsets in the domain. As demonstarted in this article TimeGPT is simple to use and can deliver insight fast!
+TimeGPT enables greater accessibility to cutting-edge forecasting by reducing reliance on specialist skillsets in the domain. As demonstarted in this article TimeGPT is simple to use and can deliver insight fast!
