@@ -30,6 +30,8 @@ The set-up here is fairly straightforward. The first requirement is to register 
 
 library(nixtlar) # required for TimeGPT
 library(tidyverse)
+library(timetk)
+
 
 nixtla_set_api_key(api_key = "NIXTLA_API_KEY")
 
@@ -42,16 +44,63 @@ nixtla_set_api_key(api_key = "NIXTLA_API_KEY")
 Here we forecast recruitment volumes for three months. The forecast uses a combination of both historic volumes and turnover volumes. It is important to note that any exogenous variables values, the turnover volume in this example, must be present for the entire forecast window. Therefore, we will "lag" the turnover values by three months. This assumes a relationship between turnover three months prior on recruitment volumes in the current month. In a business setting this may reflect the required business approvals required prior to a requisition being approved and created.
 
 ```{r}
+df <- readr::read_csv(file = "US_Regional_Sales_Data.csv") |> 
+    janitor::clean_names() 
+
+vars_to_keep <- c("sales_channel", "order_date", "order_quantity", "total_sale")
+
+df1 <- df |> 
+    dplyr::mutate(
+        total_sale = unit_price * order_quantity,
+        order_date = as.Date(order_date, format = "%d/%m/%y")
+        ) |>
+    dplyr::select(one_of(vars_to_keep)) |> 
+    dplyr::select(
+        unique_id = sales_channel, 
+        ds = order_date, 
+        y = total_sale
+        ) |> 
+    dplyr::group_by(unique_id) |> 
+    timetk::summarise_by_time(
+        .date_var = ds,
+        .by = "week",
+        y = log(sum(y))
+    ) |> 
+    dplyr::ungroup()
+
+
+```
+
+```{r}
+
+nixtla_client_cv <- nixtlar::nixtla_client_cross_validation(df1, h = 10, model = "timegpt-1-long-horizon")
+
+
+nixtlar::nixtla_client_plot(df1, nixtla_client_cv, max_insample_length = 80) |> plotly::ggplotly()
 
 
 
 ```
 
-<br>
+```{r}
 
-## Anomaly Detection
+fcst_long_horizon <- nixtlar::nixtla_client_forecast(df1, 
+                                                     h=20, 
+                                                     freq = "W",
+                                                     id_col = "unique_id",
+                                                     model = "timegpt-1-long-horizon"
+                                                     )
+
+```
 
 ```{r}
+# convert back to normal number
+df1 |> glimpse()
+fcst_long_horizon |> glimpse()
+df1 <- df1 |> dplyr::mutate(y = exp(y))
+fcst_long_horizon <- fcst_long_horizon |> dplyr::mutate(TimeGPT = exp(TimeGPT))
+
+nixtla_client_plot(df1, fcst_long_horizon, id_col = "unique_id", max_insample_length = 200)
 
 ```
 
